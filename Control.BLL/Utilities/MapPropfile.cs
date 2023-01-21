@@ -14,8 +14,6 @@ namespace Control.BLL.Utilities
 			CreateMap<Owner, OwnerVM>().ReverseMap();
 			CreateMap<Period, PeriodVM>().ReverseMap();
 			CreateMap<Position, PositionVM>().ReverseMap();
-			CreateMap<Status, StatusVM>().ReverseMap();
-			CreateMap<Units, UnitsVM>().ReverseMap();
 		}
 	}
 }

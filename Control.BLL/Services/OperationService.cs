@@ -72,50 +72,48 @@ namespace Control.BLL.Services
 			await _unitOfWork.SaveAsync();
 		}
 
-		public async Task UpdateAsync(OperationVM vm)
-		{
-			var id = vm.OperationId;
-			var models = await _unitOfWork.Operations
-				.GetAsync(
-					expression: _ => _.OperationId.Equals(id),
-					isTracking: false);
+        public async Task UpdateAsync(OperationVM vm)
+        {
+            var model = _mapper.Map<Operation>(vm);
+            var models = await _unitOfWork.Operations
+                .GetAsync(
+                    expression: _ => _.OperationId.Equals(model.OperationId),
+                    isTracking: false);
 
-			var model = models.FirstOrDefault();
+            if (models==null)
+            {
+                string errorMessage = $"{model!.GetType().Name} model with id: {model.OperationId} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
 
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
+            else
+            {
+                _unitOfWork.Operations.Update(model);
+                await _unitOfWork.SaveAsync();
+            }
+        }
 
-			else
-			{
-				_unitOfWork.Operations.Update(model);
-			}
-		}
+        public async Task DeleteAsync(OperationVM vm)
+        {
+            var model = _mapper.Map<Operation>(vm);
+            var models = await _unitOfWork.Operations
+                .GetAsync(
+                    expression: _ => _.OperationId.Equals(model.OperationId),
+                    isTracking: false);
 
-		public async Task DeleteAsync(OperationVM vm)
-		{
-			var id = vm.OperationId;
-			var models = await _unitOfWork.Operations
-				.GetAsync(
-					expression: _ => _.OperationId.Equals(id),
-					isTracking: false);
+            if (models==null)
+            {
+                string errorMessage = $"{model!.GetType().Name} model with id: {model.OperationId} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
 
-			var model = models.FirstOrDefault();
-
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				_unitOfWork.Operations.Delete(model);
-			}
-		}
-	}
+            else
+            {
+                _unitOfWork.Operations.Delete(model);
+                await _unitOfWork.SaveAsync();
+            }
+        }
+    }
 }

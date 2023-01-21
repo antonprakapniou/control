@@ -72,50 +72,48 @@ namespace Control.BLL.Services
 			await _unitOfWork.SaveAsync();
 		}
 
-		public async Task UpdateAsync(OwnerVM vm)
-		{
-			var id = vm.OwnerId;
-			var models = await _unitOfWork.Owners
-				.GetAsync(
-					expression: _ => _.OwnerId.Equals(id),
-					isTracking: false);
+        public async Task UpdateAsync(OwnerVM vm)
+        {
+            var model = _mapper.Map<Owner>(vm);
+            var models = await _unitOfWork.Owners
+                .GetAsync(
+                    expression: _ => _.OwnerId.Equals(model.OwnerId),
+                    isTracking: false);
 
-			var model = models.FirstOrDefault();
+            if (models==null)
+            {
+                string errorMessage = $"{model!.GetType().Name} model with id: {model.OwnerId} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
 
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
+            else
+            {
+                _unitOfWork.Owners.Update(model);
+                await _unitOfWork.SaveAsync();
+            }
+        }
 
-			else
-			{
-				_unitOfWork.Owners.Update(model);
-			}
-		}
+        public async Task DeleteAsync(OwnerVM vm)
+        {
+            var model = _mapper.Map<Owner>(vm);
+            var models = await _unitOfWork.Owners
+                .GetAsync(
+                    expression: _ => _.OwnerId.Equals(model.OwnerId),
+                    isTracking: false);
 
-		public async Task DeleteAsync(OwnerVM vm)
-		{
-			var id = vm.OwnerId;
-			var models = await _unitOfWork.Owners
-				.GetAsync(
-					expression: _ => _.OwnerId.Equals(id),
-					isTracking: false);
+            if (models==null)
+            {
+                string errorMessage = $"{model!.GetType().Name} model with id: {model.OwnerId} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
 
-			var model = models.FirstOrDefault();
-
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				_unitOfWork.Owners.Delete(model);
-			}
-		}
-	}
+            else
+            {
+                _unitOfWork.Owners.Delete(model);
+                await _unitOfWork.SaveAsync();
+            }
+        }
+    }
 }

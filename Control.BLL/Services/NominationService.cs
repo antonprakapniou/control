@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Control.BLL.Services
 {
-	public sealed class NominationService:INominationsService
+	public sealed class NominationService:INominationService
 	{
 		private readonly ILogger<MeasuringService> _logger;
 		private readonly IMapper _mapper;
@@ -72,50 +72,48 @@ namespace Control.BLL.Services
 			await _unitOfWork.SaveAsync();
 		}
 
-		public async Task UpdateAsync(NominationVM vm)
-		{
-			var id = vm.NominationId;
-			var models = await _unitOfWork.Nominations
-				.GetAsync(
-					expression: _ => _.NominationId.Equals(id),
-					isTracking: false);
+        public async Task UpdateAsync(NominationVM vm)
+        {
+            var model = _mapper.Map<Nomination>(vm);
+            var models = await _unitOfWork.Nominations
+                .GetAsync(
+                    expression: _ => _.NominationId.Equals(model.NominationId),
+                    isTracking: false);
 
-			var model = models.FirstOrDefault();
+            if (models==null)
+            {
+                string errorMessage = $"{model!.GetType().Name} model with id: {model.NominationId} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
 
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
+            else
+            {
+                _unitOfWork.Nominations.Update(model);
+                await _unitOfWork.SaveAsync();
+            }
+        }
 
-			else
-			{
-				_unitOfWork.Nominations.Update(model);
-			}
-		}
+        public async Task DeleteAsync(NominationVM vm)
+        {
+            var model = _mapper.Map<Nomination>(vm);
+            var models = await _unitOfWork.Nominations
+                .GetAsync(
+                    expression: _ => _.NominationId.Equals(model.NominationId),
+                    isTracking: false);
 
-		public async Task DeleteAsync(NominationVM vm)
-		{
-			var id = vm.NominationId;
-			var models = await _unitOfWork.Nominations
-				.GetAsync(
-					expression: _ => _.NominationId.Equals(id),
-					isTracking: false);
+            if (models==null)
+            {
+                string errorMessage = $"{model!.GetType().Name} model with id: {model.NominationId} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
 
-			var model = models.FirstOrDefault();
-
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				_unitOfWork.Nominations.Delete(model);
-			}
-		}
-	}
+            else
+            {
+                _unitOfWork.Nominations.Delete(model);
+                await _unitOfWork.SaveAsync();
+            }
+        }
+    }
 }

@@ -15,8 +15,6 @@ namespace Control.DAL.Repositories
 		public IGenericRepository<Owner> Owners { get; }
 		public IGenericRepository<Period> Periods { get; }
 		public IGenericRepository<Position> Positions { get; }
-		public IGenericRepository<Status> Statuses { get; }
-		public IGenericRepository<Units> Units { get; }
 
 		#endregion
 
@@ -29,8 +27,6 @@ namespace Control.DAL.Repositories
 			Owners=new GenericRepository<Owner>(_db);
 			Periods=new GenericRepository<Period>(_db);
 			Positions=new GenericRepository<Position>(_db);
-			Statuses=new GenericRepository<Status>(_db);
-			Units=new GenericRepository<Units>(_db);
 		}
 
 		public async Task SaveAsync()

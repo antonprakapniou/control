@@ -10,8 +10,6 @@ namespace Control.DAL.Interfaces
 		public IGenericRepository<Owner> Owners { get; }
 		public IGenericRepository<Period> Periods { get; }
 		public IGenericRepository<Position> Positions { get; }
-		public IGenericRepository<Status> Statuses { get; }
-		public IGenericRepository<Units> Units { get; }
 
 		public Task SaveAsync(); 
 	}

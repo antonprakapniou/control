@@ -33,9 +33,7 @@ namespace Control.BLL.Services
 						.Include(_ => _.Nomination)
 						.Include(_ => _.Operation)
 						.Include(_ => _.Owner)
-						.Include(_ => _.Period)
-						.Include(_ => _.Status)
-						.Include(_ => _.Units)!,
+						.Include(_ => _.Period)!,
 					isTracking: false);
 
 			if (models==null)
@@ -56,15 +54,13 @@ namespace Control.BLL.Services
 		{
 			var models = await _unitOfWork.Positions
 				.GetAsync(
-					expression: _ => _.UnitsId.Equals(id),
+					expression: _ => _.PositionId.Equals(id),
 					include:query=>query
 						.Include(_ => _.Measuring)
 						.Include(_ => _.Nomination)
 						.Include(_ => _.Operation)
 						.Include(_ => _.Owner)
-						.Include(_ => _.Period)
-						.Include(_ => _.Status)
-						.Include(_ => _.Units)!,
+						.Include(_ => _.Period)!,
 					isTracking: false);
 
 			var model = models.FirstOrDefault();
@@ -90,50 +86,48 @@ namespace Control.BLL.Services
 			await _unitOfWork.SaveAsync();
 		}
 
-		public async Task UpdateAsync(PositionVM vm)
-		{
-			var id = vm.PositionId;
-			var models = await _unitOfWork.Positions
-				.GetAsync(
-					expression: _ => _.PositionId.Equals(id),
-					isTracking: false);
+        public async Task UpdateAsync(PositionVM vm)
+        {
+            var model = _mapper.Map<Owner>(vm);
+            var models = await _unitOfWork.Owners
+                .GetAsync(
+                    expression: _ => _.OwnerId.Equals(model.OwnerId),
+                    isTracking: false);
 
-			var model = models.FirstOrDefault();
+            if (models==null)
+            {
+                string errorMessage = $"{model!.GetType().Name} model with id: {model.OwnerId} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
 
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
+            else
+            {
+                _unitOfWork.Owners.Update(model);
+                await _unitOfWork.SaveAsync();
+            }
+        }
 
-			else
-			{
-				_unitOfWork.Positions.Update(model);
-			}
-		}
+        public async Task DeleteAsync(PositionVM vm)
+        {
+            var model = _mapper.Map<Position>(vm);
+            var models = await _unitOfWork.Positions
+                .GetAsync(
+                    expression: _ => _.PositionId.Equals(model.PositionId),
+                    isTracking: false);
 
-		public async Task DeleteAsync(PositionVM vm)
-		{
-			var id = vm.PositionId;
-			var models = await _unitOfWork.Positions
-				.GetAsync(
-					expression: _ => _.PositionId.Equals(id),
-					isTracking: false);
+            if (models==null)
+            {
+                string errorMessage = $"{model!.GetType().Name} model with id: {model.PositionId} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
 
-			var model = models.FirstOrDefault();
-
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				_unitOfWork.Positions.Delete(model);
-			}
-		}
-	}
+            else
+            {
+                _unitOfWork.Positions.Delete(model);
+                await _unitOfWork.SaveAsync();
+            }
+        }
+    }
 }

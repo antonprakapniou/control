@@ -11,8 +11,6 @@ namespace Control.DAL.EF
 		public DbSet<Operation> Operations { get; set; }
 		public DbSet<Owner> Owners { get; set; }
 		public DbSet<Period> Periods { get; set; }
-		public DbSet<Status> Statuses { get; set; }
-		public DbSet<Units> Units { get; set; }
 		public DbSet<Position> Positions { get; set; }
 
 		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
@@ -24,8 +22,6 @@ namespace Control.DAL.EF
 				.ApplyConfiguration(new OperationModelConfiguration())
 				.ApplyConfiguration(new OwnerModelConfiguration())
 				.ApplyConfiguration(new PeriodModelConfiguration())
-				.ApplyConfiguration(new StatusModelConfiguration())
-				.ApplyConfiguration(new UnitsModelConfiguration())
 				.ApplyConfiguration(new PositionModelConfiguration());
 		}
 	}

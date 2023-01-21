@@ -31,19 +31,22 @@ namespace Control.BLL.ViewModels
 		[DisplayName("Created")]
 		public DateTime Created { get; set; }
 
-		#endregion
+		[DisplayName("Status")]
+		public StatusEnum Status { get; set; }
 
-		#region You never know
+        #endregion
 
-		//public double? Minimum { get; set; }
-		//public double? Maximum { get; set; }
-		//public string? Accuracy { get; set; }
+        #region You never know
 
-		#endregion
+        //public double? Minimum { get; set; }
+        //public double? Maximum { get; set; }
+        //public string? Accuracy { get; set; }
 
-		#region IncludedProperties
+        #endregion
 
-		[DisplayName("Measuring")]
+        #region IncludedProperties
+
+        [DisplayName("Measuring")]
 		public Guid? MeasuringId { get; set; }
 		public Measuring? Measuring { get; set; }
 
@@ -62,14 +65,6 @@ namespace Control.BLL.ViewModels
 		[DisplayName("Period")]
 		public Guid? PeriodId { get; set; }
 		public Period? Period { get; set; }
-
-		[DisplayName("Status")]
-		public Guid? StatusId { get; set; }
-		public Status? Status { get; set; }
-
-		[DisplayName("Units")]
-		public Guid? UnitsId { get; set; }
-		public Units? Units { get; set; }
 
 		#endregion
 	}

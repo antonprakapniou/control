@@ -33,15 +33,7 @@ namespace Control.DAL.ModelsConfigurations
 
 			//builder
 			//	.HasOne(_ => _.Period)
-			//	.WithMany(_ => _.Positions);
-
-			//builder
-			//	.HasOne(_ => _.Status)
-			//	.WithMany(_ => _.Positions);
-
-			//builder
-			//	.HasOne(_ => _.Units)
-			//	.WithMany(_ => _.Positions);
+			//	.WithMany(_ => _.Positions);				
 
 			#endregion
 
@@ -80,14 +72,18 @@ namespace Control.DAL.ModelsConfigurations
 				.HasColumnName("Addition");
 
 			builder
-				.Property(_ => _.Previous)
-				.HasColumnName("Previous");
+				.Property(_ => _.PreviousDate)
+				.HasColumnName("PreviousDate");
 
 			builder
-				.Property(_ => _.Next)
-				.HasColumnName("Next");
+				.Property(_ => _.NextDate)
+				.HasColumnName("NextDate");
 
-			builder
+            builder
+                .Property(_ => _.Status)
+                .HasColumnName("Status");
+
+            builder
 				.Property(_ => _.Created)
 				.HasColumnName("Created");
 		}

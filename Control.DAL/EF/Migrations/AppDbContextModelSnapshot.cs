@@ -165,9 +165,9 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnType("text")
                         .HasColumnName("Name");
 
-                    b.Property<DateTime>("Next")
+                    b.Property<DateTime>("NextDate")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("Next");
+                        .HasColumnName("NextDate");
 
                     b.Property<Guid?>("NominationId")
                         .HasColumnType("uuid");
@@ -181,12 +181,13 @@ namespace Control.DAL.EF.Migrations
                     b.Property<Guid?>("PeriodId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Previous")
+                    b.Property<DateTime?>("PreviousDate")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("Previous");
+                        .HasColumnName("PreviousDate");
 
-                    b.Property<Guid?>("StatusId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("Status");
 
                     b.Property<Guid?>("UnitsId")
                         .HasColumnType("uuid");
@@ -204,29 +205,9 @@ namespace Control.DAL.EF.Migrations
 
                     b.HasIndex("PeriodId");
 
-                    b.HasIndex("StatusId");
-
                     b.HasIndex("UnitsId");
 
                     b.ToTable("Positions", (string)null);
-                });
-
-            modelBuilder.Entity("Control.DAL.Models.Status", b =>
-                {
-                    b.Property<Guid>("StatusId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("Name");
-
-                    b.HasKey("StatusId")
-                        .HasName("StatusId");
-
-                    b.ToTable("Statuses", (string)null);
                 });
 
             modelBuilder.Entity("Control.DAL.Models.Units", b =>
@@ -274,11 +255,6 @@ namespace Control.DAL.EF.Migrations
                         .HasForeignKey("PeriodId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Control.DAL.Models.Status", "Status")
-                        .WithMany("Positions")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("Control.DAL.Models.Units", "Units")
                         .WithMany("Positions")
                         .HasForeignKey("UnitsId")
@@ -293,8 +269,6 @@ namespace Control.DAL.EF.Migrations
                     b.Navigation("Owner");
 
                     b.Navigation("Period");
-
-                    b.Navigation("Status");
 
                     b.Navigation("Units");
                 });
@@ -320,11 +294,6 @@ namespace Control.DAL.EF.Migrations
                 });
 
             modelBuilder.Entity("Control.DAL.Models.Period", b =>
-                {
-                    b.Navigation("Positions");
-                });
-
-            modelBuilder.Entity("Control.DAL.Models.Status", b =>
                 {
                     b.Navigation("Positions");
                 });

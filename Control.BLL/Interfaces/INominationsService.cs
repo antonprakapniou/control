@@ -2,5 +2,5 @@
 
 namespace Control.BLL.Interfaces
 {
-	public interface INominationsService : IGenericService<NominationVM> { }
+	public interface INominationService : IGenericService<NominationVM> { }
 }

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Control.BLL.Services
 {
-	public class MeasuringService:IMeasuringService
+	public class MeasuringService : IMeasuringService
 	{
 		private readonly ILogger<MeasuringService> _logger;
 		private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ namespace Control.BLL.Services
 
 		public async Task<IEnumerable<MeasuringVM>> GetAsync()
 		{
-			var models = await _unitOfWork.Measurings.GetAsync(isTracking:false);
+			var models = await _unitOfWork.Measurings.GetAsync(isTracking: false);
 
 			if (models==null)
 			{
@@ -49,7 +49,7 @@ namespace Control.BLL.Services
 					expression: _ => _.MeasuringId.Equals(id),
 					isTracking: false);
 
-			var model=models.FirstOrDefault();
+			var model = models.FirstOrDefault();
 
 			if (model==null)
 			{
@@ -67,24 +67,22 @@ namespace Control.BLL.Services
 
 		public async Task CreateAsync(MeasuringVM vm)
 		{
-			var model=_mapper.Map<Measuring>(vm);
+			var model = _mapper.Map<Measuring>(vm);
 			_unitOfWork.Measurings.Create(model);
 			await _unitOfWork.SaveAsync();
 		}
 
 		public async Task UpdateAsync(MeasuringVM vm)
 		{
-			var id=vm.MeasuringId;
+			var model = _mapper.Map<Measuring>(vm);
 			var models = await _unitOfWork.Measurings
 				.GetAsync(
-					expression: _ => _.MeasuringId.Equals(id),
+					expression: _ => _.MeasuringId.Equals(model.MeasuringId),
 					isTracking: false);
 
-			var model = models.FirstOrDefault();
-
-			if (model==null)
+			if (models==null)
 			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
+				string errorMessage = $"{model!.GetType().Name} model with id: {model.MeasuringId} not found ";
 				_logger.LogError(errorMessage);
 				throw new ObjectNotFoundException(errorMessage);
 			}
@@ -92,22 +90,21 @@ namespace Control.BLL.Services
 			else
 			{
 				_unitOfWork.Measurings.Update(model);
+				await _unitOfWork.SaveAsync();
 			}
 		}
 
 		public async Task DeleteAsync(MeasuringVM vm)
 		{
-			var id = vm.MeasuringId;
+			var model = _mapper.Map<Measuring>(vm);
 			var models = await _unitOfWork.Measurings
 				.GetAsync(
-					expression: _ => _.MeasuringId.Equals(id),
+					expression: _ => _.MeasuringId.Equals(model.MeasuringId),
 					isTracking: false);
 
-			var model = models.FirstOrDefault();
-
-			if (model==null)
+			if (models==null)
 			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
+				string errorMessage = $"{model!.GetType().Name} model with id: {model.MeasuringId} not found ";
 				_logger.LogError(errorMessage);
 				throw new ObjectNotFoundException(errorMessage);
 			}
@@ -115,6 +112,7 @@ namespace Control.BLL.Services
 			else
 			{
 				_unitOfWork.Measurings.Delete(model);
+				await _unitOfWork.SaveAsync();
 			}
 		}
 	}
