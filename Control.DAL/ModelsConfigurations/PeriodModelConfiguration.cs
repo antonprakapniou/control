@@ -8,7 +8,8 @@ namespace Control.DAL.ModelsConfigurations
 	{
 		public void Configure(EntityTypeBuilder<Period> builder)
 		{
-			builder.ToTable("Periods")
+			builder
+				.ToTable("Periods")
 				.HasKey(_ => _.PeriodId)
 				.HasName("PeriodId");
 
@@ -17,16 +18,18 @@ namespace Control.DAL.ModelsConfigurations
 				.WithOne(_ => _.Period)
 				.OnDelete(DeleteBehavior.SetNull); ;
 
-			builder.Property(_ => _.PeriodId)
+			builder
+				.Property(_ => _.PeriodId)
 				.HasColumnName("Id");
 
-			builder.Property(_ => _.Name)
+			builder
+				.Property(_ => _.Name)
 				.HasColumnName("Name")
 				.IsRequired();
 
-			builder.Property(_ => _.Month)
-				.HasColumnName("Month")
-				.IsRequired();
+			builder
+				.Property(_ => _.Month)
+				.HasColumnName("Month");
 		}
 	}
 }

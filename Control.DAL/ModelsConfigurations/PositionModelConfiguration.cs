@@ -8,7 +8,8 @@ namespace Control.DAL.ModelsConfigurations
 	{
 		public void Configure(EntityTypeBuilder<Position> builder)
 		{
-			builder.ToTable("Positions")
+			builder
+				.ToTable("Positions")
 				.HasKey(_ => _.PositionId)
 				.HasName("PositionId");
 
@@ -44,35 +45,50 @@ namespace Control.DAL.ModelsConfigurations
 
 			#endregion
 
-			builder.Property(_ => _.PositionId)
+			builder
+				.Property(_ => _.PositionId)
 				.HasColumnName("Id");
 
-			builder.Property(_ => _.Name)
+			builder
+				.Property(_ => _.Name)
 				.HasColumnName("Name")
 				.IsRequired();
 
-			builder.Property(_ => _.Minimum)
-				.HasColumnName("Minimum");
+			#region You never know
 
-			builder.Property(_ => _.Maximum)
-				.HasColumnName("Maximum");
+			//builder.Property(_ => _.Minimum)
+			//	.HasColumnName("Minimum");
 
-			builder.Property(_ => _.Accuracy)
-				.HasColumnName("Accuracy");
+			//builder.Property(_ => _.Maximum)
+			//	.HasColumnName("Maximum");
 
-			builder.Property(_ => _.Included)
+			//builder.Property(_ => _.Accuracy)
+			//	.HasColumnName("Accuracy");
+
+			#endregion
+
+			builder
+				.Property(_ => _.Description)
+				.HasColumnName("Description");
+
+			builder
+				.Property(_ => _.Included)
 				.HasColumnName("Included");
 
-			builder.Property(_ => _.Addition)
+			builder
+				.Property(_ => _.Addition)
 				.HasColumnName("Addition");
 
-			builder.Property(_ => _.Previous)
+			builder
+				.Property(_ => _.Previous)
 				.HasColumnName("Previous");
 
-			builder.Property(_ => _.Next)
+			builder
+				.Property(_ => _.Next)
 				.HasColumnName("Next");
 
-			builder.Property(_ => _.Created)
+			builder
+				.Property(_ => _.Created)
 				.HasColumnName("Created");
 		}
 	}

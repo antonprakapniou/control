@@ -1,13 +1,12 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Control.DAL.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialize : Migration
+    public partial class CreateDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +17,7 @@ namespace Control.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Code = table.Column<string>(type: "text", nullable: false)
+                    Code = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,7 +29,7 @@ namespace Control.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,7 +41,7 @@ namespace Control.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -54,7 +53,7 @@ namespace Control.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Shop = table.Column<string>(type: "text", nullable: true),
+                    Shop = table.Column<string>(type: "text", nullable: false),
                     Production = table.Column<string>(type: "text", nullable: true),
                     Master = table.Column<string>(type: "text", nullable: true),
                     Phone = table.Column<string>(type: "text", nullable: true),
@@ -66,11 +65,10 @@ namespace Control.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Perods",
+                name: "Periods",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Month = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -109,19 +107,17 @@ namespace Control.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Minimum = table.Column<double>(type: "double precision", nullable: false),
-                    Maximum = table.Column<double>(type: "double precision", nullable: false),
-                    Accuracy = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     Included = table.Column<string>(type: "text", nullable: true),
                     Addition = table.Column<string>(type: "text", nullable: true),
                     Previous = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Next = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     MeasuringId = table.Column<Guid>(type: "uuid", nullable: true),
                     NominationId = table.Column<Guid>(type: "uuid", nullable: true),
                     OperationId = table.Column<Guid>(type: "uuid", nullable: true),
                     OwnerId = table.Column<Guid>(type: "uuid", nullable: true),
-                    PeriodId = table.Column<int>(type: "integer", nullable: true),
+                    PeriodId = table.Column<Guid>(type: "uuid", nullable: true),
                     StatusId = table.Column<Guid>(type: "uuid", nullable: true),
                     UnitsId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
@@ -153,9 +149,9 @@ namespace Control.DAL.EF.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
-                        name: "FK_Positions_Perods_PeriodId",
+                        name: "FK_Positions_Periods_PeriodId",
                         column: x => x.PeriodId,
-                        principalTable: "Perods",
+                        principalTable: "Periods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
@@ -227,7 +223,7 @@ namespace Control.DAL.EF.Migrations
                 name: "Owners");
 
             migrationBuilder.DropTable(
-                name: "Perods");
+                name: "Periods");
 
             migrationBuilder.DropTable(
                 name: "Statuses");

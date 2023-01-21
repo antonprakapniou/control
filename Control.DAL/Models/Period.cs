@@ -3,7 +3,7 @@
 	public sealed class Period
 	{
 		private int _month;
-		public int PeriodId { get; set; }
+		public Guid PeriodId { get; set; }
 		public string? Name { get; set; }
 		public ICollection<Position>? Positions { get; set; }
 

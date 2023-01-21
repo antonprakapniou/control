@@ -8,7 +8,8 @@ namespace Control.DAL.ModelsConfigurations
 	{
 		public void Configure(EntityTypeBuilder<Owner> builder)
 		{
-			builder.ToTable("Owners")
+			builder
+				.ToTable("Owners")
 				.HasKey(_ => _.OwnerId)
 				.HasName("OwnerId");
 
@@ -17,22 +18,29 @@ namespace Control.DAL.ModelsConfigurations
 				.WithOne(_ => _.Owner)
 				.OnDelete(DeleteBehavior.SetNull); ;
 
-			builder.Property(_ => _.OwnerId)
+			builder
+				.Property(_ => _.OwnerId)
 				.HasColumnName("Id");
 
-			builder.Property(_ => _.Shop)
-				.HasColumnName("Shop");
+			builder
+				.Property(_ => _.Shop)
+				.HasColumnName("Shop")
+				.IsRequired();
 
-			builder.Property(_ => _.Production)
+			builder
+				.Property(_ => _.Production)
 				.HasColumnName("Production");
 
-			builder.Property(_ => _.Master)
+			builder
+				.Property(_ => _.Master)
 				.HasColumnName("Master");
 
-			builder.Property(_ => _.Phone)
+			builder
+				.Property(_ => _.Phone)
 				.HasColumnName("Phone");
 
-			builder.Property(_ => _.Email)
+			builder
+				.Property(_ => _.Email)
 				.HasColumnName("Email");
 		}
 	}

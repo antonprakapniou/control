@@ -8,7 +8,8 @@ namespace Control.DAL.ModelsConfigurations
 	{
 		public void Configure(EntityTypeBuilder<Nomination> builder)
 		{
-			builder.ToTable("Nominations")
+			builder
+				.ToTable("Nominations")
 				.HasKey(_ => _.NominationId)
 				.HasName("NominationId");
 
@@ -17,12 +18,13 @@ namespace Control.DAL.ModelsConfigurations
 				.WithOne(_ => _.Nomination)
 				.OnDelete(DeleteBehavior.SetNull); ;
 
-			builder.Property(_ => _.NominationId)
+			builder
+				.Property(_ => _.NominationId)
 				.HasColumnName("Id");
 
-			builder.Property(_ => _.Name)
-				.HasColumnName("Name")
-				.IsRequired();
+			builder
+				.Property(_ => _.Name)
+				.HasColumnName("Name");
 		}
 	}
 }

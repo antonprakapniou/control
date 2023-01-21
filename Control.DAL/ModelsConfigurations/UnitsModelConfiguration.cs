@@ -8,7 +8,8 @@ namespace Control.DAL.ModelsConfigurations
 	{
 		public void Configure(EntityTypeBuilder<Units> builder)
 		{
-			builder.ToTable("Units")
+			builder
+				.ToTable("Units")
 				.HasKey(_ => _.UnitsId)
 				.HasName("UnitsId");
 
@@ -17,10 +18,12 @@ namespace Control.DAL.ModelsConfigurations
 				.WithOne(_ => _.Units)
 				.OnDelete(DeleteBehavior.SetNull);
 
-			builder.Property(_ => _.UnitsId)
+			builder
+				.Property(_ => _.UnitsId)
 				.HasColumnName("Id");
 
-			builder.Property(_ => _.Name)
+			builder
+				.Property(_ => _.Name)
 				.HasColumnName("Name")
 				.IsRequired();
 		}

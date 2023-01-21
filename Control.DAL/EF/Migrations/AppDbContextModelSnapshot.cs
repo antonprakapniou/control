@@ -30,7 +30,6 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnName("Id");
 
                     b.Property<string>("Code")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("Code");
 
@@ -53,7 +52,6 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnName("Id");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("Name");
 
@@ -71,7 +69,6 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnName("Id");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("Name");
 
@@ -105,6 +102,7 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnName("Production");
 
                     b.Property<string>("Shop")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("Shop");
 
@@ -116,12 +114,10 @@ namespace Control.DAL.EF.Migrations
 
             modelBuilder.Entity("Control.DAL.Models.Period", b =>
                 {
-                    b.Property<int>("PeriodId")
+                    b.Property<Guid>("PeriodId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("uuid")
                         .HasColumnName("Id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PeriodId"));
 
                     b.Property<int>("Month")
                         .HasColumnType("integer")
@@ -145,32 +141,24 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("Id");
 
-                    b.Property<string>("Accuracy")
-                        .HasColumnType("text")
-                        .HasColumnName("Accuracy");
-
                     b.Property<string>("Addition")
                         .HasColumnType("text")
                         .HasColumnName("Addition");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("Created");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("Description");
 
                     b.Property<string>("Included")
                         .HasColumnType("text")
                         .HasColumnName("Included");
 
-                    b.Property<double>("Maximum")
-                        .HasColumnType("double precision")
-                        .HasColumnName("Maximum");
-
                     b.Property<Guid?>("MeasuringId")
                         .HasColumnType("uuid");
-
-                    b.Property<double>("Minimum")
-                        .HasColumnType("double precision")
-                        .HasColumnName("Minimum");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -190,8 +178,8 @@ namespace Control.DAL.EF.Migrations
                     b.Property<Guid?>("OwnerId")
                         .HasColumnType("uuid");
 
-                    b.Property<int?>("PeriodId")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("PeriodId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("Previous")
                         .HasColumnType("timestamp with time zone")
