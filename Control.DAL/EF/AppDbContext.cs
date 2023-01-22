@@ -6,7 +6,8 @@ namespace Control.DAL.EF
 {
 	public sealed class AppDbContext : DbContext
 	{
-		public DbSet<Measuring> Measurings { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Measuring> Measurings { get; set; }
 		public DbSet<Nomination> Nominations { get; set; }
 		public DbSet<Operation> Operations { get; set; }
 		public DbSet<Owner> Owners { get; set; }
@@ -22,7 +23,8 @@ namespace Control.DAL.EF
 				.ApplyConfiguration(new OperationModelConfiguration())
 				.ApplyConfiguration(new OwnerModelConfiguration())
 				.ApplyConfiguration(new PeriodModelConfiguration())
-				.ApplyConfiguration(new PositionModelConfiguration());
-		}
+				.ApplyConfiguration(new PositionModelConfiguration())
+                .ApplyConfiguration(new CategoryModelConfiguration());
+        }
 	}
 }

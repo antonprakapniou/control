@@ -10,12 +10,12 @@ namespace Control.BLL.Services
 {
 	public sealed class OwnerService:IOwnerService
 	{
-		private readonly ILogger<MeasuringService> _logger;
+		private readonly ILogger<OwnerService> _logger;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 
 		public OwnerService(
-			ILogger<MeasuringService> logger,
+			ILogger<OwnerService> logger,
 			IMapper mapper,
 			IUnitOfWork unitOfWork)
 		{

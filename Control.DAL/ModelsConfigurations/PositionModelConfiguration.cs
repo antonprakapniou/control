@@ -13,32 +13,36 @@ namespace Control.DAL.ModelsConfigurations
 				.HasKey(_ => _.PositionId)
 				.HasName("PositionId");
 
-			#region Alternative one-to-many relationship setup
+            #region Alternative one-to-many relationship setup
 
-			//builder
-			//	.HasOne(_ => _.Measuring)
-			//	.WithMany(_=>_.Positions);
+            //builder
+            //	.HasOne(_ => _.Measuring)
+            //	.WithMany(_=>_.Positions);
 
-			//builder
-			//	.HasOne(_ => _.Nomination)
-			//	.WithMany(_ => _.Positions);
+            //builder
+            //	.HasOne(_ => _.Nomination)
+            //	.WithMany(_ => _.Positions);
 
-			//builder
-			//	.HasOne(_ => _.Operation)
-			//	.WithMany(_ => _.Positions);
+            //builder
+            //	.HasOne(_ => _.Operation)
+            //	.WithMany(_ => _.Positions);
 
-			//builder
-			//	.HasOne(_ => _.Owner)
-			//	.WithMany(_ => _.Positions);
+            //builder
+            //	.HasOne(_ => _.Owner)
+            //	.WithMany(_ => _.Positions);
 
-			//builder
-			//	.HasOne(_ => _.Period)
-			//	.WithMany(_ => _.Positions);				
+            //builder
+            //	.HasOne(_ => _.Period)
+            //	.WithMany(_ => _.Positions);
+            //	
+            //builder
+            //	.HasOne(_ => _.Category)
+            //	.WithMany(_ => _.Categories);				
 
-			#endregion
+            #endregion
 
-			builder
-				.Property(_ => _.PositionId)
+            builder
+                .Property(_ => _.PositionId)
 				.HasColumnName("Id");
 
 			builder

@@ -11,12 +11,12 @@ namespace Control.BLL.Services
 {
 	public sealed class PositionService:IPositionService
 	{
-		private readonly ILogger<MeasuringService> _logger;
+		private readonly ILogger<PositionService> _logger;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 
 		public PositionService(
-			ILogger<MeasuringService> logger,
+			ILogger<PositionService> logger,
 			IMapper mapper,
 			IUnitOfWork unitOfWork)
 		{

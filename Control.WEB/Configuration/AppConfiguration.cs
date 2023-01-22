@@ -25,7 +25,8 @@ namespace Control.WEB.Configuration
 
             services.AddAutoMapper(typeof(MapPropfile));
             services.AddTransient<IUnitOfWork,UnitOfWork>();
-			services.AddTransient<IMeasuringService, MeasuringService>();
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IMeasuringService, MeasuringService>();
 			services.AddTransient<INominationService, NominationService>();
 			services.AddTransient<IOperationService, OperationService>();
 			services.AddTransient<IOwnerService, OwnerService>();

@@ -4,7 +4,8 @@ namespace Control.DAL.Interfaces
 {
 	public interface IUnitOfWork
 	{
-		public IGenericRepository<Measuring> Measurings { get;}
+        public IGenericRepository<Category> Categories { get; }
+        public IGenericRepository<Measuring> Measurings { get;}
 		public IGenericRepository<Nomination> Nominations { get; }
 		public IGenericRepository<Operation> Operations { get; }
 		public IGenericRepository<Owner> Owners { get; }

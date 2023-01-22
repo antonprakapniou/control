@@ -8,7 +8,8 @@ namespace Control.BLL.Utilities
 	{
 		public MapPropfile()
 		{
-			CreateMap<Measuring,MeasuringVM>().ReverseMap();
+            CreateMap<Category, CategoryVM>().ReverseMap();
+            CreateMap<Measuring,MeasuringVM>().ReverseMap();
 			CreateMap<Nomination, NominationVM>().ReverseMap();
 			CreateMap<Operation, OperationVM>().ReverseMap();
 			CreateMap<Owner, OwnerVM>().ReverseMap();

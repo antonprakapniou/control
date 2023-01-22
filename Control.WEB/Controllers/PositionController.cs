@@ -10,6 +10,7 @@ namespace Control.WEB.Controllers
     {
         private readonly ILogger<PositionController> _logger;
         private readonly IPositionService _positionService;
+        private readonly ICategoryService _categoryService;
         private readonly IMeasuringService _measuringService;
         private readonly INominationService _nominationService;
         private readonly IOperationService _operationService;
@@ -19,6 +20,7 @@ namespace Control.WEB.Controllers
         public PositionController(
             ILogger<PositionController> logger,
             IPositionService positionService,
+            ICategoryService categoryService,
             IMeasuringService measuringService,
             INominationService nominationService,
             IOperationService operationService,
@@ -27,6 +29,7 @@ namespace Control.WEB.Controllers
         {
             _logger=logger;
             _positionService=positionService;
+            _categoryService=categoryService;
             _measuringService=measuringService;
             _nominationService=nominationService;
             _operationService=operationService;
@@ -63,6 +66,7 @@ namespace Control.WEB.Controllers
         {
             try
             {
+                var categories = _categoryService.GetAsync().Result;
                 var measurings = _measuringService.GetAsync().Result;
                 var nominations = _nominationService.GetAsync().Result;
                 var operations = _operationService.GetAsync().Result;
@@ -72,6 +76,12 @@ namespace Control.WEB.Controllers
                 PositionCreatingVM positionCreatingVM = new()
                 {
                     PositionVM=new(),
+
+                    Categories=categories.Select(_ => new SelectListItem
+                    {
+                        Value=_.CategoryId.ToString(),
+                        Text=_.Name
+                    }),
 
                     Measurings=measurings.Select(_ => new SelectListItem
                     {

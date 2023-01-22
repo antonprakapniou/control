@@ -10,12 +10,12 @@ namespace Control.BLL.Services
 {
 	public sealed class PeriodService:IPeriodService
 	{
-		private readonly ILogger<MeasuringService> _logger;
+		private readonly ILogger<PeriodService> _logger;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 
 		public PeriodService(
-			ILogger<MeasuringService> logger,
+			ILogger<PeriodService> logger,
 			IMapper mapper,
 			IUnitOfWork unitOfWork)
 		{

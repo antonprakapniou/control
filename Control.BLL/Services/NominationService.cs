@@ -10,12 +10,12 @@ namespace Control.BLL.Services
 {
 	public sealed class NominationService:INominationService
 	{
-		private readonly ILogger<MeasuringService> _logger;
+		private readonly ILogger<NominationService> _logger;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 
 		public NominationService(
-			ILogger<MeasuringService> logger,
+			ILogger<NominationService> logger,
 			IMapper mapper,
 			IUnitOfWork unitOfWork)
 		{

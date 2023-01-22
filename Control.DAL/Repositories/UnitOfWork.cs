@@ -8,8 +8,10 @@ namespace Control.DAL.Repositories
 	{
 		private readonly AppDbContext _db;
 
-		#region Repositories
-		public IGenericRepository<Measuring> Measurings { get; }
+        #region Repositories
+
+        public IGenericRepository<Category> Categories { get; }
+        public IGenericRepository<Measuring> Measurings { get; }
 		public IGenericRepository<Nomination> Nominations { get; }
 		public IGenericRepository<Operation> Operations { get; }
 		public IGenericRepository<Owner> Owners { get; }
@@ -21,7 +23,8 @@ namespace Control.DAL.Repositories
 		public UnitOfWork(AppDbContext db)
 		{
 			_db= db;
-			Measurings=new GenericRepository<Measuring>(_db);
+            Categories=new GenericRepository<Category>(_db);
+            Measurings=new GenericRepository<Measuring>(_db);
 			Nominations=new GenericRepository<Nomination>(_db);
 			Operations=new GenericRepository<Operation>(_db);
 			Owners=new GenericRepository<Owner>(_db);

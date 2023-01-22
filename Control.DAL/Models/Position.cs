@@ -31,20 +31,22 @@
 
         #region IncludedProperties
 
-        public Guid? MeasuringId { get; set; }
+        //public Guid? MeasuringId { get; set; }
 		public Measuring? Measuring { get; set; }
-		public Guid? NominationId { get; set; }
+		//public Guid? NominationId { get; set; }
 		public Nomination? Nomination { get; set; }
-		public Guid? OperationId { get; set; }
+		//public Guid? OperationId { get; set; }
 		public Operation? Operation { get; set; }
-		public Guid? OwnerId { get; set; }
+		//public Guid? OwnerId { get; set; }
 		public Owner? Owner { get; set; }
-		public Guid? PeriodId { get; set; }
+		//public Guid? PeriodId { get; set; }
 		public Period? Period { get; set; }
+        //public Guid? CategoryId { get; set; }
+        public Category? Category { get; set; }
 
-		#endregion
+        #endregion
 
-		public Position()
+        public Position()
 		{
 			NextDate=NextDate
 				.AddMonths(Period!.Month)

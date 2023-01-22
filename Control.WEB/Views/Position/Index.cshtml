@@ -1,0 +1,135 @@
+﻿@model IEnumerable<PositionVM>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-info pl-3">Positions list</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Position" asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+
+@if (Model.Count()>0)
+{
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Included
+                </th>
+                <th>
+                    Addition
+                </th>
+                <th>
+                    PreviousDate
+                </th>
+                <th>
+                    NextDate
+                </th>
+                <th>
+                    Created
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Measuring
+                </th>
+                <th>
+                    Nomination
+                </th>
+                <th>
+                    Operation
+                </th>
+                <th>
+                    Owner
+                </th>
+                <th>
+                    Period
+                </th>
+                <th>
+                    Category
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @item.Included
+                    </td>
+                    <td>
+                        @item.Addition
+                    </td>
+                    <td>
+                        @item.PreviousDate
+                    </td>
+                    <td>
+                        @item.NextDate
+                    </td>
+                    <td>
+                        @item.Created
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        @item.Measuring!.Name
+                    </td>
+                    <td>
+                        @item.Nomination!.Name
+                    </td>
+                    <td>
+                        @item.Operation!.Name
+                    </td>
+                    <td>
+                        @item.Owner!.Shop&nbsp;@item.Owner!.Production
+                    </td>
+                    <td>
+                        @item.Period!.Name
+                    </td>
+                    <td>
+                        @item.Category!.Name
+                    </td>                    
+                    
+                    <td class="text-center">
+                        <div class="w-25 btn-group" role="group">
+                            <a asp-controller="Position" asp-route-id="@item.PositionId" asp-action="Update" class="btn btn-primary mx-2">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form method="post" asp-controller="Position" asp-action="Delete" asp-route-id="@item.PositionId">
+                                <input type="submit" class="btn btn-danger w-100" value="Delete" />
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+else
+{
+    <p>Positions list is empty</p>
+}

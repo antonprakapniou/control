@@ -23,10 +23,10 @@ namespace Control.BLL.ViewModels
 		public string? Addition { get; set; }
 
 		[DisplayName("Previous")]
-		public DateTime? Previous { get; set; }
+		public DateTime? PreviousDate { get; set; }
 
 		[DisplayName("Next")]
-		public DateTime Next { get; set; }
+		public DateTime NextDate { get; set; }
 
 		[DisplayName("Created")]
 		public DateTime Created { get; set; }
@@ -47,25 +47,26 @@ namespace Control.BLL.ViewModels
         #region IncludedProperties
 
         [DisplayName("Measuring")]
-		public Guid? MeasuringId { get; set; }
+		//public Guid? MeasuringId { get; set; }
 		public Measuring? Measuring { get; set; }
 
 		[DisplayName("Nomination")]
-		public Guid? NominationId { get; set; }
+		//public Guid? NominationId { get; set; }
 		public Nomination? Nomination { get; set; }
 
 		[DisplayName("Operation")]
-		public Guid? OperationId { get; set; }
+		//public Guid? OperationId { get; set; }
 		public Operation? Operation { get; set; }
 
 		[DisplayName("Owner")]
-		public Guid? OwnerId { get; set; }
+		//public Guid? OwnerId { get; set; }
 		public Owner? Owner { get; set; }
 
 		[DisplayName("Period")]
-		public Guid? PeriodId { get; set; }
+		//public Guid? PeriodId { get; set; }
 		public Period? Period { get; set; }
+        public Category? Category { get; set; }
 
-		#endregion
-	}
+        #endregion
+    }
 }
