@@ -15,13 +15,22 @@ namespace Control.WEB.Configuration
 		{
 			services.AddControllersWithViews();
 
-			string? connectionName = AppConstants.DevelopmentConnection;
-			string connectionString=configuration
+            //string? connectionName = AppConstants.DevelopPostrgeSqlConnection;
+
+            string? connectionName = AppConstants.DevelopSqLiteConnection;
+            string connectionString =configuration
 				.GetConnectionString(connectionName!)
 
 				??throw new InvalidOperationException($"Connection \"{connectionName}\" not found");
-			services.AddDbContext<AppDbContext>(options=>
-			options.UseNpgsql(connectionString));
+
+			//services.AddDbContext<AppDbContext>(options=>
+			//	options.UseNpgsql(connectionString));
+
+			services.AddDbContext<AppDbContext>(options =>
+			{
+				options.UseSqlite(connectionString);
+				options.EnableSensitiveDataLogging();
+			});
 
             services.AddAutoMapper(typeof(MapPropfile));
             services.AddTransient<IUnitOfWork,UnitOfWork>();

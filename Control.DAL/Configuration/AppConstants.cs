@@ -2,6 +2,7 @@
 {
 	public static class AppConstants
 	{
-		public const string? DevelopmentConnection = "DefaultConnection"; 
-	}
+		public const string? DevelopPostrgeSqlConnection = "DevelopPostrgeSqlConnection";
+		public const string? DevelopSqLiteConnection = "DevelopSqLiteConnection";
+    }
 }

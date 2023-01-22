@@ -26,7 +26,7 @@ namespace Control.BLL.Services
 
 		public async Task<IEnumerable<OwnerVM>> GetAsync()
 		{
-			var models = await _unitOfWork.Owners.GetAsync(isTracking: false);
+			var models = await _unitOfWork.Owners.GetAllAsync(isTracking: false);
 
 			if (models==null)
 			{
@@ -45,7 +45,7 @@ namespace Control.BLL.Services
 		public async Task<OwnerVM> GetByIdAsync(Guid id)
 		{
 			var models = await _unitOfWork.Owners
-				.GetAsync(
+				.GetAllAsync(
 					expression: _ => _.OwnerId.Equals(id),
 					isTracking: false);
 
@@ -76,7 +76,7 @@ namespace Control.BLL.Services
         {
             var model = _mapper.Map<Owner>(vm);
             var models = await _unitOfWork.Owners
-                .GetAsync(
+                .GetAllAsync(
                     expression: _ => _.OwnerId.Equals(model.OwnerId),
                     isTracking: false);
 
@@ -94,17 +94,15 @@ namespace Control.BLL.Services
             }
         }
 
-        public async Task DeleteAsync(OwnerVM vm)
+        public async Task DeleteAsync(Guid id)
         {
-            var model = _mapper.Map<Owner>(vm);
-            var models = await _unitOfWork.Owners
-                .GetAsync(
-                    expression: _ => _.OwnerId.Equals(model.OwnerId),
-                    isTracking: false);
+            var model = await _unitOfWork.Owners.GetOneAsync(
+                expression: _ => _.OwnerId.Equals(id),
+                isTracking: false);
 
-            if (models==null)
+            if (model==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {model.OwnerId} not found ";
+                string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }

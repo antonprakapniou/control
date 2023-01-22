@@ -17,7 +17,7 @@ namespace Control.DAL.Repositories
 			_t=db.Set<T>();
 		}
 
-		public async Task<IEnumerable<T>> GetAsync(
+		public async Task<IEnumerable<T>> GetAllAsync(
 			Expression<Func<T, bool>>? expression = null,
 			Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
 			Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
@@ -30,7 +30,20 @@ namespace Control.DAL.Repositories
 			if (!isTracking) query=query.AsNoTracking();
 			return await query.ToListAsync();
 		}
-		public void Create(T entity)
+		
+		public async Task<T> GetOneAsync(
+            Expression<Func<T, bool>>? expression = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
+            bool isTracking = true)
+        {
+            IQueryable<T> query = _t;
+            if (expression!=null) query=query.Where(expression);
+            if (include!=null) query=include(query);
+            if (!isTracking) query=query.AsNoTracking();
+			return await query.FirstAsync();
+        }
+
+        public void Create(T entity)
 		{
 			_t.Add(entity);
 		}

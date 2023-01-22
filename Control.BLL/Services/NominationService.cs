@@ -26,7 +26,7 @@ namespace Control.BLL.Services
 
 		public async Task<IEnumerable<NominationVM>> GetAsync()
 		{
-			var models = await _unitOfWork.Nominations.GetAsync(isTracking: false);
+			var models = await _unitOfWork.Nominations.GetAllAsync(isTracking: false);
 
 			if (models==null)
 			{
@@ -45,7 +45,7 @@ namespace Control.BLL.Services
 		public async Task<NominationVM> GetByIdAsync(Guid id)
 		{
 			var models = await _unitOfWork.Nominations
-				.GetAsync(
+				.GetAllAsync(
 					expression: _ => _.NominationId.Equals(id),
 					isTracking: false);
 
@@ -76,7 +76,7 @@ namespace Control.BLL.Services
         {
             var model = _mapper.Map<Nomination>(vm);
             var models = await _unitOfWork.Nominations
-                .GetAsync(
+                .GetAllAsync(
                     expression: _ => _.NominationId.Equals(model.NominationId),
                     isTracking: false);
 
@@ -94,17 +94,15 @@ namespace Control.BLL.Services
             }
         }
 
-        public async Task DeleteAsync(NominationVM vm)
+        public async Task DeleteAsync(Guid id)
         {
-            var model = _mapper.Map<Nomination>(vm);
-            var models = await _unitOfWork.Nominations
-                .GetAsync(
-                    expression: _ => _.NominationId.Equals(model.NominationId),
-                    isTracking: false);
+            var model = await _unitOfWork.Nominations.GetOneAsync(
+                expression: _ => _.NominationId.Equals(id),
+                isTracking: false);
 
-            if (models==null)
+            if (model==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {model.NominationId} not found ";
+                string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }

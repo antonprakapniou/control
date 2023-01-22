@@ -135,8 +135,7 @@ namespace Control.WEB.Controllers
         {
             try
             {
-                var vm = await _service.GetByIdAsync(id);
-                await _service.DeleteAsync(vm);
+                await _service.DeleteAsync(id);
                 return RedirectToAction("Index");
             }
 

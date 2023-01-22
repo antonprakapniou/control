@@ -26,7 +26,7 @@ namespace Control.BLL.Services
 
 		public async Task<IEnumerable<MeasuringVM>> GetAsync()
 		{
-			var models = await _unitOfWork.Measurings.GetAsync(isTracking: false);
+			var models = await _unitOfWork.Measurings.GetAllAsync(isTracking: false);
 
 			if (models==null)
 			{
@@ -45,7 +45,7 @@ namespace Control.BLL.Services
 		public async Task<MeasuringVM> GetByIdAsync(Guid id)
 		{
 			var models = await _unitOfWork.Measurings
-				.GetAsync(
+				.GetAllAsync(
 					expression: _ => _.MeasuringId.Equals(id),
 					isTracking: false);
 
@@ -76,7 +76,7 @@ namespace Control.BLL.Services
 		{
 			var model = _mapper.Map<Measuring>(vm);
 			var models = await _unitOfWork.Measurings
-				.GetAsync(
+				.GetAllAsync(
 					expression: _ => _.MeasuringId.Equals(model.MeasuringId),
 					isTracking: false);
 
@@ -94,26 +94,24 @@ namespace Control.BLL.Services
 			}
 		}
 
-		public async Task DeleteAsync(MeasuringVM vm)
-		{
-			var model = _mapper.Map<Measuring>(vm);
-			var models = await _unitOfWork.Measurings
-				.GetAsync(
-					expression: _ => _.MeasuringId.Equals(model.MeasuringId),
-					isTracking: false);
+        public async Task DeleteAsync(Guid id)
+        {
+            var model = await _unitOfWork.Measurings.GetOneAsync(
+                expression: _ => _.MeasuringId.Equals(id),
+                isTracking: false);
 
-			if (models==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {model.MeasuringId} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
+            if (model==null)
+            {
+                string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
 
-			else
-			{
-				_unitOfWork.Measurings.Delete(model);
-				await _unitOfWork.SaveAsync();
-			}
-		}
-	}
+            else
+            {
+                _unitOfWork.Measurings.Delete(model);
+                await _unitOfWork.SaveAsync();
+            }
+        }
+    }
 }

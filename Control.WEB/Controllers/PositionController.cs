@@ -129,36 +129,36 @@ namespace Control.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PositionCreatingVM positionCreatingVM)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            //    var vm = positionCreatingVM.PositionVM;
+
+
+            //    await _positionService.CreateAsync(vm!);
+            //    return RedirectToAction("Index");
+            //}
+
+            //else return View(positionCreatingVM);
+            try
             {
-                var vm = positionCreatingVM.PositionVM;
+                if (ModelState.IsValid)
+                {
+                    var vm = positionCreatingVM.PositionVM;
 
 
-                await _positionService.CreateAsync(vm!);
-                return RedirectToAction("Index");
+                    await _positionService.CreateAsync(vm!);
+                    return RedirectToAction("Index");
+                }
+
+                else return View(positionCreatingVM);
             }
 
-            else return View(positionCreatingVM);
-            //try
-            //{
-            //    if (ModelState.IsValid)
-            //    {
-            //        var vm = positionCreatingVM.PositionVM;
-
-
-            //        await _positionService.CreateAsync(vm!);
-            //        return RedirectToAction("Index");
-            //    }
-
-            //    else return View(positionCreatingVM);
-            //}
-
-            //catch (Exception ex)
-            //{
-            //    string message = ex.Message;
-            //    _logger.LogError(message);
-            //    return BadRequest(message);
-            //}
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                _logger.LogError(message);
+                return BadRequest(message);
+            }
         }
 
         //[HttpGet]
@@ -208,30 +208,29 @@ namespace Control.WEB.Controllers
         //    }
         //}
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete(Guid id)
-        //{
-        //    try
-        //    {
-        //        var vm = await _positionService.GetByIdAsync(id);
-        //        await _positionService.DeleteAsync(vm);
-        //        return RedirectToAction("Index");
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                await _positionService.DeleteAsync(id);
+                return RedirectToAction("Index");
+            }
 
-        //    catch (ObjectNotFoundException ex)
-        //    {
-        //        string message = ex.Message;
-        //        _logger.LogError(message);
-        //        return NotFound(message);
-        //    }
+            catch (ObjectNotFoundException ex)
+            {
+                string message = ex.Message;
+                _logger.LogError(message);
+                return NotFound(message);
+            }
 
-        //    catch (Exception ex)
-        //    {
-        //        string message = ex.Message;
-        //        _logger.LogError(message);
-        //        return BadRequest(message);
-        //    }
-        //}
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                _logger.LogError(message);
+                return BadRequest(message);
+            }
+        }
     }
 }

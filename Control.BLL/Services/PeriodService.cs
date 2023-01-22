@@ -26,7 +26,7 @@ namespace Control.BLL.Services
 
 		public async Task<IEnumerable<PeriodVM>> GetAsync()
 		{
-			var models = await _unitOfWork.Periods.GetAsync(isTracking: false);
+			var models = await _unitOfWork.Periods.GetAllAsync(isTracking: false);
 
 			if (models==null)
 			{
@@ -45,7 +45,7 @@ namespace Control.BLL.Services
 		public async Task<PeriodVM> GetByIdAsync(Guid id)
 		{
 			var models = await _unitOfWork.Periods
-				.GetAsync(
+				.GetAllAsync(
 					expression: _ => _.PeriodId.Equals(id),
 					isTracking: false);
 
@@ -68,15 +68,22 @@ namespace Control.BLL.Services
 		public async Task CreateAsync(PeriodVM vm)
 		{
 			var model = _mapper.Map<Period>(vm);
-			_unitOfWork.Periods.Create(model);
-			await _unitOfWork.SaveAsync();
+
+			if (int.TryParse(model.Name, out int month))
+			{
+				model.Month=month;
+				_unitOfWork.Periods.Create(model);
+				await _unitOfWork.SaveAsync();
+			}
+
+			else throw new InvalidValueException("Invalid value for Period");
 		}
 
         public async Task UpdateAsync(PeriodVM vm)
         {
             var model = _mapper.Map<Period>(vm);
             var models = await _unitOfWork.Periods
-                .GetAsync(
+                .GetAllAsync(
                     expression: _ => _.PeriodId.Equals(model.PeriodId),
                     isTracking: false);
 
@@ -94,17 +101,15 @@ namespace Control.BLL.Services
             }
         }
 
-        public async Task DeleteAsync(PeriodVM vm)
+        public async Task DeleteAsync(Guid id)
         {
-            var model = _mapper.Map<Period>(vm);
-            var models = await _unitOfWork.Periods
-                .GetAsync(
-                    expression: _ => _.PeriodId.Equals(model.PeriodId),
-                    isTracking: false);
+            var model = await _unitOfWork.Periods.GetOneAsync(
+                expression: _ => _.PeriodId.Equals(id),
+                isTracking: false);
 
-            if (models==null)
+            if (model==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {model.PeriodId} not found ";
+                string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }

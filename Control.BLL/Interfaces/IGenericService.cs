@@ -17,6 +17,6 @@ namespace Control.BLL.Interfaces
 
 		public Task UpdateAsync(T vm);
 
-		public Task DeleteAsync(T vm);
+		public Task DeleteAsync(Guid id);
 	}
 }

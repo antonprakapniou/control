@@ -135,14 +135,13 @@ namespace Control.WEB.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Delete(Guid id)
 		{
-			try
-			{
-				var vm = await _service.GetByIdAsync(id);
-				await _service.DeleteAsync(vm);
-				return RedirectToAction("Index");
-			}
+            try
+            {
+                await _service.DeleteAsync(id);
+                return RedirectToAction("Index");
+            }
 
-			catch (ObjectNotFoundException ex)
+            catch (ObjectNotFoundException ex)
 			{
 				string message = ex.Message;
 				_logger.LogError(message);

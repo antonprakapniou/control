@@ -26,7 +26,7 @@ namespace Control.BLL.Services
 
         public async Task<IEnumerable<CategoryVM>> GetAsync()
         {
-            var models = await _unitOfWork.Categories.GetAsync(isTracking: false);
+            var models = await _unitOfWork.Categories.GetAllAsync(isTracking: false);
 
             if (models==null)
             {
@@ -45,7 +45,7 @@ namespace Control.BLL.Services
         public async Task<CategoryVM> GetByIdAsync(Guid id)
         {
             var models = await _unitOfWork.Categories
-                .GetAsync(
+                .GetAllAsync(
                     expression: _ => _.CategoryId.Equals(id),
                     isTracking: false);
 
@@ -76,7 +76,7 @@ namespace Control.BLL.Services
         {
             var model = _mapper.Map<Category>(vm);
             var models = await _unitOfWork.Categories
-                .GetAsync(
+                .GetAllAsync(
                     expression: _ => _.CategoryId.Equals(model.CategoryId),
                     isTracking: false);
 
@@ -94,17 +94,15 @@ namespace Control.BLL.Services
             }
         }
 
-        public async Task DeleteAsync(CategoryVM vm)
+        public async Task DeleteAsync(Guid id)
         {
-            var model = _mapper.Map<Category>(vm);
-            var models = await _unitOfWork.Categories
-                .GetAsync(
-                    expression: _ => _.CategoryId.Equals(model.CategoryId),
-                    isTracking: false);
+            var model = await _unitOfWork.Categories.GetOneAsync(
+                expression:_=>_.CategoryId.Equals(id),
+                isTracking:false);
 
-            if (models==null)
+            if (model==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {model.CategoryId} not found ";
+                string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }
