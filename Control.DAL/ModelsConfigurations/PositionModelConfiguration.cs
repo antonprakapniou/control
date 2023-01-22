@@ -50,19 +50,6 @@ namespace Control.DAL.ModelsConfigurations
 				.HasColumnName("Name")
 				.IsRequired();
 
-			#region You never know
-
-			//builder.Property(_ => _.Minimum)
-			//	.HasColumnName("Minimum");
-
-			//builder.Property(_ => _.Maximum)
-			//	.HasColumnName("Maximum");
-
-			//builder.Property(_ => _.Accuracy)
-			//	.HasColumnName("Accuracy");
-
-			#endregion
-
 			builder
 				.Property(_ => _.Description)
 				.HasColumnName("Description");
@@ -77,19 +64,23 @@ namespace Control.DAL.ModelsConfigurations
 
 			builder
 				.Property(_ => _.PreviousDate)
-				.HasColumnName("PreviousDate");
+				.HasColumnName("PreviousDate")
+				.IsRequired();
 
 			builder
 				.Property(_ => _.NextDate)
-				.HasColumnName("NextDate");
-
-            builder
-                .Property(_ => _.Status)
-                .HasColumnName("Status");
+				.HasColumnName("NextDate")
+                .IsRequired();			          
 
             builder
 				.Property(_ => _.Created)
-				.HasColumnName("Created");
-		}
+				.HasColumnName("Created")
+                .IsRequired();
+
+            builder
+				.Property(_ => _.Status)
+				.HasColumnName("Status")
+				.IsRequired();
+        }
 	}
 }

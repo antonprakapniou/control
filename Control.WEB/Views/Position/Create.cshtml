@@ -1,0 +1,91 @@
+﻿@model PositionCreatingVM
+
+<form method="post" asp-controller="Position" asp-action="Create">
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <h2 class="text-info pl-3">New position</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="PositionVM!.Name"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="PositionVM!.Name" class=" form-control" />
+                        <span asp-validation-for="PositionVM!.Name" class=" text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="PositionVM!.Description"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="PositionVM!.Description" class=" form-control" />
+                        <span asp-validation-for="PositionVM!.Description" class=" text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="PositionVM!.Included"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="PositionVM!.Included" class=" form-control" />
+                        <span asp-validation-for="PositionVM!.Included" class=" text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="PositionVM!.Addition"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="PositionVM!.Addition" class=" form-control" />
+                        <span asp-validation-for="PositionVM!.Addition" class=" text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="PositionVM!.PreviousDate"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="PositionVM!.PreviousDate" class=" form-control" />
+                        <span asp-validation-for="PositionVM!.PreviousDate" class=" text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="PositionVM!.PeriodId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="PositionVM!.PeriodId" asp-items="@Model.Periods" class=" form-control">
+                            <option disabled selected>
+                                Select period
+                            </option>
+                        </select>
+                        <span asp-validation-for="PositionVM!.PeriodId" class=" text-danger"></span>
+                    </div>
+                </div>               
+                <div class="form-group row p-3">
+                    <div class="col-8 offset-4 row">
+                        <div class="col">
+                            <input type="submit" class="btn btn-info w-100" value="Create" />
+                        </div>
+                        <div class="col">
+                            <a asp-controller="Position" asp-action="Index" class="btn btn-success w-100">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

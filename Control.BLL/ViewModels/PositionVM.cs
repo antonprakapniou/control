@@ -7,6 +7,7 @@ namespace Control.BLL.ViewModels
 	public sealed class PositionVM
 	{
 		#region Own properties
+
 		public Guid PositionId { get; set; }
 
 		[Required]
@@ -22,6 +23,7 @@ namespace Control.BLL.ViewModels
 		[DisplayName("Addition")]
 		public string? Addition { get; set; }
 
+		[Required]
 		[DisplayName("Previous")]
 		public DateTime? PreviousDate { get; set; }
 
@@ -34,37 +36,38 @@ namespace Control.BLL.ViewModels
 		[DisplayName("Status")]
 		public StatusEnum Status { get; set; }
 
-        #endregion
+        #endregion        
+		        
+        #region IncludedPropertiesId
 
-        #region You never know
+        [DisplayName("Measuring")]
+        public Guid? MeasuringId { get; set; }
 
-        //public double? Minimum { get; set; }
-        //public double? Maximum { get; set; }
-        //public string? Accuracy { get; set; }
+        [DisplayName("Nomination")]
+        public Guid? NominationId { get; set; }
+
+        [DisplayName("Operation")]
+        public Guid? OperationId { get; set; }
+
+        [DisplayName("Owner")]
+        public Guid? OwnerId { get; set; }
+
+        [Required]
+        [DisplayName("Period")]
+        public Guid? PeriodId { get; set; }
+
+        [DisplayName("CategoryId")]
+        public Guid? CategoryId { get; set; }
 
         #endregion
 
         #region IncludedProperties
 
-        [DisplayName("Measuring")]
-		//public Guid? MeasuringId { get; set; }
-		public Measuring? Measuring { get; set; }
-
-		[DisplayName("Nomination")]
-		//public Guid? NominationId { get; set; }
-		public Nomination? Nomination { get; set; }
-
-		[DisplayName("Operation")]
-		//public Guid? OperationId { get; set; }
-		public Operation? Operation { get; set; }
-
-		[DisplayName("Owner")]
-		//public Guid? OwnerId { get; set; }
-		public Owner? Owner { get; set; }
-
-		[DisplayName("Period")]
-		//public Guid? PeriodId { get; set; }
-		public Period? Period { get; set; }
+        public Measuring? Measuring { get; set; }		
+		public Nomination? Nomination { get; set; }		
+		public Operation? Operation { get; set; }		
+		public Owner? Owner { get; set; }		
+		public Period? Period { get; set; }        
         public Category? Category { get; set; }
 
         #endregion

@@ -29,6 +29,7 @@ namespace Control.BLL.Services
 		{
 			var models = await _unitOfWork.Positions.GetAsync(
 					include: query => query
+						.Include(_=>_.Category)
 						.Include(_ => _.Measuring)
 						.Include(_ => _.Nomination)
 						.Include(_ => _.Operation)
@@ -56,7 +57,8 @@ namespace Control.BLL.Services
 				.GetAsync(
 					expression: _ => _.PositionId.Equals(id),
 					include:query=>query
-						.Include(_ => _.Measuring)
+						.Include(_ => _.Category)
+                        .Include(_ => _.Measuring)
 						.Include(_ => _.Nomination)
 						.Include(_ => _.Operation)
 						.Include(_ => _.Owner)
@@ -82,7 +84,8 @@ namespace Control.BLL.Services
 		public async Task CreateAsync(PositionVM vm)
 		{
 			var model = _mapper.Map<Position>(vm);
-			_unitOfWork.Positions.Create(model);
+			model.Created=DateTime.UtcNow;
+            _unitOfWork.Positions.Create(model);
 			await _unitOfWork.SaveAsync();
 		}
 

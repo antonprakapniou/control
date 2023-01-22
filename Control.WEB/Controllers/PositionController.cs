@@ -129,24 +129,36 @@ namespace Control.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PositionCreatingVM positionCreatingVM)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    var vm = positionCreatingVM.PositionVM;
-                    await _positionService.CreateAsync(vm!);
-                    return RedirectToAction("Index");
-                }
+                var vm = positionCreatingVM.PositionVM;
 
-                else return View(positionCreatingVM);
+
+                await _positionService.CreateAsync(vm!);
+                return RedirectToAction("Index");
             }
 
-            catch (Exception ex)
-            {
-                string message = ex.Message;
-                _logger.LogError(message);
-                return BadRequest(message);
-            }
+            else return View(positionCreatingVM);
+            //try
+            //{
+            //    if (ModelState.IsValid)
+            //    {
+            //        var vm = positionCreatingVM.PositionVM;
+
+
+            //        await _positionService.CreateAsync(vm!);
+            //        return RedirectToAction("Index");
+            //    }
+
+            //    else return View(positionCreatingVM);
+            //}
+
+            //catch (Exception ex)
+            //{
+            //    string message = ex.Message;
+            //    _logger.LogError(message);
+            //    return BadRequest(message);
+            //}
         }
 
         //[HttpGet]

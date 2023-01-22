@@ -95,22 +95,25 @@
                         @item.Status
                     </td>
                     <td>
-                        @item.Measuring!.Name
+                        @if (item.Measuring != null) @item.Measuring.Name
                     </td>
                     <td>
-                        @item.Nomination!.Name
+                        @if (item.Nomination != null) @item.Nomination.Name
                     </td>
                     <td>
-                        @item.Operation!.Name
+                        @if (item.Operation != null) @item.Operation.Name
                     </td>
                     <td>
-                        @item.Owner!.Shop&nbsp;@item.Owner!.Production
+                        @if (item.Owner != null)
+                        {
+                            @item.Owner!.Shop @item.Owner!.Production
+                        }                        
                     </td>
                     <td>
-                        @item.Period!.Name
+                        @if (item.Period != null) @item.Period.Name
                     </td>
                     <td>
-                        @item.Category!.Name
+                        @if (item.Category != null) @item.Category.Name
                     </td>                    
                     
                     <td class="text-center">
