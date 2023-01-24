@@ -10,8 +10,8 @@ namespace Control.DAL.ModelsConfigurations
         {
             builder
                 .ToTable("Categories")
-                .HasKey(_ => _.CategoryId)
-                .HasName("CategoryId");
+                .HasKey(_ => _.Id)
+                .HasName("Id");
 
             builder
                 .HasMany(_ => _.Positions)
@@ -19,7 +19,7 @@ namespace Control.DAL.ModelsConfigurations
                 .OnDelete(DeleteBehavior.SetNull); ;
 
             builder
-                .Property(_ => _.CategoryId)
+                .Property(_ => _.Id)
                 .HasColumnName("Id");
 
             builder

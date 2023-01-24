@@ -5,7 +5,7 @@ namespace Control.BLL.ViewModels
 {
 	public sealed class OperationVM
 	{
-		public Guid OperationId { get; set; }
+		public Guid Id { get; set; }
 
 		[Required]
 		[DisplayName("Name")]

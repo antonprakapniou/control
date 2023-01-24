@@ -5,7 +5,7 @@ namespace Control.BLL.ViewModels
 {
 	public sealed class NominationVM
 	{
-		public Guid NominationId { get; set; }
+		public Guid Id { get; set; }
 
 		[Required]
 		[DisplayName("Name")]

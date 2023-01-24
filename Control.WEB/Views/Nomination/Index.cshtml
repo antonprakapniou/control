@@ -36,10 +36,10 @@
                     </td>                    
                     <td class="text-center">
                         <div class="w-25 btn-group" role="group">
-                            <a asp-controller="Nomination" asp-action="Update" asp-route-id="@item.NominationId" class="btn btn-primary mx-2">
+                            <a asp-controller="Nomination" asp-action="Update" asp-route-id="@item.Id" class="btn btn-primary mx-2">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form method="post" asp-controller="Nomination" asp-action="Delete" asp-route-id="@item.NominationId">
+                            <form method="post" asp-controller="Nomination" asp-action="Delete" asp-route-id="@item.Id">
                                 <input type="submit" class="btn btn-danger w-100" value="Delete" />
                             </form>
                         </div>

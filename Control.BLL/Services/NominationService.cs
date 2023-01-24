@@ -10,99 +10,89 @@ namespace Control.BLL.Services
 {
 	public sealed class NominationService:INominationService
 	{
-		private readonly ILogger<NominationService> _logger;
-		private readonly IMapper _mapper;
-		private readonly IUnitOfWork _unitOfWork;
+        private const string _typeName = "Nomination";
 
-		public NominationService(
-			ILogger<NominationService> logger,
-			IMapper mapper,
-			IUnitOfWork unitOfWork)
-		{
-			_logger=logger;
-			_mapper=mapper;
-			_unitOfWork=unitOfWork;
-		}
+        private readonly ILogger<NominationService> _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-		public async Task<IEnumerable<NominationVM>> GetAsync()
-		{
-			var models = await _unitOfWork.Nominations.GetAllAsync(isTracking: false);
-
-			if (models==null)
-			{
-				string errorMessage = $"{models!.GetType().Name} collection not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				var modelsVM = _mapper.Map<IEnumerable<NominationVM>>(models);
-				return modelsVM;
-			}
-		}
-
-		public async Task<NominationVM> GetByIdAsync(Guid id)
-		{
-			var models = await _unitOfWork.Nominations
-				.GetAllAsync(
-					expression: _ => _.NominationId.Equals(id),
-					isTracking: false);
-
-			var model = models.FirstOrDefault();
-
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				var modelVM = _mapper.Map<NominationVM>(model);
-				return modelVM;
-			}
-		}
-
-		public async Task CreateAsync(NominationVM vm)
-		{
-			var model = _mapper.Map<Nomination>(vm);
-			_unitOfWork.Nominations.Create(model);
-			await _unitOfWork.SaveAsync();
-		}
-
-        public async Task UpdateAsync(NominationVM vm)
+        public NominationService(
+            ILogger<NominationService> logger,
+            IMapper mapper,
+            IUnitOfWork unitOfWork)
         {
-            var model = _mapper.Map<Nomination>(vm);
-            var models = await _unitOfWork.Nominations
-                .GetAllAsync(
-                    expression: _ => _.NominationId.Equals(model.NominationId),
-                    isTracking: false);
+            _logger=logger;
+            _mapper=mapper;
+            _unitOfWork=unitOfWork;
+        }
+
+        public async Task<IEnumerable<NominationVM>> GetAllAsync()
+        {
+            var models = await _unitOfWork.Nominations.GetAllByAsync();
 
             if (models==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {model.NominationId} not found ";
+                string errorMessage = $"{_typeName} collection not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }
 
             else
             {
+                var modelsVM = _mapper.Map<IEnumerable<NominationVM>>(models);
+                return modelsVM;
+            }
+        }
+
+        public async Task<NominationVM> GetByIdAsync(Guid id)
+        {
+            var model = await _unitOfWork.Nominations.GetOneByAsync(_ => _.Id.Equals(id));
+
+            if (model==null)
+            {
+                string errorMessage = $"{_typeName} collection not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
+
+            else
+            {
+                var modelVM = _mapper.Map<NominationVM>(model);
+                return modelVM;
+            }
+        }
+
+        public async Task CreateAsync(NominationVM vm)
+        {
+            var model = _mapper.Map<Nomination>(vm);
+            _unitOfWork.Nominations.Create(model);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task UpdateAsync(NominationVM vm)
+        {
+            if (_unitOfWork.Nominations.IsExists(_ => _.Id.Equals(vm.Id)))
+            {
+                var model = _mapper.Map<Nomination>(vm);
                 _unitOfWork.Nominations.Update(model);
                 await _unitOfWork.SaveAsync();
+            }
+
+            else
+            {
+                string errorMessage = $"{_typeName} model with id: {vm.Id} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
             }
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var model = await _unitOfWork.Nominations.GetOneAsync(
-                expression: _ => _.NominationId.Equals(id),
-                isTracking: false);
+            var model = await _unitOfWork.Nominations.GetOneByAsync(_ => _.Id.Equals(id));
 
             if (model==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
+                string errorMessage = $"{_typeName} model with id: {id} not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }

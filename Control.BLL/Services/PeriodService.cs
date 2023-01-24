@@ -10,106 +10,96 @@ namespace Control.BLL.Services
 {
 	public sealed class PeriodService:IPeriodService
 	{
-		private readonly ILogger<PeriodService> _logger;
-		private readonly IMapper _mapper;
-		private readonly IUnitOfWork _unitOfWork;
+        private const string _typeName = "Period";
 
-		public PeriodService(
-			ILogger<PeriodService> logger,
-			IMapper mapper,
-			IUnitOfWork unitOfWork)
-		{
-			_logger=logger;
-			_mapper=mapper;
-			_unitOfWork=unitOfWork;
-		}
+        private readonly ILogger<PeriodService> _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-		public async Task<IEnumerable<PeriodVM>> GetAsync()
-		{
-			var models = await _unitOfWork.Periods.GetAllAsync(isTracking: false);
-
-			if (models==null)
-			{
-				string errorMessage = $"{models!.GetType().Name} collection not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				var modelsVM = _mapper.Map<IEnumerable<PeriodVM>>(models);
-				return modelsVM;
-			}
-		}
-
-		public async Task<PeriodVM> GetByIdAsync(Guid id)
-		{
-			var models = await _unitOfWork.Periods
-				.GetAllAsync(
-					expression: _ => _.PeriodId.Equals(id),
-					isTracking: false);
-
-			var model = models.FirstOrDefault();
-
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				var modelVM = _mapper.Map<PeriodVM>(model);
-				return modelVM;
-			}
-		}
-
-		public async Task CreateAsync(PeriodVM vm)
-		{
-			var model = _mapper.Map<Period>(vm);
-
-			if (int.TryParse(model.Name, out int month))
-			{
-				model.Month=month;
-				_unitOfWork.Periods.Create(model);
-				await _unitOfWork.SaveAsync();
-			}
-
-			else throw new InvalidValueException("Invalid value for Period");
-		}
-
-        public async Task UpdateAsync(PeriodVM vm)
+        public PeriodService(
+            ILogger<PeriodService> logger,
+            IMapper mapper,
+            IUnitOfWork unitOfWork)
         {
-            var model = _mapper.Map<Period>(vm);
-            var models = await _unitOfWork.Periods
-                .GetAllAsync(
-                    expression: _ => _.PeriodId.Equals(model.PeriodId),
-                    isTracking: false);
+            _logger=logger;
+            _mapper=mapper;
+            _unitOfWork=unitOfWork;
+        }
+
+        public async Task<IEnumerable<PeriodVM>> GetAllAsync()
+        {
+            var models = await _unitOfWork.Periods.GetAllByAsync();
 
             if (models==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {model.PeriodId} not found ";
+                string errorMessage = $"{_typeName} collection not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }
 
             else
             {
+                var modelsVM = _mapper.Map<IEnumerable<PeriodVM>>(models);
+                return modelsVM;
+            }
+        }
+
+        public async Task<PeriodVM> GetByIdAsync(Guid id)
+        {
+            var model = await _unitOfWork.Periods.GetOneByAsync(_ => _.Id.Equals(id));
+
+            if (model==null)
+            {
+                string errorMessage = $"{_typeName} collection not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
+
+            else
+            {
+                var modelVM = _mapper.Map<PeriodVM>(model);
+                return modelVM;
+            }
+        }
+
+        public async Task CreateAsync(PeriodVM vm)
+        {
+            if (int.TryParse(vm.Name, out int month))
+            {
+                var model = _mapper.Map<Period>(vm);
+                model.Month= month;
+                _unitOfWork.Periods.Create(model);
+                await _unitOfWork.SaveAsync();
+            }
+
+            else throw new InvalidValueException("Invalid Period value");
+            
+        }
+
+        public async Task UpdateAsync(PeriodVM vm)
+        {
+            if (_unitOfWork.Periods.IsExists(_ => _.Id.Equals(vm.Id)))
+            {
+                var model = _mapper.Map<Period>(vm);
                 _unitOfWork.Periods.Update(model);
                 await _unitOfWork.SaveAsync();
+            }
+
+            else
+            {
+                string errorMessage = $"{_typeName} model with id: {vm.Id} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
             }
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var model = await _unitOfWork.Periods.GetOneAsync(
-                expression: _ => _.PeriodId.Equals(id),
-                isTracking: false);
+            var model = await _unitOfWork.Periods.GetOneByAsync(_ => _.Id.Equals(id));
 
             if (model==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
+                string errorMessage = $"{_typeName} model with id: {id} not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }

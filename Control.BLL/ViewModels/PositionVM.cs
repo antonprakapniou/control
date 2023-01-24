@@ -8,7 +8,7 @@ namespace Control.BLL.ViewModels
 	{
 		#region Own properties
 
-		public Guid PositionId { get; set; }
+		public Guid Id { get; set; }
 
 		[Required]
 		[DisplayName("Name")]

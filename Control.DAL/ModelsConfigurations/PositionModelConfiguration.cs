@@ -10,8 +10,8 @@ namespace Control.DAL.ModelsConfigurations
 		{
 			builder
 				.ToTable("Positions")
-				.HasKey(_ => _.PositionId)
-				.HasName("PositionId");
+				.HasKey(_ => _.Id)
+				.HasName("Id");
 
             #region Alternative one-to-many relationship setup
 
@@ -42,7 +42,7 @@ namespace Control.DAL.ModelsConfigurations
             #endregion
 
             builder
-                .Property(_ => _.PositionId)
+                .Property(_ => _.Id)
 				.HasColumnName("Id");
 
 			builder

@@ -10,99 +10,89 @@ namespace Control.BLL.Services
 {
 	public sealed class OperationService:IOperationService
 	{
-		private readonly ILogger<OperationService> _logger;
-		private readonly IMapper _mapper;
-		private readonly IUnitOfWork _unitOfWork;
+        private const string _typeName = "Operation";
 
-		public OperationService(
-			ILogger<OperationService> logger,
-			IMapper mapper,
-			IUnitOfWork unitOfWork)
-		{
-			_logger=logger;
-			_mapper=mapper;
-			_unitOfWork=unitOfWork;
-		}
+        private readonly ILogger<OperationService> _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-		public async Task<IEnumerable<OperationVM>> GetAsync()
-		{
-			var models = await _unitOfWork.Operations.GetAllAsync(isTracking: false);
-
-			if (models==null)
-			{
-				string errorMessage = $"{models!.GetType().Name} collection not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				var modelsVM = _mapper.Map<IEnumerable<OperationVM>>(models);
-				return modelsVM;
-			}
-		}
-
-		public async Task<OperationVM> GetByIdAsync(Guid id)
-		{
-			var models = await _unitOfWork.Operations
-				.GetAllAsync(
-					expression: _ => _.OperationId.Equals(id),
-					isTracking: false);
-
-			var model = models.FirstOrDefault();
-
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				var modelVM = _mapper.Map<OperationVM>(model);
-				return modelVM;
-			}
-		}
-
-		public async Task CreateAsync(OperationVM vm)
-		{
-			var model = _mapper.Map<Operation>(vm);
-			_unitOfWork.Operations.Create(model);
-			await _unitOfWork.SaveAsync();
-		}
-
-        public async Task UpdateAsync(OperationVM vm)
+        public OperationService(
+            ILogger<OperationService> logger,
+            IMapper mapper,
+            IUnitOfWork unitOfWork)
         {
-            var model = _mapper.Map<Operation>(vm);
-            var models = await _unitOfWork.Operations
-                .GetAllAsync(
-                    expression: _ => _.OperationId.Equals(model.OperationId),
-                    isTracking: false);
+            _logger=logger;
+            _mapper=mapper;
+            _unitOfWork=unitOfWork;
+        }
+
+        public async Task<IEnumerable<OperationVM>> GetAllAsync()
+        {
+            var models = await _unitOfWork.Operations.GetAllByAsync();
 
             if (models==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {model.OperationId} not found ";
+                string errorMessage = $"{_typeName} collection not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }
 
             else
             {
+                var modelsVM = _mapper.Map<IEnumerable<OperationVM>>(models);
+                return modelsVM;
+            }
+        }
+
+        public async Task<OperationVM> GetByIdAsync(Guid id)
+        {
+            var model = await _unitOfWork.Operations.GetOneByAsync(_ => _.Id.Equals(id));
+
+            if (model==null)
+            {
+                string errorMessage = $"{_typeName} collection not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
+
+            else
+            {
+                var modelVM = _mapper.Map<OperationVM>(model);
+                return modelVM;
+            }
+        }
+
+        public async Task CreateAsync(OperationVM vm)
+        {
+            var model = _mapper.Map<Operation>(vm);
+            _unitOfWork.Operations.Create(model);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task UpdateAsync(OperationVM vm)
+        {
+            if (_unitOfWork.Operations.IsExists(_ => _.Id.Equals(vm.Id)))
+            {
+                var model = _mapper.Map<Operation>(vm);
                 _unitOfWork.Operations.Update(model);
                 await _unitOfWork.SaveAsync();
+            }
+
+            else
+            {
+                string errorMessage = $"{_typeName} model with id: {vm.Id} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
             }
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var model = await _unitOfWork.Operations.GetOneAsync(
-                expression: _ => _.OperationId.Equals(id),
-                isTracking: false);
+            var model = await _unitOfWork.Operations.GetOneByAsync(_ => _.Id.Equals(id));
 
             if (model==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
+                string errorMessage = $"{_typeName} model with id: {id} not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }

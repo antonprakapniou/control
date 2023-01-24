@@ -9,38 +9,34 @@ namespace Control.DAL.Repositories
 	public class GenericRepository<T>:IGenericRepository<T> where T : class
 	{
 		private readonly AppDbContext _db;
-		private DbSet<T> _t;
+		private readonly DbSet<T> _t;
 
 		public GenericRepository(AppDbContext db)
 		{
 			_db=db;
-			_t=db.Set<T>();
+			_t=_db.Set<T>();
 		}
 
-		public async Task<IEnumerable<T>> GetAllAsync(
+		public async Task<IEnumerable<T>> GetAllByAsync(
 			Expression<Func<T, bool>>? expression = null,
 			Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-			Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
-			bool isTracking = true)
+			Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
 		{
 			IQueryable<T> query = _t;
 			if (expression!=null) query=query.Where(expression);
 			if (orderBy!=null) query=query.OrderBy(expression!);
 			if (include!=null) query=include(query);
-			if (!isTracking) query=query.AsNoTracking();
-			return await query.ToListAsync();
+			return await query.AsNoTracking().ToListAsync();
 		}
 		
-		public async Task<T> GetOneAsync(
+		public async Task<T> GetOneByAsync(
             Expression<Func<T, bool>>? expression = null,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
-            bool isTracking = true)
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
         {
             IQueryable<T> query = _t;
             if (expression!=null) query=query.Where(expression);
             if (include!=null) query=include(query);
-            if (!isTracking) query=query.AsNoTracking();
-			return await query.FirstAsync();
+            return await query.AsNoTracking().FirstAsync();
         }
 
         public void Create(T entity)
@@ -55,5 +51,10 @@ namespace Control.DAL.Repositories
 		{
 			_t.Remove(entity);
 		}
-	}
+        public bool IsExists(Expression<Func<T, bool>> expression)
+		{
+			if (_t.AsNoTracking().Any(expression)) return true;
+			return false;
+		}
+    }
 }

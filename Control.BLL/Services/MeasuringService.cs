@@ -10,99 +10,89 @@ namespace Control.BLL.Services
 {
 	public class MeasuringService : IMeasuringService
 	{
-		private readonly ILogger<MeasuringService> _logger;
-		private readonly IMapper _mapper;
-		private readonly IUnitOfWork _unitOfWork;
+        private const string _typeName = "Measuring";
 
-		public MeasuringService(
-			ILogger<MeasuringService> logger,
-			IMapper mapper,
-			IUnitOfWork unitOfWork)
-		{
-			_logger=logger;
-			_mapper=mapper;
-			_unitOfWork=unitOfWork;
-		}
+        private readonly ILogger<MeasuringService> _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-		public async Task<IEnumerable<MeasuringVM>> GetAsync()
-		{
-			var models = await _unitOfWork.Measurings.GetAllAsync(isTracking: false);
-
-			if (models==null)
-			{
-				string errorMessage = $"{models!.GetType().Name} collection not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				var modelsVM = _mapper.Map<IEnumerable<MeasuringVM>>(models);
-				return modelsVM;
-			}
-		}
-
-		public async Task<MeasuringVM> GetByIdAsync(Guid id)
-		{
-			var models = await _unitOfWork.Measurings
-				.GetAllAsync(
-					expression: _ => _.MeasuringId.Equals(id),
-					isTracking: false);
-
-			var model = models.FirstOrDefault();
-
-			if (model==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				var modelVM = _mapper.Map<MeasuringVM>(model);
-				return modelVM;
-			}
-		}
-
-		public async Task CreateAsync(MeasuringVM vm)
-		{
-			var model = _mapper.Map<Measuring>(vm);
-			_unitOfWork.Measurings.Create(model);
-			await _unitOfWork.SaveAsync();
-		}
-
-		public async Task UpdateAsync(MeasuringVM vm)
-		{
-			var model = _mapper.Map<Measuring>(vm);
-			var models = await _unitOfWork.Measurings
-				.GetAllAsync(
-					expression: _ => _.MeasuringId.Equals(model.MeasuringId),
-					isTracking: false);
-
-			if (models==null)
-			{
-				string errorMessage = $"{model!.GetType().Name} model with id: {model.MeasuringId} not found ";
-				_logger.LogError(errorMessage);
-				throw new ObjectNotFoundException(errorMessage);
-			}
-
-			else
-			{
-				_unitOfWork.Measurings.Update(model);
-				await _unitOfWork.SaveAsync();
-			}
-		}
-
-        public async Task DeleteAsync(Guid id)
+        public MeasuringService(
+            ILogger<MeasuringService> logger,
+            IMapper mapper,
+            IUnitOfWork unitOfWork)
         {
-            var model = await _unitOfWork.Measurings.GetOneAsync(
-                expression: _ => _.MeasuringId.Equals(id),
-                isTracking: false);
+            _logger=logger;
+            _mapper=mapper;
+            _unitOfWork=unitOfWork;
+        }
+
+        public async Task<IEnumerable<MeasuringVM>> GetAllAsync()
+        {
+            var models = await _unitOfWork.Measurings.GetAllByAsync();
+
+            if (models==null)
+            {
+                string errorMessage = $"{_typeName} collection not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
+
+            else
+            {
+                var modelsVM = _mapper.Map<IEnumerable<MeasuringVM>>(models);
+                return modelsVM;
+            }
+        }
+
+        public async Task<MeasuringVM> GetByIdAsync(Guid id)
+        {
+            var model = await _unitOfWork.Measurings.GetOneByAsync(_ => _.Id.Equals(id));
 
             if (model==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
+                string errorMessage = $"{_typeName} collection not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
+
+            else
+            {
+                var modelVM = _mapper.Map<MeasuringVM>(model);
+                return modelVM;
+            }
+        }
+
+        public async Task CreateAsync(MeasuringVM vm)
+        {
+            var model = _mapper.Map<Measuring>(vm);
+            _unitOfWork.Measurings.Create(model);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task UpdateAsync(MeasuringVM vm)
+        {
+            if (_unitOfWork.Measurings.IsExists(_ => _.Id.Equals(vm.Id)))
+            {
+                var model = _mapper.Map<Measuring>(vm);
+                _unitOfWork.Measurings.Update(model);
+                await _unitOfWork.SaveAsync();
+            }
+
+            else
+            {
+                string errorMessage = $"{_typeName} model with id: {vm.Id} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            var model = await _unitOfWork.Measurings.GetOneByAsync(_ => _.Id.Equals(id));
+
+            if (model==null)
+            {
+                string errorMessage = $"{_typeName} model with id: {id} not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }

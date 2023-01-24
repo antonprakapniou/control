@@ -5,18 +5,17 @@ namespace Control.DAL.Interfaces
 {
 	public interface IGenericRepository<T> where T : class
 	{
-		public Task<IEnumerable<T>> GetAllAsync(
+		public Task<IEnumerable<T>> GetAllByAsync(
 			Expression<Func<T, bool>>? expression = null,
 			Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-			Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
-			bool isTracking = true);
-		public Task<T> GetOneAsync(
+			Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
+        public Task<T> GetOneByAsync(
             Expression<Func<T, bool>>? expression = null,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
-            bool isTracking = true);
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
 
         public void Create(T entity);
 		public void Update(T entity);
 		public void Delete(T entity);
+		public bool IsExists(Expression<Func<T, bool>> expression);
 	}
 }

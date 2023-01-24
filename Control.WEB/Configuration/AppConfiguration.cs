@@ -33,14 +33,14 @@ namespace Control.WEB.Configuration
 			});
 
             services.AddAutoMapper(typeof(MapPropfile));
-            services.AddTransient<IUnitOfWork,UnitOfWork>();
-            services.AddTransient<ICategoryService, CategoryService>();
-            services.AddTransient<IMeasuringService, MeasuringService>();
-			services.AddTransient<INominationService, NominationService>();
-			services.AddTransient<IOperationService, OperationService>();
-			services.AddTransient<IOwnerService, OwnerService>();
-			services.AddTransient<IPeriodService, PeriodService>();
-			services.AddTransient<IPositionService, PositionService>();
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IMeasuringService, MeasuringService>();
+			services.AddScoped<INominationService, NominationService>();
+			services.AddScoped<IOperationService, OperationService>();
+			services.AddScoped<IOwnerService, OwnerService>();
+			services.AddScoped<IPeriodService, PeriodService>();
+			services.AddScoped<IPositionService, PositionService>();
 		}
 	}
 }

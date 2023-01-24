@@ -23,7 +23,7 @@ namespace Control.WEB.Controllers
         {
             try
             {
-                var vms = await _service.GetAsync();
+                var vms = await _service.GetAllAsync();
                 return View(vms);
             }
 

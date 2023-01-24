@@ -2,7 +2,7 @@
 {
 	public sealed class Owner
 	{
-		public Guid OwnerId { get; set; }
+		public Guid Id { get; set; }
 		public string? Shop { get; set; }
 		public string? Production { get; set; }
 		public string? Master { get; set; }

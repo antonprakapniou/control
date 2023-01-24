@@ -5,7 +5,7 @@ namespace Control.BLL.ViewModels
 {
     public sealed class CategoryVM
     {
-        public Guid CategoryId { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [DisplayName("Name")]

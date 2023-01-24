@@ -10,6 +10,8 @@ namespace Control.BLL.Services
 {
     public sealed class CategoryService:ICategoryService
     {
+        private const string _typeName = "Category";
+
         private readonly ILogger<CategoryService> _logger;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -24,13 +26,13 @@ namespace Control.BLL.Services
             _unitOfWork=unitOfWork;
         }
 
-        public async Task<IEnumerable<CategoryVM>> GetAsync()
+        public async Task<IEnumerable<CategoryVM>> GetAllAsync()
         {
-            var models = await _unitOfWork.Categories.GetAllAsync(isTracking: false);
+            var models = await _unitOfWork.Categories.GetAllByAsync();
 
             if (models==null)
             {
-                string errorMessage = $"{models!.GetType().Name} collection not found ";
+                string errorMessage = $"{_typeName} collection not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }
@@ -44,16 +46,11 @@ namespace Control.BLL.Services
 
         public async Task<CategoryVM> GetByIdAsync(Guid id)
         {
-            var models = await _unitOfWork.Categories
-                .GetAllAsync(
-                    expression: _ => _.CategoryId.Equals(id),
-                    isTracking: false);
-
-            var model = models.FirstOrDefault();
+            var model = await _unitOfWork.Categories.GetOneByAsync(_=>_.Id.Equals(id));
 
             if (model==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
+                string errorMessage = $"{_typeName} collection not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }
@@ -74,35 +71,28 @@ namespace Control.BLL.Services
 
         public async Task UpdateAsync(CategoryVM vm)
         {
-            var model = _mapper.Map<Category>(vm);
-            var models = await _unitOfWork.Categories
-                .GetAllAsync(
-                    expression: _ => _.CategoryId.Equals(model.CategoryId),
-                    isTracking: false);
-
-            if (models==null)
+            if (_unitOfWork.Categories.IsExists(_ => _.Id.Equals(vm.Id)))
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {model.CategoryId} not found ";
-                _logger.LogError(errorMessage);
-                throw new ObjectNotFoundException(errorMessage);
+                var model = _mapper.Map<Category>(vm);
+                _unitOfWork.Categories.Update(model);
+                await _unitOfWork.SaveAsync();
             }
 
             else
             {
-                _unitOfWork.Categories.Update(model);
-                await _unitOfWork.SaveAsync();
+                string errorMessage = $"{_typeName} model with id: {vm.Id} not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
             }
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var model = await _unitOfWork.Categories.GetOneAsync(
-                expression:_=>_.CategoryId.Equals(id),
-                isTracking:false);
+            var model = await _unitOfWork.Categories.GetOneByAsync(_=>_.Id.Equals(id));
 
             if (model==null)
             {
-                string errorMessage = $"{model!.GetType().Name} model with id: {id} not found ";
+                string errorMessage = $"{_typeName} model with id: {id} not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }

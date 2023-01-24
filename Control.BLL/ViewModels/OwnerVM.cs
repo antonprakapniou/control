@@ -5,7 +5,7 @@ namespace Control.BLL.ViewModels
 {
 	public sealed class OwnerVM
 	{
-		public Guid OwnerId { get; set; }
+		public Guid Id { get; set; }
 
 		[Required]
 		[DisplayName("Shop")]

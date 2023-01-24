@@ -42,10 +42,10 @@
                     </td>
                     <td class="text-center">
                         <div class="w-25 btn-group" role="group">
-                            <a asp-controller="Measuring" asp-action="Update" asp-route-id="@item.MeasuringId" class="btn btn-primary mx-2">
+                            <a asp-controller="Measuring" asp-action="Update" asp-route-id="@item.Id" class="btn btn-primary mx-2">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form method="post" asp-controller="Measuring" asp-action="Delete" asp-route-id="@item.MeasuringId">
+                            <form method="post" asp-controller="Measuring" asp-action="Delete" asp-route-id="@item.Id">
                                 <input type="submit" class="btn btn-danger w-100" value="Delete" />
                             </form>
                         </div>

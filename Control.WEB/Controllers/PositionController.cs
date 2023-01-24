@@ -42,7 +42,7 @@ namespace Control.WEB.Controllers
         {
             try
             {
-                var vms = await _positionService.GetAsync();
+                var vms = await _positionService.GetAllAsync();
                 return View(vms);
             }
 
@@ -62,16 +62,16 @@ namespace Control.WEB.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             try
             {
-                var categories = _categoryService.GetAsync().Result;
-                var measurings = _measuringService.GetAsync().Result;
-                var nominations = _nominationService.GetAsync().Result;
-                var operations = _operationService.GetAsync().Result;
-                var owners = _ownerService.GetAsync().Result;
-                var periods = _periodService.GetAsync().Result;
+                var categories = await _categoryService.GetAllAsync();
+                var measurings = await _measuringService.GetAllAsync();
+                var nominations =await _nominationService.GetAllAsync();
+                var operations = await _operationService.GetAllAsync();
+                var owners = await _ownerService.GetAllAsync();
+                var periods = await _periodService.GetAllAsync();
 
                 PositionCreatingVM positionCreatingVM = new()
                 {
@@ -79,37 +79,37 @@ namespace Control.WEB.Controllers
 
                     Categories=categories.Select(_ => new SelectListItem
                     {
-                        Value=_.CategoryId.ToString(),
+                        Value=_.Id.ToString(),
                         Text=_.Name
                     }),
 
                     Measurings=measurings.Select(_ => new SelectListItem
                     {
-                        Value=_.MeasuringId.ToString(),
+                        Value=_.Id.ToString(),
                         Text=_.Name
                     }),
 
                     Nominations=nominations.Select(_ => new SelectListItem
                     {
-                        Value=_.NominationId.ToString(),
+                        Value=_.Id.ToString(),
                         Text=_.Name
                     }),
 
                     Operations=operations.Select(_ => new SelectListItem
                     {
-                        Value=_.OperationId.ToString(),
+                        Value=_.Id.ToString(),
                         Text=_.Name
                     }),
 
                     Owners=owners.Select(_ => new SelectListItem
                     {
-                        Value=_.OwnerId.ToString(),
+                        Value=_.Id.ToString(),
                         Text=$"{_.Shop} {_.Production}",
                     }),
 
                     Periods=periods.Select(_ => new SelectListItem
                     {
-                        Value=_.PeriodId.ToString(),
+                        Value=_.Id.ToString(),
                         Text=_.Name
                     })
                 };
@@ -129,16 +129,6 @@ namespace Control.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PositionCreatingVM positionCreatingVM)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    var vm = positionCreatingVM.PositionVM;
-
-
-            //    await _positionService.CreateAsync(vm!);
-            //    return RedirectToAction("Index");
-            //}
-
-            //else return View(positionCreatingVM);
             try
             {
                 if (ModelState.IsValid)
