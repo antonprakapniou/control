@@ -5,6 +5,8 @@ using Control.DAL.Configuration;
 using Control.DAL.EF;
 using Control.DAL.Interfaces;
 using Control.DAL.Repositories;
+using Control.WEB.Interfaces;
+using Control.WEB.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Control.WEB.Configuration
@@ -41,6 +43,7 @@ namespace Control.WEB.Configuration
 			services.AddScoped<IOwnerService, OwnerService>();
 			services.AddScoped<IPeriodService, PeriodService>();
 			services.AddScoped<IPositionService, PositionService>();
+			services.AddTransient<IFileManager,FileManager>();
 		}
 	}
 }

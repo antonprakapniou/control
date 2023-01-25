@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Control.DAL\Control.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\positions\" />
+  </ItemGroup>
+
 </Project>

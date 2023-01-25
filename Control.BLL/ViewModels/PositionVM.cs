@@ -36,8 +36,11 @@ namespace Control.BLL.ViewModels
 		[DisplayName("Status")]
 		public StatusEnum Status { get; set; }
 
-        #endregion        
-		        
+        [DisplayName("Picture")]
+        public string? Picture { get; set; }
+
+        #endregion
+
         #region IncludedPropertiesId
 
         [DisplayName("Measuring")]

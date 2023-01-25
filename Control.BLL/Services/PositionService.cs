@@ -83,8 +83,8 @@ namespace Control.BLL.Services
             var model = _mapper.Map<Position>(vm);
             var period = await _unitOfWork.Periods.GetOneByAsync(_ => _.Id.Equals(vm.PeriodId));
 
-            if (model.Period==null) throw new ObjectNotFoundException($"{_typeName} model with id: {vm.Id} not found ");
-            else model.NextDate = model.PreviousDate.AddMonths(model.Period.Month);
+            if (period is null) throw new ObjectNotFoundException($"'{period!.GetType().Name}' with id: {period.Id} not found ");
+            else model.NextDate = model.PreviousDate.AddMonths(period.Month);
 
             model.Status=SetStatus(model.NextDate);
             model.Created=DateTime.Now;

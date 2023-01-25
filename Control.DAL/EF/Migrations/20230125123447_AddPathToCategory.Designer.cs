@@ -3,6 +3,7 @@ using System;
 using Control.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Control.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230125123447_AddPathToCategory")]
+    partial class AddPathToCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -28,6 +31,11 @@ namespace Control.DAL.EF.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("Name");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Path");
 
                     b.HasKey("Id")
                         .HasName("Id");
@@ -196,10 +204,6 @@ namespace Control.DAL.EF.Migrations
 
                     b.Property<Guid?>("PeriodId")
                         .HasColumnType("TEXT");
-
-                    b.Property<string>("Picture")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Picture");
 
                     b.Property<DateTime>("PreviousDate")
                         .HasColumnType("TEXT")

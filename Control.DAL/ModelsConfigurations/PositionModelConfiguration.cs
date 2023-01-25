@@ -77,10 +77,15 @@ namespace Control.DAL.ModelsConfigurations
 				.HasColumnName("Created")
                 .IsRequired();
 
-            builder
+			builder
 				.Property(_ => _.Status)
 				.HasColumnName("Status")
 				.IsRequired();
+
+			builder
+				.Property(_ => _.Picture)
+				.HasColumnName("Picture");
+
         }
 	}
 }

@@ -1,6 +1,8 @@
 ﻿using Control.BLL.Exceptions;
 using Control.BLL.Interfaces;
 using Control.BLL.ViewModels;
+using Control.DAL.Configuration;
+using Control.WEB.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -8,6 +10,8 @@ namespace Control.WEB.Controllers
 {
     public sealed class PositionController : Controller
     {
+        private const string _partialPath = AppConstants.PositionPartialPath;
+
         private readonly ILogger<PositionController> _logger;
         private readonly IPositionService _positionService;
         private readonly ICategoryService _categoryService;
@@ -16,6 +20,7 @@ namespace Control.WEB.Controllers
         private readonly IOperationService _operationService;
         private readonly IOwnerService _ownerService;
         private readonly IPeriodService _periodService;
+        private readonly IFileManager _fileManager;
 
         public PositionController(
             ILogger<PositionController> logger,
@@ -25,7 +30,8 @@ namespace Control.WEB.Controllers
             INominationService nominationService,
             IOperationService operationService,
             IOwnerService ownerService,
-            IPeriodService periodService)
+            IPeriodService periodService,
+            IFileManager fileManager)
         {
             _logger=logger;
             _positionService=positionService;
@@ -35,6 +41,7 @@ namespace Control.WEB.Controllers
             _operationService=operationService;
             _ownerService=ownerService;
             _periodService=periodService;
+            _fileManager=fileManager;
         }
 
         [HttpGet]
@@ -135,6 +142,12 @@ namespace Control.WEB.Controllers
                 {
                     var vm = positionCreatingVM.PositionVM;
 
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Count()!=0)
+                    {
+                        _fileManager.Load(files, _partialPath);
+                        vm!.Picture=_fileManager.FileName;
+                    }
 
                     await _positionService.CreateAsync(vm!);
                     return RedirectToAction("Index");
@@ -204,6 +217,8 @@ namespace Control.WEB.Controllers
         {
             try
             {
+                var model=await _positionService.GetByIdAsync(id);
+                if (model.Picture is not null) _fileManager.Delete(model.Picture,_partialPath);
                 await _positionService.DeleteAsync(id);
                 return RedirectToAction("Index");
             }

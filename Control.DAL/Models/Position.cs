@@ -13,6 +13,7 @@
 		public DateTime NextDate { get; set; }
         public DateTime Created { get; set; }
         public StatusEnum Status { get; set; }
+		public string? Picture { get; set; }
 
         #endregion
 
