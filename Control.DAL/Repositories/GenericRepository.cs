@@ -39,18 +39,21 @@ namespace Control.DAL.Repositories
             return await query.AsNoTracking().FirstAsync();
         }
 
-        public void Create(T entity)
+        public async Task CreateAsync(T entity)
 		{
 			_t.Add(entity);
+			await _db.SaveChangesAsync();
 		}
-		public void Update(T entity)
+		public async Task UpdateAsync(T entity)
 		{
 			_t.Update(entity);
-		}
-		public void Delete(T entity)
+            await _db.SaveChangesAsync();
+        }
+        public async Task DeleteAsync(T entity)
 		{
 			_t.Remove(entity);
-		}
+            await _db.SaveChangesAsync();
+        }
         public bool IsExists(Expression<Func<T, bool>> expression)
 		{
 			if (_t.AsNoTracking().Any(expression)) return true;

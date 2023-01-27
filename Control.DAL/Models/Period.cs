@@ -1,8 +1,7 @@
 ﻿namespace Control.DAL.Models
 {
-	public sealed class Period
+	public sealed class Period:BaseModel
 	{
-		public Guid Id { get; set; }
 		public string? Name { get; set; }
         public int Month { get; set; }
 

@@ -21,25 +21,27 @@ namespace Control.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            try
-            {
-                var vms = await _service.GetAllAsync();
-                return View(vms);
-            }
+            var vms = await _service.GetAllAsync();
+            return View(vms);
+            //try
+            //{
+            //    var vms = await _service.GetAllAsync();
+            //    return View(vms);
+            //}
 
-            catch (ObjectNotFoundException ex)
-            {
-                string message = ex.Message;
-                _logger.LogError(message);
-                return NotFound(message);
-            }
+            //catch (ObjectNotFoundException ex)
+            //{
+            //    string message = ex.Message;
+            //    _logger.LogError(message);
+            //    return NotFound(message);
+            //}
 
-            catch (Exception ex)
-            {
-                string message = ex.Message;
-                _logger.LogError(message);
-                return BadRequest(message);
-            }
+            //catch (Exception ex)
+            //{
+            //    string message = ex.Message;
+            //    _logger.LogError(message);
+            //    return BadRequest(message);
+            //}
         }
 
         [HttpGet]

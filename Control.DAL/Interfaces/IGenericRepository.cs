@@ -13,9 +13,9 @@ namespace Control.DAL.Interfaces
             Expression<Func<T, bool>>? expression = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
 
-        public void Create(T entity);
-		public void Update(T entity);
-		public void Delete(T entity);
+        public Task CreateAsync(T entity);
+		public Task UpdateAsync(T entity);
+		public Task DeleteAsync(T entity);
 		public bool IsExists(Expression<Func<T, bool>> expression);
 	}
 }

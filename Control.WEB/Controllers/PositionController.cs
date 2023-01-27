@@ -93,7 +93,7 @@ namespace Control.WEB.Controllers
                     Measurings=measurings.Select(_ => new SelectListItem
                     {
                         Value=_.Id.ToString(),
-                        Text=_.Name
+                        Text=_.Code
                     }),
 
                     Nominations=nominations.Select(_ => new SelectListItem

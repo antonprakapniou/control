@@ -8,100 +8,37 @@ using Microsoft.Extensions.Logging;
 
 namespace Control.BLL.Services
 {
-	public sealed class OperationService:IOperationService
-	{
-        private const string _typeName = "Operation";
-
-        private readonly ILogger<OperationService> _logger;
+    public sealed class OperationService : GenericService<OperationVM, Operation>,IOperationService
+    {
+        private readonly ILogger<GenericService<OperationVM, Operation>> _logger;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IGenericRepository<Operation> _repository;
 
         public OperationService(
-            ILogger<OperationService> logger,
+            ILogger<GenericService<OperationVM, Operation>> logger,
             IMapper mapper,
-            IUnitOfWork unitOfWork)
+            IGenericRepository<Operation> repository)
+            : base(logger, mapper, repository)
         {
             _logger=logger;
             _mapper=mapper;
-            _unitOfWork=unitOfWork;
+            _repository=repository;
         }
 
-        public async Task<IEnumerable<OperationVM>> GetAllAsync()
+        public override async Task<IEnumerable<OperationVM>> GetAllAsync()
         {
-            var models = await _unitOfWork.Operations.GetAllByAsync();
+            var models = await _repository.GetAllByAsync();
 
-            if (models==null)
+            if (models is null)
             {
-                string errorMessage = $"{_typeName} collection not found ";
+                string errorMessage = $"'{models!.GetType().Name}' collection not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }
 
-            else
-            {
-                var modelsVM = _mapper.Map<IEnumerable<OperationVM>>(models);
-                return modelsVM;
-            }
-        }
-
-        public async Task<OperationVM> GetByIdAsync(Guid id)
-        {
-            var model = await _unitOfWork.Operations.GetOneByAsync(_ => _.Id.Equals(id));
-
-            if (model==null)
-            {
-                string errorMessage = $"{_typeName} collection not found ";
-                _logger.LogError(errorMessage);
-                throw new ObjectNotFoundException(errorMessage);
-            }
-
-            else
-            {
-                var modelVM = _mapper.Map<OperationVM>(model);
-                return modelVM;
-            }
-        }
-
-        public async Task CreateAsync(OperationVM vm)
-        {
-            var model = _mapper.Map<Operation>(vm);
-            _unitOfWork.Operations.Create(model);
-            await _unitOfWork.SaveAsync();
-        }
-
-        public async Task UpdateAsync(OperationVM vm)
-        {
-            if (_unitOfWork.Operations.IsExists(_ => _.Id.Equals(vm.Id)))
-            {
-                var model = _mapper.Map<Operation>(vm);
-                _unitOfWork.Operations.Update(model);
-                await _unitOfWork.SaveAsync();
-            }
-
-            else
-            {
-                string errorMessage = $"{_typeName} model with id: {vm.Id} not found ";
-                _logger.LogError(errorMessage);
-                throw new ObjectNotFoundException(errorMessage);
-            }
-        }
-
-        public async Task DeleteAsync(Guid id)
-        {
-            var model = await _unitOfWork.Operations.GetOneByAsync(_ => _.Id.Equals(id));
-
-            if (model==null)
-            {
-                string errorMessage = $"{_typeName} model with id: {id} not found ";
-                _logger.LogError(errorMessage);
-                throw new ObjectNotFoundException(errorMessage);
-            }
-
-            else
-            {
-                _unitOfWork.Operations.Delete(model);
-                await _unitOfWork.SaveAsync();
-            }
+            var orderModels = models.OrderBy(_ => _.Name);
+            var viewModels = _mapper.Map<IEnumerable<OperationVM>>(orderModels);
+            return viewModels;
         }
     }
 }

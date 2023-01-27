@@ -8,100 +8,37 @@ using Microsoft.Extensions.Logging;
 
 namespace Control.BLL.Services
 {
-	public class MeasuringService : IMeasuringService
-	{
-        private const string _typeName = "Measuring";
-
-        private readonly ILogger<MeasuringService> _logger;
+    public class MeasuringService : GenericService<MeasuringVM, Measuring>,IMeasuringService
+    {
+        private readonly ILogger<GenericService<MeasuringVM, Measuring>> _logger;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IGenericRepository<Measuring> _repository;
 
         public MeasuringService(
-            ILogger<MeasuringService> logger,
+            ILogger<GenericService<MeasuringVM, Measuring>> logger,
             IMapper mapper,
-            IUnitOfWork unitOfWork)
+            IGenericRepository<Measuring> repository)
+            : base(logger, mapper, repository)
         {
             _logger=logger;
             _mapper=mapper;
-            _unitOfWork=unitOfWork;
+            _repository=repository;
         }
 
-        public async Task<IEnumerable<MeasuringVM>> GetAllAsync()
+        public override async Task<IEnumerable<MeasuringVM>> GetAllAsync()
         {
-            var models = await _unitOfWork.Measurings.GetAllByAsync();
+            var models = await _repository.GetAllByAsync();
 
-            if (models==null)
+            if (models is null)
             {
-                string errorMessage = $"{_typeName} collection not found ";
+                string errorMessage = $"'{models!.GetType().Name}' collection not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }
 
-            else
-            {
-                var modelsVM = _mapper.Map<IEnumerable<MeasuringVM>>(models);
-                return modelsVM;
-            }
-        }
-
-        public async Task<MeasuringVM> GetByIdAsync(Guid id)
-        {
-            var model = await _unitOfWork.Measurings.GetOneByAsync(_ => _.Id.Equals(id));
-
-            if (model==null)
-            {
-                string errorMessage = $"{_typeName} collection not found ";
-                _logger.LogError(errorMessage);
-                throw new ObjectNotFoundException(errorMessage);
-            }
-
-            else
-            {
-                var modelVM = _mapper.Map<MeasuringVM>(model);
-                return modelVM;
-            }
-        }
-
-        public async Task CreateAsync(MeasuringVM vm)
-        {
-            var model = _mapper.Map<Measuring>(vm);
-            _unitOfWork.Measurings.Create(model);
-            await _unitOfWork.SaveAsync();
-        }
-
-        public async Task UpdateAsync(MeasuringVM vm)
-        {
-            if (_unitOfWork.Measurings.IsExists(_ => _.Id.Equals(vm.Id)))
-            {
-                var model = _mapper.Map<Measuring>(vm);
-                _unitOfWork.Measurings.Update(model);
-                await _unitOfWork.SaveAsync();
-            }
-
-            else
-            {
-                string errorMessage = $"{_typeName} model with id: {vm.Id} not found ";
-                _logger.LogError(errorMessage);
-                throw new ObjectNotFoundException(errorMessage);
-            }
-        }
-
-        public async Task DeleteAsync(Guid id)
-        {
-            var model = await _unitOfWork.Measurings.GetOneByAsync(_ => _.Id.Equals(id));
-
-            if (model==null)
-            {
-                string errorMessage = $"{_typeName} model with id: {id} not found ";
-                _logger.LogError(errorMessage);
-                throw new ObjectNotFoundException(errorMessage);
-            }
-
-            else
-            {
-                _unitOfWork.Measurings.Delete(model);
-                await _unitOfWork.SaveAsync();
-            }
+            var orderModels = models.OrderBy(_ => _.Code);
+            var viewModels = _mapper.Map<IEnumerable<MeasuringVM>>(orderModels);
+            return viewModels;
         }
     }
 }

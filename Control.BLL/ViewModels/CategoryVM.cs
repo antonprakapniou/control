@@ -3,9 +3,8 @@ using System.ComponentModel;
 
 namespace Control.BLL.ViewModels
 {
-    public sealed class CategoryVM
+    public sealed class CategoryVM:BaseViewModel
     {
-        public Guid Id { get; set; }
 
         [Required]
         [DisplayName("Name")]

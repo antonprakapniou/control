@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Control.BLL.ViewModels
 {
-	public sealed class PeriodVM
+	public sealed class PeriodVM:BaseViewModel
 	{
-		public Guid Id { get; set; }
 
 		[Required]
 		[DisplayName("Name")]

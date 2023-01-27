@@ -3,7 +3,7 @@
     [Flags]
     public enum StatusEnum
     {
-        None = 0,
+        Indefined = 0,
         Valid=0b1,
         NextMonthControl=0b1_0,
         CurrentMonthControl=0b1_00,

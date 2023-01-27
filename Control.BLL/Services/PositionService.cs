@@ -9,105 +9,78 @@ using Microsoft.Extensions.Logging;
 
 namespace Control.BLL.Services
 {
-	public sealed class PositionService:IPositionService
+	public sealed class PositionService:GenericService<PositionVM,Position>,IPositionService
 	{
-        private const string _typeName = "Position";
-
-        private readonly ILogger<PositionService> _logger;
+        private readonly ILogger<GenericService<PositionVM, Position>> _logger;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IGenericRepository<Position> _positionRepository;
+        private readonly IGenericRepository<Period> _periodRepository;
 
         public PositionService(
-            ILogger<PositionService> logger,
+            ILogger<GenericService<PositionVM, Position>> logger,
             IMapper mapper,
-            IUnitOfWork unitOfWork)
+            IGenericRepository<Position> positionRepository,
+            IGenericRepository<Period> periodRepository) 
+            : base(logger, mapper, positionRepository)
         {
             _logger=logger;
-            _mapper=mapper;
-            _unitOfWork=unitOfWork;
+            _mapper = mapper;
+            _positionRepository = positionRepository;
+            _periodRepository = periodRepository;
         }
 
-        public async Task<IEnumerable<PositionVM>> GetAllAsync()
+        public override async Task<IEnumerable<PositionVM>> GetAllAsync()
         {
-            var models = await _unitOfWork.Positions.GetAllByAsync(
-                    include: query => query
-                        .Include(_ => _.Category)
-                        .Include(_ => _.Measuring)
-                        .Include(_ => _.Nomination)
-                        .Include(_ => _.Operation)
-                        .Include(_ => _.Owner)
-                        .Include(_ => _.Period)!);
+            var models = await _positionRepository.GetAllByAsync(
+                include:query=>query
+                    .Include(_ => _.Category)
+                    .Include(_ => _.Measuring)
+                    .Include(_ => _.Nomination)
+                    .Include(_ => _.Operation)
+                    .Include(_ => _.Owner)
+                    .Include(_ => _.Period)!);
 
-            if (models==null)
+            if (models is null)
             {
-                string errorMessage = $"{_typeName} collection not found ";
+                string errorMessage = $"'{models!.GetType().Name}' collection not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }
 
-            else
-            {
-                var modelsVM = _mapper.Map<IEnumerable<PositionVM>>(models);
-                return modelsVM;
-            }
+            var orderModels = models
+                .OrderBy(_ => _.Measuring)
+                .ThenBy(_ => _.Nomination)
+                .ThenBy(_ => _.Name);
+
+            var viewModels = _mapper.Map<IEnumerable<PositionVM>>(orderModels);
+            return viewModels;
         }
 
-        public async Task<PositionVM> GetByIdAsync(Guid id)
-        {
-            var model = await _unitOfWork.Positions.GetOneByAsync(
-                expression: _ => _.Id.Equals(id),
-                    include: query => query
-                        .Include(_ => _.Category)
-                        .Include(_ => _.Measuring)
-                        .Include(_ => _.Nomination)
-                        .Include(_ => _.Operation)
-                        .Include(_ => _.Owner)
-                        .Include(_ => _.Period)!);
-
-            if (model==null)
-            {
-                string errorMessage = $"{_typeName} collection not found ";
-                _logger.LogError(errorMessage);
-                throw new ObjectNotFoundException(errorMessage);
-            }
-
-            else
-            {
-                var modelVM = _mapper.Map<PositionVM>(model);
-                return modelVM;
-            }
-        }
-
-        public async Task CreateAsync(PositionVM vm)
+        public override async Task CreateAsync(PositionVM vm)
         {
             var model = _mapper.Map<Position>(vm);
-            var period = await _unitOfWork.Periods.GetOneByAsync(_ => _.Id.Equals(vm.PeriodId));
+            var period = await _periodRepository.GetOneByAsync(_ => _.Id.Equals(vm.PeriodId));
 
-            if (period is null) throw new ObjectNotFoundException($"'{period!.GetType().Name}' with id: {period.Id} not found ");
+            if (period is null) throw new ObjectNotFoundException($"'{period!.GetType().Name}' with id: '{period.Id}' not found ");
             else model.NextDate = model.PreviousDate.AddMonths(period.Month);
 
             model.Status=SetStatus(model.NextDate);
             model.Created=DateTime.Now;
-            _unitOfWork.Positions.Create(model);
-            await _unitOfWork.SaveAsync();
-        }        
+            await _positionRepository.CreateAsync(model);
+        }  
 
-        public async Task DeleteAsync(Guid id)
+        public override async Task DeleteAsync(Guid id)
         {
-            var model = await _unitOfWork.Positions.GetOneByAsync(_ => _.Id.Equals(id));
+            var model = await _positionRepository.GetOneByAsync(_ => _.Id.Equals(id));
 
-            if (model==null)
+            if (model is null)
             {
-                string errorMessage = $"{_typeName} model with id: {id} not found ";
+                string errorMessage = $"'{model!.GetType().Name}' model with id: '{id}' not found ";
                 _logger.LogError(errorMessage);
                 throw new ObjectNotFoundException(errorMessage);
             }
 
-            else
-            {
-                _unitOfWork.Positions.Delete(model);
-                await _unitOfWork.SaveAsync();
-            }
+            await _positionRepository.DeleteAsync(model);
         }
 
         private static StatusEnum SetStatus(DateTime nextDate)
@@ -117,12 +90,8 @@ namespace Control.BLL.Services
             if (currentDate>nextDate) return StatusEnum.Invalid;
             else if (currentDate.AddMonths(2)>nextDate&&currentDate.Month.Equals(nextDate.Month)) return StatusEnum.CurrentMonthControl;
             else if (currentDate.AddMonths(2)>nextDate&&currentDate.AddMonths(1).Month.Equals(nextDate.Month)) return StatusEnum.CurrentMonthControl;
-            else return StatusEnum.Valid;
-        }
-
-        public Task UpdateAsync(PositionVM vm)
-        {
-            throw new NotImplementedException();
+            else if (currentDate<=nextDate) return StatusEnum.Valid;
+            else return StatusEnum.Indefined;
         }
     }
 }

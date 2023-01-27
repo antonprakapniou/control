@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Control.BLL.ViewModels
 {
-	public sealed class OperationVM
+	public sealed class OperationVM:BaseViewModel
 	{
-		public Guid Id { get; set; }
 
 		[Required]
 		[DisplayName("Name")]

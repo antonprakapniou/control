@@ -1,10 +1,9 @@
 ﻿namespace Control.DAL.Models
 {
-	public sealed class Position
+	public sealed class Position:BaseModel
 	{
 		#region Own properties
 
-		public Guid Id { get; set; }
 		public string? Name { get; set; }
 		public string? Description { get; set; }
 		public string? Included { get; set; }

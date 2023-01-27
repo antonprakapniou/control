@@ -17,16 +17,11 @@ namespace Control.WEB.Configuration
 		{
 			services.AddControllersWithViews();
 
-            //string? connectionName = AppConstants.DevelopPostrgeSqlConnection;
-
             string? connectionName = AppConstants.DevelopSqLiteConnection;
             string connectionString =configuration
 				.GetConnectionString(connectionName!)
 
 				??throw new InvalidOperationException($"Connection \"{connectionName}\" not found");
-
-			//services.AddDbContext<AppDbContext>(options=>
-			//	options.UseNpgsql(connectionString));
 
 			services.AddDbContext<AppDbContext>(options =>
 			{
@@ -35,15 +30,15 @@ namespace Control.WEB.Configuration
 			});
 
             services.AddAutoMapper(typeof(MapPropfile));
-            services.AddScoped<IUnitOfWork,UnitOfWork>();
-            services.AddScoped<ICategoryService, CategoryService>();
+			services.AddTransient(typeof(IGenericRepository<>),typeof(GenericRepository<>));
+            services.AddTransient<IFileManager, FileManager>();
+            services.AddScoped<ICategoryService,CategoryService>();
             services.AddScoped<IMeasuringService, MeasuringService>();
-			services.AddScoped<INominationService, NominationService>();
-			services.AddScoped<IOperationService, OperationService>();
-			services.AddScoped<IOwnerService, OwnerService>();
-			services.AddScoped<IPeriodService, PeriodService>();
-			services.AddScoped<IPositionService, PositionService>();
-			services.AddTransient<IFileManager,FileManager>();
+            services.AddScoped<INominationService, NominationService>();
+            services.AddScoped<IOperationService, OperationService>();
+            services.AddScoped<IOwnerService, OwnerService>();
+            services.AddScoped<IPeriodService, PeriodService>();
+            services.AddScoped<IPositionService, PositionService>();
 		}
 	}
 }

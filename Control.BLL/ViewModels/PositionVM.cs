@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Control.BLL.ViewModels
 {
-	public sealed class PositionVM
+	public sealed class PositionVM:BaseViewModel
 	{
 		#region Own properties
 
-		public Guid Id { get; set; }
 
 		[Required]
 		[DisplayName("Name")]

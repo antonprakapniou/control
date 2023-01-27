@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Control.BLL.ViewModels
 {
-	public sealed class OwnerVM
+	public sealed class OwnerVM:BaseViewModel
 	{
-		public Guid Id { get; set; }
 
 		[Required]
 		[DisplayName("Shop")]
