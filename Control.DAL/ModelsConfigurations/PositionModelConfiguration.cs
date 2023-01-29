@@ -45,12 +45,15 @@ namespace Control.DAL.ModelsConfigurations
                 .Property(_ => _.Id)
 				.HasColumnName("Id");
 
-			builder
-				.Property(_ => _.Name)
-				.HasColumnName("Name")
-				.IsRequired();
+            builder
+                .Property(_ => _.DeviceType)
+                .HasColumnName("Type");
 
-			builder
+            builder
+                .Property(_ => _.FactoryNumber)
+                .HasColumnName("Number");
+
+            builder
 				.Property(_ => _.Description)
 				.HasColumnName("Description");
 

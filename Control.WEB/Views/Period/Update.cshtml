@@ -1,37 +1,26 @@
 ﻿@model PeriodVM
-
-<form method="post" asp-controller="Period" asp-action="Update">
+<br />
+<form method="post" asp-controller="Period" asp-action="Update" class="needs-validation" novalidate>
     <input asp-for="Id" hidden />
-    <div class="border p-3">
-        <div class="form-group row">
-            <h2 class="text-info pl-3">Update period</h2>
-        </div>
-        <div class="row">
-            <div class="col-8">
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="Name"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-bg-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row p-3">
-                    <div class="col-8 offset-4 row">
-                        <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Update" />
-                        </div>
-                        <div class="col">
-                            <a asp-controller="Period" asp-action="Index" class="btn btn-success w-100">
-                                <i class="fas fa-sign-out-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <div class="row mb-3">
+        <label asp-for="Name" class="col-sm-2 col-form-label text-end"></label>
+        <div class="col-sm-3">
+            <input asp-for="Name" class="form-control" required />
+            <div class="valid-feedback">
+                Nice
             </div>
-            <div class="col-4">
-                @* Keep this empty *@
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <button type="submit" class="btn btn-outline-success">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+                <a asp-controller="Period" asp-action="Index" class="btn btn-outline-danger">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
             </div>
         </div>
     </div>

@@ -6,17 +6,19 @@ namespace Control.BLL.ViewModels
 {
 	public sealed class PositionVM:BaseViewModel
 	{
-		#region Own properties
+        #region Own properties
 
+		[DisplayName("Type")]
+        public string? DeviceType { get; set; }
 
-		[Required]
-		[DisplayName("Name")]
-		public string? Name { get; set; }
+        [Required]
+        [DisplayName("Number")]
+        public string? FactoryNumber { get; set; }
 
-		[DisplayName("Description")]
+        [DisplayName("Description")]
 		public string? Description { get; set; }
 
-		[DisplayName("Included")]
+        [DisplayName("Included")]
 		public string? Included { get; set; }
 
 		[DisplayName("Addition")]
@@ -24,7 +26,7 @@ namespace Control.BLL.ViewModels
 
 		[Required]
 		[DisplayName("Previous")]
-		public DateTime? PreviousDate { get; set; }
+		public DateTime PreviousDate { get; set; }
 
 		[DisplayName("Next")]
 		public DateTime NextDate { get; set; }
@@ -42,15 +44,18 @@ namespace Control.BLL.ViewModels
 
         #region IncludedPropertiesId
 
+        [Required]
         [DisplayName("Measuring")]
         public Guid? MeasuringId { get; set; }
 
+        [Required]
         [DisplayName("Nomination")]
         public Guid? NominationId { get; set; }
 
         [DisplayName("Operation")]
         public Guid? OperationId { get; set; }
 
+        [Required]
         [DisplayName("Owner")]
         public Guid? OwnerId { get; set; }
 
@@ -58,7 +63,7 @@ namespace Control.BLL.ViewModels
         [DisplayName("Period")]
         public Guid? PeriodId { get; set; }
 
-        [DisplayName("CategoryId")]
+        [DisplayName("Category")]
         public Guid? CategoryId { get; set; }
 
         #endregion

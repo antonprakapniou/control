@@ -1,73 +1,55 @@
 ﻿@model OwnerVM
-
-<form method="post" asp-controller="Owner" asp-action="Update">
+<br />
+<form method="post" asp-controller="Owner" asp-action="Update" class="needs-validation" novalidate>
     <input asp-for="Id" hidden />
-    <div class="border p-3">
-        <div class="form-group row">
-            <h2 class="text-info pl-3">Update owner</h2>
-        </div>
-        <div class="row">
-            <div class="col-8">
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="Shop"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="Shop" class="form-control" />
-                        <span asp-validation-for="Shop" class="text-bg-danger"></span>
-                    </div>
-                </div>
-                 <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="Production"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="Production" class="form-control" />
-                        <span asp-validation-for="Production" class="text-bg-danger"></span>
-                    </div>
-                </div>
-                 <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="Master"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="Master" class="form-control" />
-                        <span asp-validation-for="Master" class="text-bg-danger"></span>
-                    </div>
-                </div>
-                 <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="Phone"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="Phone" class="form-control" />
-                        <span asp-validation-for="Phone" class="text-bg-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="Email"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-bg-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row p-3">
-                    <div class="col-8 offset-4 row">
-                        <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Update" />
-                        </div>
-                        <div class="col">
-                            <a asp-controller="Owner" asp-action="Index" class="btn btn-success w-100">
-                                <i class="fas fa-sign-out-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <div class="row mb-3">
+        <label asp-for="Shop" class="col-sm-2 col-form-label text-end"></label>
+        <div class="col-sm-4">
+            <input asp-for="Shop" class="form-control" required />
+            <div class="valid-feedback">
+                Nice
             </div>
-            <div class="col-4">
-                @* Keep this empty *@
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="Production" class="col-sm-2 col-form-label text-end"></label>
+        <div class="col-sm-4">
+            <input asp-for="Production" class="form-control" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="Master" class="col-sm-2 col-form-label text-end"></label>
+        <div class="col-sm-4">
+            <input asp-for="Master" class="form-control" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="Phone" class="col-sm-2 col-form-label text-end"></label>
+        <div class="col-sm-4">
+            <input asp-for="Phone" class="form-control" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="Email" class="col-sm-2 col-form-label text-end"></label>
+        <div class="col-sm-4">
+            <input asp-for="Email" class="form-control" />
+            <div class="invalid-feedback">
+                example@post.com
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-sm-6 text-end">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <button type="submit" class="btn btn-outline-success">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+                <a asp-controller="Owner" asp-action="Index" class="btn btn-outline-danger">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
             </div>
         </div>
     </div>

@@ -4,8 +4,9 @@
 	{
 		#region Own properties
 
-		public string? Name { get; set; }
-		public string? Description { get; set; }
+		public string? DeviceType { get; set; }
+        public string? FactoryNumber { get; set; }
+        public string? Description { get; set; }
 		public string? Included { get; set; }
 		public string? Addition { get; set; }
 		public DateTime PreviousDate { get; set; }

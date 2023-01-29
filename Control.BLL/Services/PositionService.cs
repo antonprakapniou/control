@@ -50,7 +50,9 @@ namespace Control.BLL.Services
             var orderModels = models
                 .OrderBy(_ => _.Measuring)
                 .ThenBy(_ => _.Nomination)
-                .ThenBy(_ => _.Name);
+                .ThenBy(_ => _.OwnerId)
+                .ThenBy(_ => _.DeviceType)
+                .ThenBy(_ => _.FactoryNumber);
 
             var viewModels = _mapper.Map<IEnumerable<PositionVM>>(orderModels);
             return viewModels;

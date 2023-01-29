@@ -7,7 +7,7 @@ namespace Control.BLL.ViewModels
 	{
 
 		[Required]
-		[DisplayName("Name")]
+		[DisplayName("Operation")]
 		public string? Name { get; set; }
 	}
 }

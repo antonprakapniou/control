@@ -169,17 +169,20 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("Description");
 
+                    b.Property<string>("DeviceType")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Type");
+
+                    b.Property<string>("FactoryNumber")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Number");
+
                     b.Property<string>("Included")
                         .HasColumnType("TEXT")
                         .HasColumnName("Included");
 
                     b.Property<Guid?>("MeasuringId")
                         .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Name");
 
                     b.Property<DateTime>("NextDate")
                         .HasColumnType("TEXT")

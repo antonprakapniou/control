@@ -1,0 +1,19 @@
+﻿@using Control.DAL.Configuration
+
+@if (TempData[AppConstants.ToastrSuccess]!=null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        toastr.success('@TempData[AppConstants.ToastrSuccess]')
+    </script>
+}
+
+@if (TempData[AppConstants.ToastrError]!=null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        toastr.error('@TempData[AppConstants.ToastrError]')
+    </script>
+}

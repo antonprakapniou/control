@@ -1,80 +1,54 @@
 ﻿@model IEnumerable<OwnerVM>
-
-<div class="container p-3">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-info pl-3">Owners list</h2>
-        </div>
-        <div class="col-6 text-end">
-            <a asp-controller="Owner" asp-action="Create" class="btn btn-primary">
-                <i class="fas fa-plus"></i>
-            </a>
-        </div>
-    </div>
-</div>
-
 <br />
-<br />
-
-@if (Model.Count()>0)
-{
-    <table class="table table-bordered table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>
-                    Shop
-                </th>
-                <th>
-                    Production
-                </th>
-                <th>
-                    Master
-                </th>
-                <th>
-                    Phone
-                </th>
-                <th>
-                    Email
-                </th>
-                <th>@* Keep this empty *@</th>
-            </tr>
-        </thead>
-        <tbody>
+<table class="table table-responsive table-dark table-hover align-middle" style="width:100%">
+    <thead>
+        <tr>
+            <th style="width:18%">
+                <div class="col-12 text-start">
+                    <a asp-controller="Owner" asp-action="Create" class="btn btn-dark">
+                        <i class="bi bi-plus-lg"></i>&nbsp;Shop
+                    </a>
+                </div>
+            </th>
+            <th class="text-center align-middle" style="width:18% ">Production</th>
+            <th class="text-center align-middle" style="width:18% ">Master</th>
+            <th class="text-center align-middle" style="width:18% ">Phone</th>
+            <th class="text-center align-middle" style="width:18% ">Email</th>
+            <th class="text-center align-middle" style="width:10% "><i class="bi bi-gear-wide-connected"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count()>0)
+        {
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @item.Shop
-                    </td>
-                    <td>
-                        @item.Production
-                    </td>
-                    <td>
-                        @item.Master
-                    </td>
-                    <td>
-                        @item.Phone
-                    </td>
-                    <td>
-                        @item.Email
-                    </td>
+                    <td>@item.Shop</td>
+                    <td class="text-center">@item.Production</td>
+                    <td class="text-center">@item.Master</td>
+                    <td class="text-center">@item.Phone</td>
+                    <td class="text-center">@item.Email</td>
                     <td class="text-center">
-                        <div class="w-25 btn-group" role="group">
-                            <a asp-controller="Owner" asp-action="Update" asp-route-id="@item.Id" class="btn btn-primary mx-2">
-                                <i class="fas fa-edit"></i>
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <a asp-controller="Owner" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-warning">
+                                <i class="bi bi-pencil-fill"></i>
                             </a>
                             <form method="post" asp-controller="Owner" asp-action="Delete" asp-route-id="@item.Id">
-                                <input type="submit" class="btn btn-danger w-100" value="Delete" />
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
                             </form>
                         </div>
                     </td>
                 </tr>
             }
-        </tbody>
-    </table>
-}
+        }
 
-else
-{
-    <p>Owners list is empty</p>
-}
+        else
+        {
+            <tr>
+                <td colspan="6">Nomination list is empty</td>
+            </tr>
+        }
+    </tbody>
+</table>

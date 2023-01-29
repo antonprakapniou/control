@@ -41,5 +41,17 @@ namespace Control.BLL.Services
             var viewModels = _mapper.Map<IEnumerable<PeriodVM>>(orderModels);
             return viewModels;
         }
+
+        public override async Task CreateAsync(PeriodVM viewModel)
+        {
+            if (int.TryParse(viewModel.Name, out int month))
+            {
+                var model = _mapper.Map<Period>(viewModel);
+                model.Month= month;
+                await _repository.CreateAsync(model);
+            }
+
+            else throw  new InvalidValueException("Invalid 'Period' value. It must be '012', for example");            
+        }
     }
 }

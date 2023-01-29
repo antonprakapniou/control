@@ -7,9 +7,10 @@ namespace Control.BLL.ViewModels
 	{
 
 		[Required]
-		[DisplayName("Name")]
+		[DisplayName("Measuring")]
 		public string? Name { get; set; }
 
+		[Required]
 		[DisplayName("Code")]
 		public string? Code { get; set; }
 	}

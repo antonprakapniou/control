@@ -1,138 +1,63 @@
 ﻿@model IEnumerable<PositionVM>
-
-<div class="container p-3">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-info pl-3">Positions list</h2>
-        </div>
-        <div class="col-6 text-end">
-            <a asp-controller="Position" asp-action="Create" class="btn btn-primary">
-                <i class="fas fa-plus"></i>
-            </a>
-        </div>
-    </div>
-</div>
-
 <br />
-<br />
-
-@if (Model.Count()>0)
-{
-    <table class="table table-bordered table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Included
-                </th>
-                <th>
-                    Addition
-                </th>
-                <th>
-                    PreviousDate
-                </th>
-                <th>
-                    NextDate
-                </th>
-                <th>
-                    Created
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
-                    Measuring
-                </th>
-                <th>
-                    Nomination
-                </th>
-                <th>
-                    Operation
-                </th>
-                <th>
-                    Owner
-                </th>
-                <th>
-                    Period
-                </th>
-                <th>
-                    Category
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
+<table class="table table-responsive table-dark table-hover align-middle" style="width:100%">
+    <thead>
+        <tr>
+            <th class ="text-center align-middle">
+                <div class="col-12 text-start">
+                    <a asp-controller="Position" asp-action="Create" class="btn btn-dark">
+                        <i class="bi bi-plus-lg"></i>
+                    </a>
+                </div>
+            </th>
+            <th class="text-center align-middle">FactoryNumber</th>
+            <th class="text-center align-middle">Owner</th>
+            <th class="text-center align-middle">Period</th>
+            <th class="text-center align-middle">PreviousDate</th>
+            <th class="text-center align-middle">Status</th>
+            <th class="text-center align-middle">Operation</th>
+            <th class="text-center align-middle">Category</th>
+            <th class="text-center align-middle"><i class="bi bi-gear-wide-connected"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count()>0)
+        {
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @item.Name
-                    </td>
-                    <td>
-                        @item.Description
-                    </td>
-                    <td>
-                        @item.Included
-                    </td>
-                    <td>
-                        @item.Addition
-                    </td>
-                    <td>
-                        @item.PreviousDate
-                    </td>
-                    <td>
-                        @item.NextDate
-                    </td>
-                    <td>
-                        @item.Created
-                    </td>
-                    <td>
-                        @item.Status
-                    </td>
-                    <td>
-                        @if (item.Measuring != null) @item.Measuring.Name
-                    </td>
-                    <td>
-                        @if (item.Nomination != null) @item.Nomination.Name
-                    </td>
-                    <td>
-                        @if (item.Operation != null) @item.Operation.Name
-                    </td>
-                    <td>
-                        @if (item.Owner != null)
-                        {
-                            @item.Owner!.Shop @item.Owner!.Production
-                        }                        
-                    </td>
-                    <td>
-                        @if (item.Period != null) @item.Period.Name
-                    </td>
-                    <td>
-                        @if (item.Category != null) @item.Category.Name
-                    </td>                    
-                    
-                    <td class="text-center">
-                        <div class="w-25 btn-group" role="group">
-                            <a asp-controller="Position" asp-route-id="@item.Id" asp-action="Update" class="btn btn-primary mx-2">
-                                <i class="fas fa-edit"></i>
+                    <td class="text-center align-middle">@item.DeviceType</td>
+                    <td class="text-center align-middle">@item.FactoryNumber</td>
+                    <td class="text-center align-middle">@if (item.Owner != null){@item.Owner!.Shop @item.Owner!.Production}</td>
+                    <td class="text-center align-middle">@if (item.Period is not null)@item.Period.Name</td>
+                     <td class="text-center align-middle">@item.PreviousDate.ToShortDateString()</td>
+                    <td class="text-center align-middle">@item.Status</td>
+                    <td class="text-center align-middle">@if (item.Operation is not null)@item.Operation.Name</td>
+                    <td class="text-center align-middle">@if (item.Category is not null)@item.Category.Name</td>
+                     <td class="text-center align-middle">
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <a asp-controller="Position" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-info">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>                            
+                            <a asp-controller="Position" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-warning">
+                                <i class="bi bi-pencil-fill"></i>
                             </a>
-                            <form method="post" asp-controller="Position" asp-action="Delete" asp-route-id="@item.Id">
-                                <input type="submit" class="btn btn-danger w-100" value="Delete" />
+                            <form method="post" asp-controller="Owner" asp-action="Delete" asp-route-id="@item.Id">
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
                             </form>
                         </div>
                     </td>
                 </tr>
             }
-        </tbody>
-    </table>
-}
+        }
 
-else
-{
-    <p>Positions list is empty</p>
-}
+        else
+        {
+            <tr>
+                <td colspan="9">Position list is empty</td>
+            </tr>
+        }
+    </tbody>
+</table>

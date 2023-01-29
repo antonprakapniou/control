@@ -1,99 +1,142 @@
 ﻿@model PositionCreatingVM
-
-<form method="post" asp-controller="Position" asp-action="Create" enctype="multipart/form-data">
-    <div class="border p-3">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group row">
-            <h2 class="text-info pl-3">New position</h2>
+<br />
+<form method="post" asp-controller="Position" asp-action="Create" class="needs-validation" novalidate>
+    <div class="row mb-3">
+        <label asp-for="PositionVM!.MeasuringId" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <select asp-for="PositionVM!.MeasuringId" asp-items="@Model.Measurings" class=" form-control" required>
+                <option disabled selected value="">Select measuring</option>
+            </select>
+            <div class="valid-feedback">
+                Nice
+            </div>
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
         </div>
-        <div class="row">
-            <div class="col-8">
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="PositionVM!.Name"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="PositionVM!.Name" class=" form-control" />
-                        <span asp-validation-for="PositionVM!.Name" class=" text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="PositionVM!.Description"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="PositionVM!.Description" class=" form-control" />
-                        <span asp-validation-for="PositionVM!.Description" class=" text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="PositionVM!.Included"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="PositionVM!.Included" class=" form-control" />
-                        <span asp-validation-for="PositionVM!.Included" class=" text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="PositionVM!.Addition"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="PositionVM!.Addition" class=" form-control" />
-                        <span asp-validation-for="PositionVM!.Addition" class=" text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="PositionVM!.PreviousDate"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="PositionVM!.PreviousDate" class=" form-control" />
-                        <span asp-validation-for="PositionVM!.PreviousDate" class=" text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="PositionVM!.PeriodId"></label>
-                    </div>
-                    <div class="col-8">
-                        <select asp-for="PositionVM!.PeriodId" asp-items="@Model.Periods" class=" form-control">
-                            <option disabled selected>
-                                Select period
-                            </option>
-                        </select>
-                        <span asp-validation-for="PositionVM!.PeriodId" class=" text-danger"></span>
-                    </div>
-                </div>  
-                <div class="form-group row">
-                    <div class="col-4">
-                        Image
-                    </div>
-                    <div class="col-8">
-                        <input type="file" name="files" id="uploadBox" class=" form-control" />
-                    </div>
-                </div>
-                <div class="form-group row p-3">
-                    <div class="col-8 offset-4 row">
-                        <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Create" />
-                        </div>
-                        <div class="col">
-                            <a asp-controller="Position" asp-action="Index" class="btn btn-success w-100">
-                                <i class="fas fa-sign-out-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+        <label asp-for="PositionVM!.NominationId" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <select asp-for="PositionVM!.NominationId" asp-items="@Model.Nominations" class=" form-control" required>
+                <option disabled selected value="">Select nomination</option>
+            </select>
+            <div class="valid-feedback">
+                Nice
+            </div>
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
+        </div>
+        <label asp-for="PositionVM!.DeviceType" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <input asp-for="PositionVM!.DeviceType" class="form-control" />
+        </div>
+        <label asp-for="PositionVM!.FactoryNumber" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <input asp-for="PositionVM!.FactoryNumber" class="form-control" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-sm-6">
+            <textarea asp-for="PositionVM!.Description" id="tinytextarea" class="form-control" placeholder="Description"></textarea>
+        </div>
+        <div class="col-sm-6">
+            <textarea asp-for="PositionVM!.Included" id="tinytextarea" class="form-control" placeholder="Included"></textarea>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="PositionVM!.OwnerId" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <select asp-for="PositionVM!.OwnerId" asp-items="@Model.Owners" class=" form-control" required>
+                <option disabled selected value="">Select owner</option>
+            </select>
+            <div class="valid-feedback">
+                Nice
+            </div>
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
+        </div>
+        <label asp-for="PositionVM!.PeriodId" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <select asp-for="PositionVM!.PeriodId" asp-items="@Model.Periods" class=" form-control" required>
+                <option disabled selected value="">Select period</option>
+            </select>
+            <div class="valid-feedback">
+                Nice
+            </div>
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
+        </div>
+        <label asp-for="PositionVM!.PreviousDate" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <input asp-for="PositionVM!.PreviousDate" class="form-control" required />
+            <div class="valid-feedback">
+                Nice
+            </div>
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
+        </div>
+        <label asp-for="PositionVM!.NextDate" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <input asp-for="PositionVM!.NextDate" class="form-control" required />
+            <div class="valid-feedback">
+                Nice
+            </div>
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="PositionVM!.OperationId" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <select asp-for="PositionVM!.OperationId" asp-items="@Model.Operations" class=" form-control" required>
+                <option disabled selected value="">Select operation</option>
+            </select>
+            <div class="valid-feedback">
+                Nice
+            </div>
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
+        </div>
+        <label asp-for="PositionVM!.CategoryId" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <select asp-for="PositionVM!.CategoryId" asp-items="@Model.Categories" class=" form-control" required>
+                <option disabled selected value="">Select category</option>
+            </select>
+            <div class="valid-feedback">
+                Nice
+            </div>
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-sm-6">
+            <textarea asp-for="PositionVM!.Addition" id="tinytextarea" class="form-control" placeholder="Addition"></textarea>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-sm-6 text-end">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <button type="submit" class="btn btn-outline-success">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+                <a asp-controller="Measuring" asp-action="Index" class="btn btn-outline-danger">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
             </div>
         </div>
     </div>
 </form>
 
 @section Scripts{
-
     @{
         <partial name="_ValidationScriptsPartial" />
+        <script src="~/js/site.js"></script>
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Control.BLL.Exceptions;
 using Control.BLL.Interfaces;
 using Control.BLL.ViewModels;
+using Control.DAL.Configuration;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Control.WEB.Controllers
@@ -21,27 +22,25 @@ namespace Control.WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var vms = await _service.GetAllAsync();
-            return View(vms);
-            //try
-            //{
-            //    var vms = await _service.GetAllAsync();
-            //    return View(vms);
-            //}
+            try
+            {
+                var vms = await _service.GetAllAsync();
+                return View(vms);
+            }
 
-            //catch (ObjectNotFoundException ex)
-            //{
-            //    string message = ex.Message;
-            //    _logger.LogError(message);
-            //    return NotFound(message);
-            //}
+            catch (ObjectNotFoundException ex)
+            {
+                string message = ex.Message;
+                _logger.LogError(message);
+                return NotFound(message);
+            }
 
-            //catch (Exception ex)
-            //{
-            //    string message = ex.Message;
-            //    _logger.LogError(message);
-            //    return BadRequest(message);
-            //}
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                _logger.LogError(message);
+                return BadRequest(message);
+            }
         }
 
         [HttpGet]
@@ -69,15 +68,17 @@ namespace Control.WEB.Controllers
                 if (ModelState.IsValid)
                 {
                     await _service.CreateAsync(vm);
+                    TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrCreateSuccess;
                     return RedirectToAction("Index");
                 }
 
-                else return View(vm);
+                else return View();
 
             }
 
             catch (Exception ex)
             {
+                TempData[AppConstants.ToastrError]=AppConstants.ToastrCreateError;
                 string message = ex.Message;
                 _logger.LogError(message);
                 return BadRequest(message);
@@ -117,6 +118,7 @@ namespace Control.WEB.Controllers
                 if (ModelState.IsValid)
                 {
                     await _service.UpdateAsync(vm);
+                    TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrUpdateSuccess;
                     return RedirectToAction();
                 }
 
@@ -125,6 +127,7 @@ namespace Control.WEB.Controllers
 
             catch (Exception ex)
             {
+                TempData[AppConstants.ToastrError]=AppConstants.ToastrUpdateError;
                 string message = ex.Message;
                 _logger.LogError(message);
                 return BadRequest(message);
@@ -138,11 +141,13 @@ namespace Control.WEB.Controllers
             try
             {
                 await _service.DeleteAsync(id);
+                TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrDeleteSuccess;
                 return RedirectToAction("Index");
             }
 
             catch (ObjectNotFoundException ex)
             {
+                TempData[AppConstants.ToastrError]=AppConstants.ToastrDeleteError;
                 string message = ex.Message;
                 _logger.LogError(message);
                 return NotFound(message);
@@ -150,6 +155,7 @@ namespace Control.WEB.Controllers
 
             catch (Exception ex)
             {
+                TempData[AppConstants.ToastrError]=AppConstants.ToastrDeleteError;
                 string message = ex.Message;
                 _logger.LogError(message);
                 return BadRequest(message);
