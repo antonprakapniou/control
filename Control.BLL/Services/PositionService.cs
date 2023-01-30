@@ -48,16 +48,16 @@ namespace Control.BLL.Services
             }
 
             var orderModels = models
-                .OrderBy(_ => _.Measuring)
-                .ThenBy(_ => _.Nomination)
+                .OrderBy(_ => _.Measuring!.Code)
+                .ThenBy(_ => _.Nomination!.Name)
                 .ThenBy(_ => _.OwnerId)
                 .ThenBy(_ => _.DeviceType)
-                .ThenBy(_ => _.FactoryNumber);
+                .ThenBy(_ => _.FactoryNumber)
+                .ToList();
 
             var viewModels = _mapper.Map<IEnumerable<PositionVM>>(orderModels);
             return viewModels;
         }
-
         public override async Task CreateAsync(PositionVM vm)
         {
             var model = _mapper.Map<Position>(vm);
@@ -66,11 +66,25 @@ namespace Control.BLL.Services
             if (period is null) throw new ObjectNotFoundException($"'{period!.GetType().Name}' with id: '{period.Id}' not found ");
             else model.NextDate = model.PreviousDate.AddMonths(period.Month);
 
-            model.Status=SetStatus(model.NextDate);
             model.Created=DateTime.Now;
             await _positionRepository.CreateAsync(model);
-        }  
+        }
+        public override async Task UpdateAsync(PositionVM viewModel)
+        {
+            var model = _mapper.Map<Position>(viewModel);
+            var modelFromDb = await _positionRepository.GetOneByAsync(_ => _.Id.Equals(model.Id));
 
+            if (modelFromDb is null)
+            {
+                string errorMessage = $"'{model!.GetType().Name}' with id: '{model.Id}' not found ";
+                _logger.LogError(errorMessage);
+                throw new ObjectNotFoundException(errorMessage);
+            }
+
+            var modelFromDbCreated = modelFromDb.Created;
+            model.Created=modelFromDbCreated;
+            await _positionRepository.UpdateAsync(model);
+        }
         public override async Task DeleteAsync(Guid id)
         {
             var model = await _positionRepository.GetOneByAsync(_ => _.Id.Equals(id));
@@ -83,17 +97,6 @@ namespace Control.BLL.Services
             }
 
             await _positionRepository.DeleteAsync(model);
-        }
-
-        private static StatusEnum SetStatus(DateTime nextDate)
-        {
-            DateTime currentDate = DateTime.Now;
-
-            if (currentDate>nextDate) return StatusEnum.Invalid;
-            else if (currentDate.AddMonths(2)>nextDate&&currentDate.Month.Equals(nextDate.Month)) return StatusEnum.CurrentMonthControl;
-            else if (currentDate.AddMonths(2)>nextDate&&currentDate.AddMonths(1).Month.Equals(nextDate.Month)) return StatusEnum.CurrentMonthControl;
-            else if (currentDate<=nextDate) return StatusEnum.Valid;
-            else return StatusEnum.Indefined;
         }
     }
 }

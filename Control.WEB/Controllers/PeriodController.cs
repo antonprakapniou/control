@@ -122,7 +122,7 @@ namespace Control.WEB.Controllers
                     return RedirectToAction();
                 }
 
-                else return View(vm);
+                else return View();
             }
 
             catch (Exception ex)

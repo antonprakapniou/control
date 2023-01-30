@@ -12,7 +12,7 @@
 		public DateTime PreviousDate { get; set; }
 		public DateTime NextDate { get; set; }
         public DateTime Created { get; set; }
-        public StatusEnum Status { get; set; }
+        public StatusEnum Status { get => SetStatus(NextDate); set { } }
 		public string? Picture { get; set; }
 
         #endregion
@@ -38,5 +38,16 @@
 		public Category? Category { get; set; }
 
         #endregion
-	}
+
+        private static StatusEnum SetStatus(DateTime nextDate)
+        {
+            DateTime currentDate = DateTime.Now;
+
+            if (currentDate>nextDate) return StatusEnum.Invalid;
+            else if (currentDate.AddMonths(2)>nextDate&&currentDate.Month.Equals(nextDate.Month)) return StatusEnum.CurrentMonthControl;
+            else if (currentDate.AddMonths(2)>nextDate&&currentDate.AddMonths(1).Month.Equals(nextDate.Month)) return StatusEnum.NextMonthControl;
+            else if (currentDate<=nextDate) return StatusEnum.Valid;
+            else return StatusEnum.Indefined;
+        }
+    }
 }

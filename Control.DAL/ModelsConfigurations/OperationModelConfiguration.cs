@@ -24,7 +24,8 @@ namespace Control.DAL.ModelsConfigurations
 
 			builder
 				.Property(_ => _.Name)
-				.HasColumnName("Name");
+				.HasColumnName("Name")
+				.IsRequired();
 		}
 	}
 }

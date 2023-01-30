@@ -46,12 +46,14 @@ namespace Control.DAL.ModelsConfigurations
 				.HasColumnName("Id");
 
             builder
-                .Property(_ => _.DeviceType)
-                .HasColumnName("Type");
+				.Property(_ => _.DeviceType)
+				.HasColumnName("Type")
+				.IsRequired();
 
             builder
-                .Property(_ => _.FactoryNumber)
-                .HasColumnName("Number");
+				.Property(_ => _.FactoryNumber)
+				.HasColumnName("Number")
+				.IsRequired();
 
             builder
 				.Property(_ => _.Description)
@@ -88,7 +90,6 @@ namespace Control.DAL.ModelsConfigurations
 			builder
 				.Property(_ => _.Picture)
 				.HasColumnName("Picture");
-
         }
 	}
 }

@@ -8,6 +8,7 @@ namespace Control.BLL.ViewModels
 	{
         #region Own properties
 
+        [Required]
 		[DisplayName("Type")]
         public string? DeviceType { get; set; }
 
@@ -24,17 +25,20 @@ namespace Control.BLL.ViewModels
 		[DisplayName("Addition")]
 		public string? Addition { get; set; }
 
-		[Required]
-		[DisplayName("Previous")]
+        [Required]
+        [DisplayName("Previous")]
 		public DateTime PreviousDate { get; set; }
 
-		[DisplayName("Next")]
+        [Required]
+        [DisplayName("Next")]
 		public DateTime NextDate { get; set; }
 
+        [Required]
 		[DisplayName("Created")]
 		public DateTime Created { get; set; }
 
-		[DisplayName("Status")]
+        [Required]
+        [DisplayName("Status")]
 		public StatusEnum Status { get; set; }
 
         [DisplayName("Picture")]
@@ -52,6 +56,7 @@ namespace Control.BLL.ViewModels
         [DisplayName("Nomination")]
         public Guid? NominationId { get; set; }
 
+        [Required]
         [DisplayName("Operation")]
         public Guid? OperationId { get; set; }
 
@@ -63,6 +68,7 @@ namespace Control.BLL.ViewModels
         [DisplayName("Period")]
         public Guid? PeriodId { get; set; }
 
+        [Required]
         [DisplayName("Category")]
         public Guid? CategoryId { get; set; }
 

@@ -143,84 +143,84 @@ namespace Control.WEB.Controllers
                     var vm = positionCreatingVM.PositionVM;
 
                     var files = HttpContext.Request.Form.Files;
-                    if (files.Count()!=0)
+                    if (files.Count!=0)
                     {
                         _fileManager.Load(files, _partialPath);
                         vm!.Picture=_fileManager.FileName;
                     }
 
                     await _positionService.CreateAsync(vm!);
+                    TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrCreateSuccess;
                     return RedirectToAction("Index");
                 }
 
-                else return View(positionCreatingVM);
+                else return View();
             }
 
             catch (Exception ex)
             {
+                TempData[AppConstants.ToastrError]=AppConstants.ToastrCreateError;
                 string message = ex.Message;
                 _logger.LogError(message);
                 return BadRequest(message);
             }
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Update(Guid id)
-        //{
-        //    try
-        //    {
-        //        var vm = await _positionService.GetByIdAsync(id);
-        //        return View(vm);
-        //    }
-
-        //    catch (ObjectNotFoundException ex)
-        //    {
-        //        string message = ex.Message;
-        //        _logger.LogError(message);
-        //        return NotFound(message);
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        string message = ex.Message;
-        //        _logger.LogError(message);
-        //        return BadRequest(message);
-        //    }
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Update(PositionVM vm)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            await _positionService.UpdateAsync(vm);
-        //            return RedirectToAction();
-        //        }
-
-        //        else return View(vm);
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        string message = ex.Message;
-        //        _logger.LogError(message);
-        //        return BadRequest(message);
-        //    }
-        //}
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id)
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid id)
         {
             try
             {
-                var model=await _positionService.GetByIdAsync(id);
-                if (model.Picture is not null) _fileManager.Delete(model.Picture,_partialPath);
-                await _positionService.DeleteAsync(id);
-                return RedirectToAction("Index");
+                var vm = await _positionService.GetByIdAsync(id);
+                var categories = await _categoryService.GetAllAsync();
+                var measurings = await _measuringService.GetAllAsync();
+                var nominations = await _nominationService.GetAllAsync();
+                var operations = await _operationService.GetAllAsync();
+                var owners = await _ownerService.GetAllAsync();
+                var periods = await _periodService.GetAllAsync();
+
+                PositionCreatingVM positionCreatingVM = new()
+                {
+                    PositionVM=vm,
+
+                    Categories=categories.Select(_ => new SelectListItem
+                    {
+                        Value=_.Id.ToString(),
+                        Text=_.Name
+                    }),
+
+                    Measurings=measurings.Select(_ => new SelectListItem
+                    {
+                        Value=_.Id.ToString(),
+                        Text=_.Code
+                    }),
+
+                    Nominations=nominations.Select(_ => new SelectListItem
+                    {
+                        Value=_.Id.ToString(),
+                        Text=_.Name
+                    }),
+
+                    Operations=operations.Select(_ => new SelectListItem
+                    {
+                        Value=_.Id.ToString(),
+                        Text=_.Name
+                    }),
+
+                    Owners=owners.Select(_ => new SelectListItem
+                    {
+                        Value=_.Id.ToString(),
+                        Text=$"{_.Shop} {_.Production}",
+                    }),
+
+                    Periods=periods.Select(_ => new SelectListItem
+                    {
+                        Value=_.Id.ToString(),
+                        Text=_.Name
+                    })
+                };
+
+                return View(positionCreatingVM);
             }
 
             catch (ObjectNotFoundException ex)
@@ -232,6 +232,75 @@ namespace Control.WEB.Controllers
 
             catch (Exception ex)
             {
+                string message = ex.Message;
+                _logger.LogError(message);
+                return BadRequest(message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(PositionCreatingVM positionCreatingVM)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var vm = positionCreatingVM.PositionVM;
+                    var vmFromDb = await _positionService.GetByIdAsync(vm!.Id);
+                    var oldPicture = vmFromDb.Picture;
+                    var files = HttpContext.Request.Form.Files;
+
+                    if (files.Count!=0)
+                    {
+                        if (oldPicture is not null) _fileManager.Delete(oldPicture!, _partialPath);
+                        _fileManager.Load(files, _partialPath);
+                        vm!.Picture=_fileManager.FileName;
+                    }
+
+                    else vm.Picture=oldPicture;
+
+                    await _positionService.UpdateAsync(vm!);
+                    TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrUpdateSuccess;
+                    return RedirectToAction();
+                }
+
+                else return View();
+            }
+
+            catch (Exception ex)
+            {
+                TempData[AppConstants.ToastrError]=AppConstants.ToastrUpdateError;
+                string message = ex.Message;
+                _logger.LogError(message);
+                return BadRequest(message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                var model=await _positionService.GetByIdAsync(id);
+                if (model.Picture is not null) _fileManager.Delete(model.Picture,_partialPath);
+                await _positionService.DeleteAsync(id);
+                TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrDeleteSuccess;
+                return RedirectToAction("Index");
+            }
+
+            catch (ObjectNotFoundException ex)
+            {
+                TempData[AppConstants.ToastrError]=AppConstants.ToastrDeleteError;
+                string message = ex.Message;
+                _logger.LogError(message);
+                return NotFound(message);
+            }
+
+            catch (Exception ex)
+            {
+                TempData[AppConstants.ToastrError]=AppConstants.ToastrDeleteError;
                 string message = ex.Message;
                 _logger.LogError(message);
                 return BadRequest(message);

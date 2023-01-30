@@ -29,7 +29,8 @@ namespace Control.DAL.ModelsConfigurations
 
 			builder
 				.Property(_ => _.Month)
-				.HasColumnName("Month");
+				.HasColumnName("Month")
+				.IsRequired();
 		}
 	}
 }

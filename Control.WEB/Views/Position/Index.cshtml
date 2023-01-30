@@ -1,4 +1,41 @@
-﻿@model IEnumerable<PositionVM>
+﻿@using Control.DAL.Models
+
+@model IEnumerable<PositionVM>
+<br />
+<div class="row mb-3">
+    <div class="col-sm-1 text-end">
+        <div class="badge text-bg-light col-4">
+            <i class="fa-solid fa-check"></i>
+        </div>
+    </div>
+    <div class="col-sm-1">
+        Valid
+    </div>
+    <div class="col-sm-1 text-end">
+        <div class="badge text-bg-success col-4">
+            <i class="fa-solid fa-check"></i>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        Control in next month
+    </div>
+    <div class="col-sm-1 text-end">
+        <div class="badge text-bg-warning col-4">
+            <i class="fa-solid fa-exclamation"></i>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        Control in current month
+    </div>
+    <div class="col-sm-1 text-end">
+        <div class="badge text-bg-danger col-4">
+            <i class="fa-solid fa-exclamation"></i>
+        </div>
+    </div>
+    <div class="col-sm-1">
+        Invalid
+    </div>
+</div>
 <br />
 <table class="table table-responsive table-dark table-hover align-middle" style="width:100%">
     <thead>
@@ -10,14 +47,14 @@
                     </a>
                 </div>
             </th>
-            <th class="text-center align-middle">FactoryNumber</th>
+            <th class="text-center align-middle">Number</th>
             <th class="text-center align-middle">Owner</th>
             <th class="text-center align-middle">Period</th>
-            <th class="text-center align-middle">PreviousDate</th>
+            <th class="text-center align-middle">Previous</th>
             <th class="text-center align-middle">Status</th>
             <th class="text-center align-middle">Operation</th>
             <th class="text-center align-middle">Category</th>
-            <th class="text-center align-middle"><i class="bi bi-gear-wide-connected"></i></th>
+            <th class="text-center align-middle" style="width:12%"><i class="bi bi-gear-wide-connected"></i></th>
         </tr>
     </thead>
     <tbody>
@@ -28,21 +65,56 @@
                 <tr>
                     <td class="text-center align-middle">@item.DeviceType</td>
                     <td class="text-center align-middle">@item.FactoryNumber</td>
-                    <td class="text-center align-middle">@if (item.Owner != null){@item.Owner!.Shop @item.Owner!.Production}</td>
+                    <td class="text-center align-middle">@if (item.Owner != null) @item.Owner!.Shop&nbsp; @if (item.Owner != null)@item.Owner!.Production</td>
                     <td class="text-center align-middle">@if (item.Period is not null)@item.Period.Name</td>
-                     <td class="text-center align-middle">@item.PreviousDate.ToShortDateString()</td>
-                    <td class="text-center align-middle">@item.Status</td>
+                    <td class="text-center align-middle">@item.PreviousDate.ToShortDateString()</td>
+                    <td class="text-center align-middle">
+                        @{
+                            if (item.Status.Equals(StatusEnum.Valid))
+                            {
+                                <div class="badge text-bg-light col-4">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                            }
+
+                            else if (item.Status.Equals(StatusEnum.NextMonthControl))
+                            {
+                                <div class="badge text-bg-success col-4">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                            }
+
+                            else if (item.Status.Equals(StatusEnum.CurrentMonthControl))
+                            {
+                                <div class="badge text-bg-warning col-4">
+                                    <i class="fa-solid fa-exclamation"></i>
+                                </div>
+                            }
+
+                            else if (item.Status.Equals(StatusEnum.Invalid))
+                            {
+                                <div class="badge text-bg-danger col-4">
+                                    <i class="fa-solid fa-exclamation"></i>
+                                </div>
+                            }
+
+                            else
+                            {
+                                <p>indefined</p>
+                            }
+                        }
+                       
                     <td class="text-center align-middle">@if (item.Operation is not null)@item.Operation.Name</td>
                     <td class="text-center align-middle">@if (item.Category is not null)@item.Category.Name</td>
                      <td class="text-center align-middle">
-                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                            <a asp-controller="Position" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-info">
-                                <i class="bi bi-pencil-fill"></i>
-                            </a>                            
+                        <div class="btn-toolbar justify-content-between" role="toolbar">
+                            <a asp-controller="Position" asp-action="Info" asp-route-id="@item.Id" class="btn btn-outline-info">
+                                <i class="bi bi-info-lg"></i>
+                            </a>
                             <a asp-controller="Position" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-warning">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>
-                            <form method="post" asp-controller="Owner" asp-action="Delete" asp-route-id="@item.Id">
+                            <form method="post" asp-controller="Position" asp-action="Delete" asp-route-id="@item.Id">
                                 <button type="submit" class="btn btn-outline-danger">
                                     <i class="bi bi-trash3"></i>
                                 </button>
