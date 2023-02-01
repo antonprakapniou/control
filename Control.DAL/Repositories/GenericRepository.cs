@@ -19,12 +19,10 @@ namespace Control.DAL.Repositories
 
 		public async Task<IEnumerable<T>> GetAllByAsync(
 			Expression<Func<T, bool>>? expression = null,
-			Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
 			Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
 		{
 			IQueryable<T> query = _t;
 			if (expression!=null) query=query.Where(expression);
-			if (orderBy!=null) query=query.OrderBy(expression!);
 			if (include!=null) query=include(query);
 			return await query.AsNoTracking().ToListAsync();
 		}
@@ -36,7 +34,8 @@ namespace Control.DAL.Repositories
             IQueryable<T> query = _t;
             if (expression!=null) query=query.Where(expression);
             if (include!=null) query=include(query);
-            return await query.AsNoTracking().FirstAsync();
+			var models=await query.AsNoTracking().FirstOrDefaultAsync();
+			return models!;
         }
 
         public async Task CreateAsync(T entity)
@@ -54,10 +53,5 @@ namespace Control.DAL.Repositories
 			_t.Remove(entity);
             await _db.SaveChangesAsync();
         }
-        public bool IsExists(Expression<Func<T, bool>> expression)
-		{
-			if (_t.AsNoTracking().Any(expression)) return true;
-			return false;
-		}
     }
 }

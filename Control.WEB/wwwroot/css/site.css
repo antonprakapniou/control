@@ -20,3 +20,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.custom-tooltip {
+    --bs-tooltip-bg: var(--bs-primary);
+}

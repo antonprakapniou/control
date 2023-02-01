@@ -26,7 +26,7 @@ namespace Control.WEB.Configuration
 			services.AddDbContext<AppDbContext>(options =>
 			{
 				options.UseSqlite(connectionString);
-				options.EnableSensitiveDataLogging();
+                options.EnableSensitiveDataLogging();
 			});
 
             services.AddAutoMapper(typeof(MapPropfile));

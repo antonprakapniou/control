@@ -1,6 +1,7 @@
-﻿@model PositionCreatingVM
+﻿@using Control.DAL.Configuration
+@model PositionCreatingVM
 <br />
-<form method="post" asp-controller="Position" asp-action="Update" class="needs-validation" enctype="multipart/form-data" novalidate>
+<form method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
     <input asp-for="PositionVM!.Id" hidden/>
     <div class="row mb-3">
         <label asp-for="PositionVM!.MeasuringId" class="col-sm-1 col-form-label text-end"></label>
@@ -85,14 +86,35 @@
             </div>
         </div>
         <label asp-for="PositionVM!.Picture" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-3">
-            <input type="file" name="files" id="uploadBox" class=" form-control" />
-        </div>
-        <div class="col-sm-2 text-end align-middle">
-            <a asp-controller="Position" asp-action="Index" class="btn btn-outline-danger">
-                <i class="bi bi-x"></i> current picture
-            </a>
-        </div>
+        
+        @if (Model.PositionVM!.Picture is not null)
+        {
+            <div class="col-sm-3">
+                <input type="file" name="files" id="uploadBox" class=" form-control" />
+            </div>
+            <div class="col-sm-1 text-end">
+                <div>
+                    <img style="width:56px;height:37px" src="@AppConstants.PositionPartialPath@Model.PositionVM!.Picture" alt="No picture">
+                </div>
+            </div>
+            <div class="col-sm-1 text-start align-middle">
+                <button type="submit" asp-controller="Position" asp-action="DeletePicture" class="btn btn-outline-danger">
+                    <i class="bi bi-trash3"></i>
+                </button>
+            </div>
+        }
+
+        else
+        {
+            <div class="col-sm-3">
+                <input type="file" name="files" id="uploadBox" class=" form-control" />
+            </div>
+            <div class="col-sm-2">
+                <div>
+                    <img  alt="No picture">
+                </div>
+            </div>
+        }
     </div>
     <div class="row mb-3">
         <div class="col-sm-4">
@@ -108,7 +130,7 @@
     <div class="row mb-3">
         <div class="col-sm-6 text-end">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <button type="submit" class="btn btn-outline-success">
+                <button type="submit" asp-controller="Position" asp-action="Update" class="btn btn-outline-success">
                     <i class="bi bi-check-lg"></i>
                 </button>
                 <a asp-controller="Position" asp-action="Index" class="btn btn-outline-danger">

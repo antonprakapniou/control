@@ -1,50 +1,78 @@
 ﻿@model OwnerVM
 <br />
-<form method="post" asp-controller="Owner" asp-action="Update" class="needs-validation" novalidate>
-    <input asp-for="Id" hidden />
-    <div class="row mb-3">
-        <label asp-for="Shop" class="col-sm-2 col-form-label text-end"></label>
-        <div class="col-sm-4">
-            <input asp-for="Shop" class="form-control" required />
-            <div class="valid-feedback">
-                Nice
-            </div>
-            <div class="invalid-feedback">
-                Field must be required
-            </div>
+<form method="post" class="needs-validation" novalidate>
+    <input asp-for="Id" hidden/>
+    <div class="card" style="width:75%">
+        <div class="card-header">Owner</div>
+        <div class="card-body">
+            <dl class="row mb-3 border-dark">
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="FullShop" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="FullShop" class="form-control" />
+                </dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="ShortShop" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="ShortShop" class="form-control" required />
+                    <div class="invalid-feedback">
+                        Field must be required
+                    </div>
+                </dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="FullProduction" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="FullProduction" class="form-control" />
+                </dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="ShortProduction" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="ShortProduction" class="form-control" />
+                </dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="ShopCode" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="ShopCode" class="form-control" />
+                </dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Master" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="Master" class="form-control" />
+                </dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Phone" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="Phone" class="form-control" />
+                </dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Email" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <div class="invalid-feedback">
+                        example@post.com
+                    </div>
+                </dd>
+            </dl>
         </div>
-    </div>
-    <div class="row mb-3">
-        <label asp-for="Production" class="col-sm-2 col-form-label text-end"></label>
-        <div class="col-sm-4">
-            <input asp-for="Production" class="form-control" />
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label asp-for="Master" class="col-sm-2 col-form-label text-end"></label>
-        <div class="col-sm-4">
-            <input asp-for="Master" class="form-control" />
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label asp-for="Phone" class="col-sm-2 col-form-label text-end"></label>
-        <div class="col-sm-4">
-            <input asp-for="Phone" class="form-control" />
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label asp-for="Email" class="col-sm-2 col-form-label text-end"></label>
-        <div class="col-sm-4">
-            <input asp-for="Email" class="form-control" />
-            <div class="invalid-feedback">
-                example@post.com
-            </div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-sm-6 text-end">
+        <div class="card-footer text-end">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <button type="submit" class="btn btn-outline-success">
+                <button type="submit" method="post" asp-controller="Owner" asp-action="Update" class="btn btn-outline-success">
                     <i class="bi bi-check-lg"></i>
                 </button>
                 <a asp-controller="Owner" asp-action="Index" class="btn btn-outline-danger">

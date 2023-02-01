@@ -69,6 +69,13 @@ namespace Control.WEB.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Info(Guid id)
+        {
+            var vm = await _positionService.GetByIdAsync(id);
+            return View(vm);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             try
@@ -111,7 +118,7 @@ namespace Control.WEB.Controllers
                     Owners=owners.Select(_ => new SelectListItem
                     {
                         Value=_.Id.ToString(),
-                        Text=$"{_.Shop} {_.Production}",
+                        Text=_.ShortName
                     }),
 
                     Periods=periods.Select(_ => new SelectListItem
@@ -210,7 +217,7 @@ namespace Control.WEB.Controllers
                     Owners=owners.Select(_ => new SelectListItem
                     {
                         Value=_.Id.ToString(),
-                        Text=$"{_.Shop} {_.Production}",
+                        Text=_.ShortName,
                     }),
 
                     Periods=periods.Select(_ => new SelectListItem
@@ -262,15 +269,52 @@ namespace Control.WEB.Controllers
 
                     await _positionService.UpdateAsync(vm!);
                     TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrUpdateSuccess;
-                    return RedirectToAction();
+                    return RedirectToAction(nameof(Update), new { id=vm.Id});
                 }
 
-                else return View();
+                return RedirectToAction();
             }
 
             catch (Exception ex)
             {
                 TempData[AppConstants.ToastrError]=AppConstants.ToastrUpdateError;
+                string message = ex.Message;
+                _logger.LogError(message);
+                return BadRequest(message);
+            }
+        }        
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeletePicture(PositionCreatingVM positionCreatingVM)
+        {
+            try
+            {
+                var vm = await _positionService.GetByIdAsync(positionCreatingVM.PositionVM!.Id);
+
+                if (vm.Picture is not null)
+                {
+                    _fileManager.Delete(vm.Picture, _partialPath);
+                    vm.Picture = null;
+                    await _positionService.UpdateAsync(vm);
+                    TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrPictureDeleteSuccess;
+                }
+
+                else TempData[AppConstants.ToastrError]=AppConstants.ToastrPictureNotFound;
+                return RedirectToAction(nameof(Update),new { id=vm.Id});
+            }
+
+            catch (ObjectNotFoundException ex)
+            {
+                TempData[AppConstants.ToastrError]=AppConstants.ToastrPictureDeleteError;
+                string message = ex.Message;
+                _logger.LogError(message);
+                return NotFound(message);
+            }
+
+            catch (Exception ex)
+            {
+                TempData[AppConstants.ToastrError]=AppConstants.ToastrPictureDeleteError;
                 string message = ex.Message;
                 _logger.LogError(message);
                 return BadRequest(message);

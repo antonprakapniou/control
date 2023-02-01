@@ -44,6 +44,13 @@ namespace Control.WEB.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Info(Guid id)
+        {
+            var vm = await _service.GetByIdAsync(id);
+            return View(vm);
+        }
+
+        [HttpGet]
         public IActionResult Create()
         {
             try

@@ -1,0 +1,57 @@
+﻿@model OwnerVM
+<br />
+<form method="get" class="needs-validation" novalidate>
+    <input asp-for="Id" hidden />
+    <div class="card" style="width:75%">
+        <div class="card-header">Owner</div>
+        <div class="card-body">
+            <dl class="row">
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="ShopCode"></label>
+                </dt>
+                <dd class="col-sm-9">@Model.ShopCode</dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="ShortName"></label>
+                </dt>
+                <dd class="col-sm-9">@Model.ShortName</dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="FullShop"></label>
+                </dt>
+                <dd class="col-sm-9">@Model.FullShop</dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="FullProduction"></label>
+                </dt>
+                <dd class="col-sm-9">@Model.FullProduction</dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Master"></label>
+                </dt>
+                <dd class="col-sm-9">@Model.Master</dd>
+                
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Phone"></label>
+                </dt>
+                <dd class="col-sm-9 align-middle">@Model.Phone</dd>         
+                
+                <dt class="col-sm-3 align-middle text-end">
+                    <label asp-for="Email"></label>
+                </dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+            </dl>
+        </div>
+        <div class="card-footer text-end">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <a asp-controller="Owner" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-warning">
+                    <i class="bi bi-pencil-fill"></i>
+                </a>
+                <a asp-controller="Owner" asp-action="Index" class="btn btn-outline-danger">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</form>

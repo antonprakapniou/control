@@ -19,6 +19,9 @@ namespace Control.DAL.ModelsConfigurations
 				.OnDelete(DeleteBehavior.SetNull); ;
 
 			builder
+				.Ignore(_=>_.FullName);
+
+			builder
 				.Property(_ => _.Id)
 				.HasColumnName("Id");
 

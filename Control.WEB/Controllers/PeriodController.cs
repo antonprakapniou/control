@@ -41,7 +41,7 @@ namespace Control.WEB.Controllers
                 _logger.LogError(message);
                 return BadRequest(message);
             }
-        }
+        }        
 
         [HttpGet]
         public IActionResult Create()

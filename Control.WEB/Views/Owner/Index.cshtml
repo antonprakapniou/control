@@ -3,7 +3,7 @@
 <table class="table table-responsive table-dark table-hover align-middle" style="width:100%">
     <thead>
         <tr>
-            <th style="width:18%">
+            <th>
                 <div class="col-12 text-start">
                     <a asp-controller="Owner" asp-action="Create" class="btn btn-dark">
                         <i class="bi bi-plus-lg"></i>&nbsp;Shop
@@ -11,10 +11,10 @@
                 </div>
             </th>
             <th class="text-center align-middle">Production</th>
+            <th class="text-center align-middle">Code</th>
             <th class="text-center align-middle">Master</th>
             <th class="text-center align-middle">Phone</th>
-            <th class="text-center align-middle">Email</th>
-            <th class="text-center align-middle" style="width:8%"><i class="bi bi-gear-wide-connected"></i></th>
+            <th class="text-center align-middle" style="width:12%"><i class="bi bi-gear-wide-connected"></i></th>
         </tr>
     </thead>
     <tbody>
@@ -23,13 +23,16 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.Shop</td>
-                    <td class="text-center">@item.Production</td>
+                    <td>@item.ShortShop</td>
+                    <td class="text-center">@item.ShortProduction</td>
+                    <td class="text-center">@item.ShopCode</td>
                     <td class="text-center">@item.Master</td>
                     <td class="text-center">@item.Phone</td>
-                    <td class="text-center">@item.Email</td>
                     <td class="text-center">
                         <div class="btn-toolbar justify-content-between" role="toolbar">
+                            <a asp-controller="Owner" asp-action="Info" asp-route-id="@item.Id" class="btn btn-outline-info">
+                                <i class="bi bi-info-lg"></i>
+                            </a>
                             <a asp-controller="Owner" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-warning">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>
@@ -47,7 +50,7 @@
         else
         {
             <tr>
-                <td colspan="6">Nomination list is empty</td>
+                <td colspan="6">Owner list is empty</td>
             </tr>
         }
     </tbody>

@@ -36,8 +36,8 @@ namespace Control.BLL.Services
                 throw new ObjectNotFoundException(errorMessage);
             }
 
-            var orderModels = models.OrderBy(_ => _.Production).ThenBy(_=>_.Shop);
-            var viewModels = _mapper.Map<IEnumerable<OwnerVM>>(orderModels);
+            //var orderModels = models.OrderBy(_ => _.Production).ThenBy(_=>_.Shop);
+            var viewModels = _mapper.Map<IEnumerable<OwnerVM>>(models);
             return viewModels;
         }
     }

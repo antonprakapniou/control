@@ -4,6 +4,7 @@
 	{
 		public string? Name { get; set; }
 		public string? Code { get; set; }
-		public ICollection<Position>? Positions { get; set; }
+        public string? FullName { get => $"{Code} {Name}"; set { } }
+        public ICollection<Position>? Positions { get; set; }
 	}
 }

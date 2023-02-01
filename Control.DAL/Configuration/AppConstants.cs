@@ -13,5 +13,8 @@
         public const string ToastrUpdateError = "Update operation failed";
         public const string ToastrDeleteSuccess = "Delete operation completed successfully";
         public const string ToastrDeleteError = "Delete operation failed";
+        public const string ToastrPictureDeleteSuccess = "Picture deleted successfully";
+        public const string ToastrPictureNotFound = "Picture not found";
+        public const string ToastrPictureDeleteError = "Delete operation failed";
     }
 }

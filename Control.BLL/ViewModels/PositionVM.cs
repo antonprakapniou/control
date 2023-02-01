@@ -76,11 +76,22 @@ namespace Control.BLL.ViewModels
 
         #region IncludedProperties
 
-        public Measuring? Measuring { get; set; }		
-		public Nomination? Nomination { get; set; }		
-		public Operation? Operation { get; set; }		
-		public Owner? Owner { get; set; }		
-		public Period? Period { get; set; }        
+        [DisplayName("Measuring")]
+        public Measuring? Measuring { get; set; }
+
+        [DisplayName("Nomination")]
+		public Nomination? Nomination { get; set; }
+
+        [DisplayName("Operation")]
+        public Operation? Operation { get; set; }
+
+        [DisplayName("Owner")]
+        public Owner? Owner { get; set; }
+
+        [DisplayName("Period")]
+        public Period? Period { get; set; }
+
+        [DisplayName("Category")]
         public Category? Category { get; set; }
 
         #endregion

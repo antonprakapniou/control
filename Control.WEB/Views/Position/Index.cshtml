@@ -65,7 +65,9 @@
                 <tr>
                     <td class="text-center align-middle">@item.DeviceType</td>
                     <td class="text-center align-middle">@item.FactoryNumber</td>
-                    <td class="text-center align-middle">@if (item.Owner != null) @item.Owner!.Shop&nbsp; @if (item.Owner != null)@item.Owner!.Production</td>
+                    <td class="text-center align-middle">@item.FactoryNumber</td>
+
+                    @*<td class="text-center align-middle">@if (item.Owner != null) @item.Owner!.Shop&nbsp; @if (item.Owner != null)@item.Owner!.Production</td>*@
                     <td class="text-center align-middle">@if (item.Period is not null)@item.Period.Name</td>
                     <td class="text-center align-middle">@item.PreviousDate.ToShortDateString()</td>
                     <td class="text-center align-middle">

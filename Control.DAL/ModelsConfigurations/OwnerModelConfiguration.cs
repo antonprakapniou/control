@@ -16,22 +16,37 @@ namespace Control.DAL.ModelsConfigurations
 			builder
 				.HasMany(_ => _.Positions)
 				.WithOne(_ => _.Owner)
-				.OnDelete(DeleteBehavior.SetNull); ;
+				.OnDelete(DeleteBehavior.SetNull);
+
+			builder
+				.Ignore(_=>_.ShortName);
 
 			builder
 				.Property(_ => _.Id)
 				.HasColumnName("Id");
 
 			builder
-				.Property(_ => _.Shop)
-				.HasColumnName("Shop")
-				.IsRequired();
+				.Property(_ => _.FullShop)
+				.HasColumnName("FullShop");
+
+            builder
+                .Property(_ => _.ShortShop)
+                .HasColumnName("ShortShop")
+                .IsRequired();
 
 			builder
-				.Property(_ => _.Production)
-				.HasColumnName("Production");
+				.Property(_ => _.FullProduction)
+				.HasColumnName("FullProduction");
 
-			builder
+            builder
+				.Property(_ => _.ShortProduction)
+				.HasColumnName("ShortProduction");
+
+            builder
+                .Property(_ => _.ShopCode)
+                .HasColumnName("ShopCode");
+
+            builder
 				.Property(_ => _.Master)
 				.HasColumnName("Master");
 
