@@ -1,13 +1,12 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿namespace Control.BLL.ViewModels;
 
-namespace Control.BLL.ViewModels
+public sealed class NominationVM : BaseViewModel
 {
-	public sealed class NominationVM:BaseViewModel
-	{
+    #region Own properties
 
-		[Required]
-		[DisplayName("Nomination")]
-		public string? Name { get; set; }
-	}
+    [Required]
+    [DisplayName("Nomination")]
+    public string? Name { get; set; }
+
+    #endregion
 }

@@ -1,0 +1,38 @@
+﻿@model MasterVM
+<br />
+<form class="needs-validation" novalidate>
+    <input asp-for="Id" hidden />
+    <div class="row mb-3">
+        <label asp-for="Name" class="col-sm-2 col-form-label text-end"></label>
+        <div class="col-sm-3">
+            <input asp-for="Name" class="form-control" required />
+            <div class="valid-feedback">
+                Nice
+            </div>
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
+        </div>
+        <label asp-for="Phone" class="col-sm-2 col-form-label text-end"></label>
+        <div class="col-sm-3">
+            <input asp-for="Phone" class="form-control" />            
+        </div>
+        <label asp-for="Email" class="col-sm-2 col-form-label text-end"></label>
+        <div class="col-sm-3">
+            <input asp-for="Email" class="form-control" type="email" required />            
+            <div class="invalid-feedback">
+                email 
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <button type="submit" method="post" asp-controller="Master" asp-action="Update" class="btn btn-outline-success">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+                <a asp-controller="Master" asp-action="Index" class="btn btn-outline-danger">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,7 +1,6 @@
-﻿namespace Control.BLL.Exceptions
+﻿namespace Control.BLL.Exceptions;
+
+public sealed class InvalidValueException : Exception
 {
-    public sealed class InvalidValueException:Exception
-    {
-        public InvalidValueException(string message):base(message) { }
-    }
+    public InvalidValueException(string message) : base(message) { }
 }

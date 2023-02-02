@@ -1,20 +1,19 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿namespace Control.BLL.ViewModels;
 
-namespace Control.BLL.ViewModels
+public sealed class MeasuringVM : BaseViewModel
 {
-	public sealed class MeasuringVM:BaseViewModel
-	{
+    #region Own properties
 
-		[Required]
-		[DisplayName("Name")]
-		public string? Name { get; set; }
+    [Required]
+    [DisplayName("Name")]
+    public string? Name { get; set; }
 
-		[Required]
-		[DisplayName("Code")]
-		public string? Code { get; set; }
+    [Required]
+    [DisplayName("Code")]
+    public string? Code { get; set; }
 
-		[DisplayName("Measuring")]
-        public string? FullName { get; set; }
-    }
+    [DisplayName("Measuring")]
+    public string? FullName { get => $"{Code} {Name}".TrimEnd(); }
+
+    #endregion
 }

@@ -3,6 +3,7 @@
 <br />
 <form method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
     <input asp-for="PositionVM!.Id" hidden/>
+    
     <div class="row mb-3">
         <label asp-for="PositionVM!.MeasuringId" class="col-sm-1 col-form-label text-end"></label>
         <div class="col-sm-2">
@@ -31,6 +32,7 @@
             <input asp-for="PositionVM!.FactoryNumber" class="form-control" required />
         </div>
     </div>
+
     <div class="row mb-3">
         <label asp-for="PositionVM!.OwnerId" class="col-sm-1 col-form-label text-end"></label>
         <div class="col-sm-2">
@@ -57,9 +59,9 @@
                 Field must be required
             </div>
         </div>
-        <label asp-for="PositionVM!.NextDate" class="col-sm-1 col-form-label text-end"></label>
+        <label asp-for="PositionVM!.NeedDate" class="col-sm-1 col-form-label text-end"></label>
         <div class="col-sm-2">
-            <input type="date" asp-for="PositionVM!.NextDate" class="form-control" disabled />
+            <input type="date" asp-for="PositionVM!.NeedDate" class="form-control" disabled />
             <div class="invalid-feedback">
                 Field must be required
             </div>
@@ -85,10 +87,21 @@
                 Field must be required
             </div>
         </div>
-        <label asp-for="PositionVM!.Picture" class="col-sm-1 col-form-label text-end"></label>
-        
+        <label asp-for="PositionVM!.AdviceDate" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <input type="date" asp-for="PositionVM!.AdviceDate" class="form-control" />
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">       
+
         @if (Model.PositionVM!.Picture is not null)
         {
+            <div class="col-sm-6"></div>
+            <label asp-for="PositionVM!.Picture" class="col-sm-1 col-form-label text-end"></label>
             <div class="col-sm-3">
                 <input type="file" name="files" id="uploadBox" class=" form-control" />
             </div>
@@ -106,12 +119,14 @@
 
         else
         {
+            <div class="col-sm-6"></div>
+            <label asp-for="PositionVM!.Picture" class="col-sm-1 col-form-label text-end"></label>
             <div class="col-sm-3">
                 <input type="file" name="files" id="uploadBox" class=" form-control" />
             </div>
             <div class="col-sm-2">
                 <div>
-                    <img  alt="No picture">
+                    <img alt="No picture">
                 </div>
             </div>
         }

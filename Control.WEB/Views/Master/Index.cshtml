@@ -1,0 +1,56 @@
+﻿@model IEnumerable<MasterVM>
+<br />
+<table class="table table-responsive table-dark table-hover align-middle" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                <div class="col-12 text-start">
+                    <a asp-controller="Master" asp-action="Create" class="btn btn-dark">
+                        <i class="bi bi-plus-lg"></i>&nbsp;Master
+                    </a>
+                </div>
+            </th>
+            <th class="align-middle">Phone</th>
+            <th>Email</th>
+            <th class="text-center align-middle" style="width:8% "><i class="bi bi-gear-wide-connected"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count()>0)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Phone
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-toolbar justify-content-between" role="toolbar">
+                            <a asp-controller="Master" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-warning">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <form method="post" asp-controller="Master" asp-action="Delete" asp-route-id="@item.Id">
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+
+        else
+        {
+            <tr>
+                <td colspan="4">Mater list is empty</td>
+            </tr>
+        }
+    </tbody>
+</table>

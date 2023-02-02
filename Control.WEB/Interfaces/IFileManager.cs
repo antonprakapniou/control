@@ -1,9 +1,8 @@
-﻿namespace Control.WEB.Interfaces
+﻿namespace Control.WEB.Interfaces;
+
+public interface IFileManager
 {
-    public interface IFileManager
-    {
-        public string? FileName { get; }
-        public void Load(IFormFileCollection files, string partialPath);
-        public void Delete(string fileName, string partialPath);
-    }
+    public string? FileName { get; }
+    public void Load(IFormFileCollection files, string partialPath);
+    public void Delete(string fileName, string partialPath);
 }

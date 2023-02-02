@@ -55,15 +55,14 @@
                 Field must be required
             </div>
         </div>
-        <label asp-for="PositionVM!.NextDate" class="col-sm-1 col-form-label text-end"></label>
+        <label asp-for="PositionVM!.NeedDate" class="col-sm-1 col-form-label text-end"></label>
         <div class="col-sm-2">
-            <input type="date" asp-for="PositionVM!.NextDate" class="form-control" disabled />            
+            <input type="date" asp-for="PositionVM!.NeedDate" class="form-control" disabled />            
             <div class="invalid-feedback">
                 Field must be required
             </div>
         </div>
-    </div>
-    
+    </div>    
     <div class="row mb-3">
          <label asp-for="PositionVM!.OperationId" class="col-sm-1 col-form-label text-end"></label>
         <div class="col-sm-2">
@@ -86,6 +85,15 @@
         <label asp-for="PositionVM!.Picture" class="col-sm-1 col-form-label text-end"></label>
         <div class="col-sm-5">
             <input type="file" name="files" id="uploadBox" class=" form-control" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="PositionVM!.AdviceDate" class="col-sm-1 col-form-label text-end"></label>
+        <div class="col-sm-2">
+            <input type="date" asp-for="PositionVM!.AdviceDate" class="form-control" />            
+            <div class="invalid-feedback">
+                Field must be required
+            </div>
         </div>
     </div>
     <div class="row mb-3">

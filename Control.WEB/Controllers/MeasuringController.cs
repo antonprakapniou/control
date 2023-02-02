@@ -1,165 +1,170 @@
-﻿using Control.BLL.Exceptions;
-using Control.BLL.Interfaces;
-using Control.BLL.ViewModels;
-using Control.DAL.Configuration;
-using Microsoft.AspNetCore.Mvc;
+﻿namespace Control.WEB.Controllers;
 
-namespace Control.WEB.Controllers
+public sealed class MeasuringController : Controller
 {
-	public sealed class MeasuringController : Controller
-	{
-		private readonly ILogger<MeasuringController> _logger;
-		private readonly IMeasuringService _service;
+    #region Own fields
 
-		public MeasuringController(
-			ILogger<MeasuringController> logger,
-			IMeasuringService service)
-		{
-			_logger=logger;
-			_service=service;
-		}
+    private readonly ILogger<MeasuringController> _logger;
+    private readonly IMeasuringService _service;
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+    #endregion
+
+    #region Ctor
+
+    public MeasuringController(
+        ILogger<MeasuringController> logger,
+        IMeasuringService service)
+    {
+        _logger=logger;
+        _service=service;
+    }
+
+    #endregion
+
+    #region Action methods
+
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        try
         {
-            try
-            {
-                var vms = await _service.GetAllAsync();
-                return View(vms);
-            }
-
-            catch (ObjectNotFoundException ex)
-            {
-                string message = ex.Message;
-                _logger.LogError(message);
-                return NotFound(message);
-            }
-
-            catch (Exception ex)
-            {
-                string message = ex.Message;
-                _logger.LogError(message);
-                return BadRequest(message);
-            }
+            var vms = await _service.GetAllAsync();
+            return View(vms);
         }
 
-        [HttpGet]
-        public IActionResult Create()
+        catch (ObjectNotFoundException ex)
         {
-            try
-            {
-                return View();
-            }
-
-            catch (Exception ex)
-            {
-                string message = ex.Message;
-                _logger.LogError(message);
-                return BadRequest(message);
-            }
+            string message = ex.Message;
+            _logger.LogError(message);
+            return NotFound(message);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(MeasuringVM vm)
+        catch (Exception ex)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    await _service.CreateAsync(vm);
-                    TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrCreateSuccess;
-                    return RedirectToAction("Index");
-                }
+            string message = ex.Message;
+            _logger.LogError(message);
+            return BadRequest(message);
+        }
+    }
 
-                else return View();
-
-            }
-
-            catch (Exception ex)
-            {
-                TempData[AppConstants.ToastrError]=AppConstants.ToastrCreateError;
-                string message = ex.Message;
-                _logger.LogError(message);
-                return BadRequest(message);
-            }
+    [HttpGet]
+    public IActionResult Create()
+    {
+        try
+        {
+            return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Update(Guid id)
+        catch (Exception ex)
         {
-            try
-            {
-                var vm = await _service.GetByIdAsync(id);
-                return View(vm);
-            }
-
-            catch (ObjectNotFoundException ex)
-            {
-                string message = ex.Message;
-                _logger.LogError(message);
-                return NotFound(message);
-            }
-
-            catch (Exception ex)
-            {
-                string message = ex.Message;
-                _logger.LogError(message);
-                return BadRequest(message);
-            }
+            string message = ex.Message;
+            _logger.LogError(message);
+            return BadRequest(message);
         }
+    }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(MeasuringVM vm)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(MeasuringVM viewModel)
+    {
+        try
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    await _service.UpdateAsync(vm);
-                    TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrUpdateSuccess;
-                    return RedirectToAction();
-                }
-
-                else return View();
-            }
-
-            catch (Exception ex)
-            {
-                TempData[AppConstants.ToastrError]=AppConstants.ToastrUpdateError;
-                string message = ex.Message;
-                _logger.LogError(message);
-                return BadRequest(message);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            try
-            {
-                await _service.DeleteAsync(id);
-                TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrDeleteSuccess;
+                await _service.CreateAsync(viewModel);
+                TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrCreateSuccess;
                 return RedirectToAction("Index");
             }
 
-            catch (ObjectNotFoundException ex)
-            {
-                TempData[AppConstants.ToastrError]=AppConstants.ToastrDeleteError;
-                string message = ex.Message;
-                _logger.LogError(message);
-                return NotFound(message);
-            }
+            else return View();
 
-            catch (Exception ex)
-            {
-                TempData[AppConstants.ToastrError]=AppConstants.ToastrDeleteError;
-                string message = ex.Message;
-                _logger.LogError(message);
-                return BadRequest(message);
-            }
+        }
+
+        catch (Exception ex)
+        {
+            TempData[AppConstants.ToastrError]=AppConstants.ToastrCreateError;
+            string message = ex.Message;
+            _logger.LogError(message);
+            return BadRequest(message);
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Update(Guid id)
+    {
+        try
+        {
+            var vm = await _service.GetByIdAsync(id);
+            return View(vm);
+        }
+
+        catch (ObjectNotFoundException ex)
+        {
+            string message = ex.Message;
+            _logger.LogError(message);
+            return NotFound(message);
+        }
+
+        catch (Exception ex)
+        {
+            string message = ex.Message;
+            _logger.LogError(message);
+            return BadRequest(message);
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Update(MeasuringVM viewModel)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                await _service.UpdateAsync(viewModel);
+                TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrUpdateSuccess;
+                return RedirectToAction();
+            }
+
+            else return View();
+        }
+
+        catch (Exception ex)
+        {
+            TempData[AppConstants.ToastrError]=AppConstants.ToastrUpdateError;
+            string message = ex.Message;
+            _logger.LogError(message);
+            return BadRequest(message);
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        try
+        {
+            await _service.DeleteAsync(id);
+            TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrDeleteSuccess;
+            return RedirectToAction("Index");
+        }
+
+        catch (ObjectNotFoundException ex)
+        {
+            TempData[AppConstants.ToastrError]=AppConstants.ToastrDeleteError;
+            string message = ex.Message;
+            _logger.LogError(message);
+            return NotFound(message);
+        }
+
+        catch (Exception ex)
+        {
+            TempData[AppConstants.ToastrError]=AppConstants.ToastrDeleteError;
+            string message = ex.Message;
+            _logger.LogError(message);
+            return BadRequest(message);
+        }
+    }
+
+    #endregion
 }

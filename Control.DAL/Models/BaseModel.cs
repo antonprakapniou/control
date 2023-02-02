@@ -1,7 +1,6 @@
-﻿namespace Control.DAL.Models
+﻿namespace Control.DAL.Models;
+
+public abstract class BaseModel
 {
-    public abstract class BaseModel
-    {
-        public Guid Id { get; set; }
-    }
+    public Guid Id { get; set; }
 }

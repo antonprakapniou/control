@@ -1,13 +1,12 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿namespace Control.BLL.ViewModels;
 
-namespace Control.BLL.ViewModels
+public sealed class OperationVM : BaseViewModel
 {
-	public sealed class OperationVM:BaseViewModel
-	{
+    #region Own properties
 
-		[Required]
-		[DisplayName("Operation")]
-		public string? Name { get; set; }
-	}
+    [Required]
+    [DisplayName("Operation")]
+    public string? Name { get; set; }
+
+    #endregion
 }

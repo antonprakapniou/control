@@ -1,4 +1,4 @@
-﻿@model OwnerVM
+﻿@model OwnerCreatingVM
 <br />
 <form method="post" class="needs-validation" novalidate>   
     <div class="card" style="width:75%">
@@ -7,58 +7,68 @@
             <dl class="row">
 
                 <dt class="col-sm-3 text-end">
-                    <label asp-for="FullShop" class="col-form-label"></label>
+                    <label asp-for="OwnerVM!.FullShop" class="col-form-label"></label>
                 </dt>
                 <dd class="col-sm-9">
-                    <input asp-for="FullShop" class="form-control" />
+                    <input asp-for="OwnerVM!.FullShop" class="form-control" />
                 </dd>
 
                 <dt class="col-sm-3 text-end">
-                    <label asp-for="ShortShop" class="col-form-label"></label>
+                    <label asp-for="OwnerVM!.ShortShop" class="col-form-label"></label>
                 </dt>
                 <dd class="col-sm-9">
-                    <input asp-for="ShortShop" class="form-control" required />
+                    <input asp-for="OwnerVM!.ShortShop" class="form-control" required />
                     <div class="invalid-feedback">
                         Field must be required
                     </div>
                 </dd>
 
                 <dt class="col-sm-3 text-end">
-                    <label asp-for="FullProduction" class="col-form-label"></label>
+                    <label asp-for="OwnerVM!.FullProduction" class="col-form-label"></label>
                 </dt>
                 <dd class="col-sm-9">
-                    <input asp-for="FullProduction" class="form-control" />
+                    <input asp-for="OwnerVM!.FullProduction" class="form-control" />
                 </dd>
 
                 <dt class="col-sm-3 text-end">
-                    <label asp-for="ShortProduction" class="col-form-label"></label>
+                    <label asp-for="OwnerVM!.ShortProduction" class="col-form-label"></label>
                 </dt>
                 <dd class="col-sm-9">
-                    <input asp-for="ShortProduction" class="form-control" />
+                    <input asp-for="OwnerVM!.ShortProduction" class="form-control" />
                 </dd>
 
                 <dt class="col-sm-3 text-end">
-                    <label asp-for="ShopCode" class="col-form-label"></label>
+                    <label asp-for="OwnerVM!.ShopCode" class="col-form-label"></label>
                 </dt>
                 <dd class="col-sm-9">
-                    <input asp-for="ShopCode" class="form-control" />
+                    <input asp-for="OwnerVM!.ShopCode" class="form-control" />
                 </dd>
 
-                <dt class="col-sm-3 text-end">
+                @*<dt class="col-sm-3 text-end">
                     <label asp-for="Master" class="col-form-label"></label>
                 </dt>
                 <dd class="col-sm-9">
                     <input asp-for="Master" class="form-control" />
-                </dd>
+                </dd>*@
 
                 <dt class="col-sm-3 text-end">
-                    <label asp-for="Phone" class="col-form-label"></label>
+                    <label asp-for="OwnerVM!.Phone" class="col-form-label"></label>
                 </dt>
                 <dd class="col-sm-9">
-                    <input asp-for="Phone" class="form-control" />
+                    <input asp-for="OwnerVM!.Phone" class="form-control" />
                 </dd>
 
-                <dt class="col-sm-3 text-end">
+                <label asp-for="OwnerVM!.MasterId" class="col-sm-1 col-form-label text-end"></label>
+                <div class="col-sm-2">
+                    <select asp-for="OwnerVM!.MasterId" asp-items="@Model.Masters" class=" form-control" required>
+                        <option disabled selected value="">select</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Field must be required
+                    </div>
+
+
+                    @*<dt class="col-sm-3 text-end">
                     <label asp-for="Email" class="col-form-label"></label>
                 </dt>
                 <dd class="col-sm-9">
@@ -66,7 +76,7 @@
                     <div class="invalid-feedback">
                         example@post.com
                     </div>
-                </dd>
+                </dd>*@
             </dl>
         </div>
         <div class="card-footer text-end">

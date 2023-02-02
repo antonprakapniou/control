@@ -1,13 +1,16 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿namespace Control.BLL.ViewModels;
 
-namespace Control.BLL.ViewModels
+public sealed class PeriodVM : BaseViewModel
 {
-	public sealed class PeriodVM:BaseViewModel
-	{
+    private const int _defaultMonth = 12;
 
-		[Required]
-		[DisplayName("Name")]
-		public string? Name { get; set; }
-	}
+    #region Own properties
+
+    [Required]
+    [DisplayName("Name")]
+    public string? Name { get; set; }
+
+    public int Month { get => (int.TryParse(Name, out int month)||Name is null) ? month : _defaultMonth; }
+
+    #endregion
 }

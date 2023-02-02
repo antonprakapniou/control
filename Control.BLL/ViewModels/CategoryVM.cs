@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
+﻿namespace Control.BLL.ViewModels;
 
-namespace Control.BLL.ViewModels
+public sealed class CategoryVM : BaseViewModel
 {
-    public sealed class CategoryVM:BaseViewModel
-    {
+    #region Own properties
 
-        [Required]
-        [DisplayName("Category")]
-        public string? Name { get; set; }
-    }
+    [Required]
+    [DisplayName("Category")]
+    public string? Name { get; set; }
+
+    #endregion
 }

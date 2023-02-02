@@ -1,16 +1,28 @@
-﻿namespace Control.DAL.Models
+﻿namespace Control.DAL.Models;
+
+public sealed class Owner : BaseModel
 {
-	public sealed class Owner:BaseModel
-	{
-		public string? FullShop { get; set; }
-        public string? ShortShop { get; set; }
-        public string? FullProduction { get; set; }
-        public string? ShortProduction { get; set; }
-        public string? ShortName { get => $"{ShortShop} {ShortProduction}".TrimEnd(); set { } }
-        public string? ShopCode { get; set; }
-        public string? Master { get; set; }
-		public string? Phone { get; set; }
-		public string? Email { get; set; }
-		public ICollection<Position>? Positions { get; set; }
-	}
+    #region Own properties
+
+    public string? FullShop { get; set; }
+    public string? ShortShop { get; set; }
+    public string? FullProduction { get; set; }
+    public string? ShortProduction { get; set; }
+    public string? ShopCode { get; set; }
+    public string? Phone { get; set; }
+    public ICollection<Position>? Positions { get; set; }
+
+    #endregion
+
+    #region Included properties Id
+
+    public Guid? MasterId { get; set; }
+
+    #endregion
+
+    #region Included properties
+
+    public Master? Master { get; set; }
+
+    #endregion
 }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Control.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230124165851_UpdateIdColumn")]
-    partial class UpdateIdColumn
+    [Migration("20230201214519_Starts")]
+    partial class Starts
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,32 @@ namespace Control.DAL.EF.Migrations
                     b.ToTable("Categories", (string)null);
                 });
 
+            modelBuilder.Entity("Control.DAL.Models.Master", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Email");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Name");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Phone");
+
+                    b.HasKey("Id")
+                        .HasName("Id");
+
+                    b.ToTable("Masters", (string)null);
+                });
+
             modelBuilder.Entity("Control.DAL.Models.Measuring", b =>
                 {
                     b.Property<Guid>("Id")
@@ -46,6 +72,7 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnName("Id");
 
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("Code");
 
@@ -68,6 +95,7 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnName("Id");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("Name");
 
@@ -85,6 +113,7 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnName("Id");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("Name");
 
@@ -101,29 +130,38 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("Id");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("FullProduction")
                         .HasColumnType("TEXT")
-                        .HasColumnName("Email");
+                        .HasColumnName("FullProduction");
 
-                    b.Property<string>("Master")
+                    b.Property<string>("FullShop")
                         .HasColumnType("TEXT")
-                        .HasColumnName("Master");
+                        .HasColumnName("FullShop");
+
+                    b.Property<Guid?>("MasterId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
                         .HasColumnType("TEXT")
                         .HasColumnName("Phone");
 
-                    b.Property<string>("Production")
+                    b.Property<string>("ShopCode")
                         .HasColumnType("TEXT")
-                        .HasColumnName("Production");
+                        .HasColumnName("ShopCode");
 
-                    b.Property<string>("Shop")
+                    b.Property<string>("ShortProduction")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("ShortProduction");
+
+                    b.Property<string>("ShortShop")
                         .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasColumnName("Shop");
+                        .HasColumnName("ShortShop");
 
                     b.HasKey("Id")
                         .HasName("Id");
+
+                    b.HasIndex("MasterId");
 
                     b.ToTable("Owners", (string)null);
                 });
@@ -134,10 +172,6 @@ namespace Control.DAL.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
                         .HasColumnName("Id");
-
-                    b.Property<int>("Month")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("Month");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -172,17 +206,22 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("Description");
 
+                    b.Property<string>("DeviceType")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Type");
+
+                    b.Property<string>("FactoryNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Number");
+
                     b.Property<string>("Included")
                         .HasColumnType("TEXT")
                         .HasColumnName("Included");
 
                     b.Property<Guid?>("MeasuringId")
                         .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Name");
 
                     b.Property<DateTime>("NextDate")
                         .HasColumnType("TEXT")
@@ -200,13 +239,13 @@ namespace Control.DAL.EF.Migrations
                     b.Property<Guid?>("PeriodId")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Picture")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Picture");
+
                     b.Property<DateTime>("PreviousDate")
                         .HasColumnType("TEXT")
                         .HasColumnName("PreviousDate");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("Status");
 
                     b.HasKey("Id")
                         .HasName("Id");
@@ -224,6 +263,16 @@ namespace Control.DAL.EF.Migrations
                     b.HasIndex("PeriodId");
 
                     b.ToTable("Positions", (string)null);
+                });
+
+            modelBuilder.Entity("Control.DAL.Models.Owner", b =>
+                {
+                    b.HasOne("Control.DAL.Models.Master", "Master")
+                        .WithMany("Owners")
+                        .HasForeignKey("MasterId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Master");
                 });
 
             modelBuilder.Entity("Control.DAL.Models.Position", b =>
@@ -274,6 +323,11 @@ namespace Control.DAL.EF.Migrations
             modelBuilder.Entity("Control.DAL.Models.Category", b =>
                 {
                     b.Navigation("Positions");
+                });
+
+            modelBuilder.Entity("Control.DAL.Models.Master", b =>
+                {
+                    b.Navigation("Owners");
                 });
 
             modelBuilder.Entity("Control.DAL.Models.Measuring", b =>

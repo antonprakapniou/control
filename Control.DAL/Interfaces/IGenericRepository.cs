@@ -1,19 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
-using System.Linq.Expressions;
+﻿namespace Control.DAL.Interfaces;
 
-namespace Control.DAL.Interfaces
+public interface IGenericRepository<T> where T : class
 {
-	public interface IGenericRepository<T> where T : class
-	{
-		public Task<IEnumerable<T>> GetAllByAsync(
-			Expression<Func<T, bool>>? expression = null,
-			Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
-        public Task<T> GetOneByAsync(
-            Expression<Func<T, bool>>? expression = null,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
+    #region Methods
 
-        public Task CreateAsync(T entity);
-		public Task UpdateAsync(T entity);
-		public Task DeleteAsync(T entity);
-	}
+    public Task<IEnumerable<T>> GetAllByAsync(Expression<Func<T, bool>>? expression = null);
+    public Task<T> GetOneByAsync(Expression<Func<T, bool>>? expression = null);
+    public Task CreateAsync(T entity);
+    public Task UpdateAsync(T entity);
+    public Task DeleteAsync(T entity);
+
+    #endregion
 }

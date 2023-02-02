@@ -1,44 +1,46 @@
-﻿using Control.BLL.Interfaces;
-using Control.BLL.Services;
-using Control.BLL.Utilities;
-using Control.DAL.Configuration;
-using Control.DAL.EF;
-using Control.DAL.Interfaces;
-using Control.DAL.Repositories;
-using Control.WEB.Interfaces;
-using Control.WEB.Utilities;
-using Microsoft.EntityFrameworkCore;
+﻿namespace Control.WEB.Configuration;
 
-namespace Control.WEB.Configuration
+public static class AppConfiguration
 {
-	public static class AppConfiguration
-	{
-		public static void Set(IConfiguration configuration, IServiceCollection services)
-		{
-			services.AddControllersWithViews();
+    public static void Set(IConfiguration configuration, IServiceCollection services)
+    {
+        services.AddControllersWithViews();
 
-            string? connectionName = AppConstants.DevelopSqLiteConnection;
-            string connectionString =configuration
-				.GetConnectionString(connectionName!)
+        #region Db connection
 
-				??throw new InvalidOperationException($"Connection \"{connectionName}\" not found");
+        string? connectionName = AppConstants.DevelopSqLiteConnection;
+        string connectionString = configuration
+            .GetConnectionString(connectionName!)
 
-			services.AddDbContext<AppDbContext>(options =>
-			{
-				options.UseSqlite(connectionString);
-                options.EnableSensitiveDataLogging();
-			});
+            ??throw new InvalidOperationException($"Connection \"{connectionName}\" not found");
 
-            services.AddAutoMapper(typeof(MapPropfile));
-			services.AddTransient(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-            services.AddTransient<IFileManager, FileManager>();
-            services.AddScoped<ICategoryService,CategoryService>();
-            services.AddScoped<IMeasuringService, MeasuringService>();
-            services.AddScoped<INominationService, NominationService>();
-            services.AddScoped<IOperationService, OperationService>();
-            services.AddScoped<IOwnerService, OwnerService>();
-            services.AddScoped<IPeriodService, PeriodService>();
-            services.AddScoped<IPositionService, PositionService>();
-		}
-	}
+        services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseSqlite(connectionString);
+            options.EnableSensitiveDataLogging();
+        });
+
+        #endregion
+
+        #region Utilities
+
+        services.AddAutoMapper(typeof(MapPropfile));
+        services.AddTransient<IFileManager, FileManager>();
+
+        #endregion
+
+        #region Services
+
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IMeasuringService, MeasuringService>();
+        services.AddScoped<INominationService, NominationService>();
+        services.AddScoped<IOperationService, OperationService>();
+        services.AddScoped<IOwnerService, OwnerService>();
+        services.AddScoped<IPeriodService, PeriodService>();
+        services.AddScoped<IPositionService, PositionService>();
+        services.AddScoped<IMasterService, MasterService>();
+
+        #endregion
+    }
 }

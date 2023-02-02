@@ -1,8 +1,11 @@
-﻿namespace Control.DAL.Models
+﻿namespace Control.DAL.Models;
+
+public sealed class Category : BaseModel
 {
-    public sealed class Category:BaseModel
-    {
-        public string? Name { get; set; }
-        public ICollection<Position>? Positions { get; set; }
-    }
+    #region Own properties
+
+    public string? Name { get; set; }
+    public ICollection<Position>? Positions { get; set; }
+
+    #endregion
 }

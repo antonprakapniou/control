@@ -35,6 +35,32 @@ namespace Control.DAL.EF.Migrations
                     b.ToTable("Categories", (string)null);
                 });
 
+            modelBuilder.Entity("Control.DAL.Models.Master", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Email");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Name");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Phone");
+
+                    b.HasKey("Id")
+                        .HasName("Id");
+
+                    b.ToTable("Masters", (string)null);
+                });
+
             modelBuilder.Entity("Control.DAL.Models.Measuring", b =>
                 {
                     b.Property<Guid>("Id")
@@ -101,10 +127,6 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("Id");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Email");
-
                     b.Property<string>("FullProduction")
                         .HasColumnType("TEXT")
                         .HasColumnName("FullProduction");
@@ -113,9 +135,8 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("FullShop");
 
-                    b.Property<string>("Master")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Master");
+                    b.Property<Guid?>("MasterId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
                         .HasColumnType("TEXT")
@@ -137,6 +158,8 @@ namespace Control.DAL.EF.Migrations
                     b.HasKey("Id")
                         .HasName("Id");
 
+                    b.HasIndex("MasterId");
+
                     b.ToTable("Owners", (string)null);
                 });
 
@@ -146,10 +169,6 @@ namespace Control.DAL.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
                         .HasColumnName("Id");
-
-                    b.Property<int>("Month")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("Month");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -225,10 +244,6 @@ namespace Control.DAL.EF.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("PreviousDate");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("Status");
-
                     b.HasKey("Id")
                         .HasName("Id");
 
@@ -245,6 +260,16 @@ namespace Control.DAL.EF.Migrations
                     b.HasIndex("PeriodId");
 
                     b.ToTable("Positions", (string)null);
+                });
+
+            modelBuilder.Entity("Control.DAL.Models.Owner", b =>
+                {
+                    b.HasOne("Control.DAL.Models.Master", "Master")
+                        .WithMany("Owners")
+                        .HasForeignKey("MasterId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Master");
                 });
 
             modelBuilder.Entity("Control.DAL.Models.Position", b =>
@@ -295,6 +320,11 @@ namespace Control.DAL.EF.Migrations
             modelBuilder.Entity("Control.DAL.Models.Category", b =>
                 {
                     b.Navigation("Positions");
+                });
+
+            modelBuilder.Entity("Control.DAL.Models.Master", b =>
+                {
+                    b.Navigation("Owners");
                 });
 
             modelBuilder.Entity("Control.DAL.Models.Measuring", b =>
