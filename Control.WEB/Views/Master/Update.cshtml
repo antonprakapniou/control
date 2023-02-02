@@ -1,30 +1,42 @@
 ﻿@model MasterVM
 <br />
-<form class="needs-validation" novalidate>
+<form method="post" class="needs-validation" novalidate>
     <input asp-for="Id" hidden />
-    <div class="row mb-3">
-        <label asp-for="Name" class="col-sm-2 col-form-label text-end"></label>
-        <div class="col-sm-3">
-            <input asp-for="Name" class="form-control" required />
-            <div class="valid-feedback">
-                Nice
-            </div>
-            <div class="invalid-feedback">
-                Field must be required
-            </div>
+    <div class="card" style="width:50%">
+        <div class="card-header">Update master</div>
+        <div class="card-body">
+            <dl class="row">
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Name" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="Name" class="form-control" required />
+                    <div class="invalid-feedback">
+                        Field must be required
+                    </div>
+                </dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Phone" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="Phone" class="form-control" />
+                </dd>
+
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Email" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <div class="invalid-feedback">
+                        address@Post.com
+                    </div>
+                </dd>
+
+            </dl>
         </div>
-        <label asp-for="Phone" class="col-sm-2 col-form-label text-end"></label>
-        <div class="col-sm-3">
-            <input asp-for="Phone" class="form-control" />            
-        </div>
-        <label asp-for="Email" class="col-sm-2 col-form-label text-end"></label>
-        <div class="col-sm-3">
-            <input asp-for="Email" class="form-control" type="email" required />            
-            <div class="invalid-feedback">
-                email 
-            </div>
-        </div>
-        <div class="col-sm-1">
+        <div class="card-footer text-end">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                 <button type="submit" method="post" asp-controller="Master" asp-action="Update" class="btn btn-outline-success">
                     <i class="bi bi-check-lg"></i>
@@ -36,3 +48,9 @@
         </div>
     </div>
 </form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -1,46 +1,90 @@
 ﻿@model OwnerVM
+
+@{
+    var master = Model.Master;
+}
+
 <br />
-<form method="get" class="needs-validation" novalidate>
+<form method="post" class="needs-validation" novalidate>
     <input asp-for="Id" hidden />
-    <div class="card" style="width:75%">
+    <div class="card" style="width:50%">
         <div class="card-header">Owner</div>
         <div class="card-body">
             <dl class="row">
 
-                <dt class="col-sm-3 text-end">
-                    <label asp-for="ShopCode"></label>
-                </dt>
-                <dd class="col-sm-9">@Model.ShopCode</dd>
+                @if (Model.ShortName is not null)
+                {
+                    <dt class="col-sm-4 text-end">
+                        <label asp-for="ShortName" class="col-form-label"></label>
+                    </dt>
+                    <dd class="col-sm-8">
+                        <input asp-for="ShortName" class="form-control" />
+                    </dd>
+                }
 
-                <dt class="col-sm-3 text-end">
-                    <label asp-for="ShortName"></label>
-                </dt>
-                <dd class="col-sm-9">@Model.ShortName</dd>
+                @if (Model.FullShop is not null)
+                {
+                    <dt class="col-sm-4 text-end">
+                        <label asp-for="FullShop" class="col-form-label"></label>
+                    </dt>
+                    <dd class="col-sm-8">
+                        <input asp-for="FullShop" class="form-control" />
+                    </dd>
+                }
 
-                <dt class="col-sm-3 text-end">
-                    <label asp-for="FullShop"></label>
-                </dt>
-                <dd class="col-sm-9">@Model.FullShop</dd>
+                @if (Model.FullProduction is not null)
+                {
+                    <dt class="col-sm-4 text-end">
+                        <label asp-for="FullProduction" class="col-form-label"></label>
+                    </dt>
+                    <dd class="col-sm-8">
+                        <input asp-for="FullProduction" class="form-control" />
+                    </dd>
+                }
 
-                <dt class="col-sm-3 text-end">
-                    <label asp-for="FullProduction"></label>
-                </dt>
-                <dd class="col-sm-9">@Model.FullProduction</dd>
+                @if (Model.ShortName is not null)
+                {
+                    <dt class="col-sm-4 text-end">
+                        <label asp-for="Phone" class="col-form-label"></label>
+                    </dt>
+                    <dd class="col-sm-8">
+                        <input asp-for="Phone" class="form-control" />
+                    </dd>
+                }
 
-                <dt class="col-sm-3 text-end">
-                    <label asp-for="Master"></label>
-                </dt>
-                <dd class="col-sm-9">@Model.Master</dd>
-                
-                <dt class="col-sm-3 text-end">
-                    <label asp-for="Phone"></label>
-                </dt>
-                <dd class="col-sm-9 align-middle">@Model.Phone</dd>         
-                
-                @*<dt class="col-sm-3 align-middle text-end">
-                    <label asp-for="Email"></label>
-                </dt>
-                <dd class="col-sm-9">@Model.Email</dd>*@
+                @if (Model.MasterId is not null)
+                {
+                    if (master!.Name is not null)
+                    {
+                        <dt class="col-sm-4 text-end">
+                            <label asp-for="Master!.Name" class="col-form-label"></label>
+                        </dt>
+                        <dd class="col-sm-8">
+                            <input asp-for="Master!.Name" class="form-control" />
+                        </dd>
+                    }
+
+                    if (master!.Phone is not null)
+                    {
+                        <dt class="col-sm-4 text-end">
+                            <label asp-for="Master!.Phone" class="col-form-label"></label>
+                        </dt>
+                        <dd class="col-sm-8">
+                            <input asp-for="Master!.Phone" class="form-control" />
+                        </dd>
+                    }
+
+                    if (master!.Email is not null)
+                    {
+                        <dt class="col-sm-4 text-end">
+                            <label asp-for="Master!.Email" class="col-form-label"></label>
+                        </dt>
+                        <dd class="col-sm-8">
+                            <input asp-for="Master!.Email" class="form-control" />
+                        </dd>
+                    }
+                }
+
             </dl>
         </div>
         <div class="card-footer text-end">
@@ -55,3 +99,9 @@
         </div>
     </div>
 </form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

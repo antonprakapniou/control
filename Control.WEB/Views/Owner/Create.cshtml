@@ -1,92 +1,75 @@
 ﻿@model OwnerCreatingVM
 <br />
-<form method="post" class="needs-validation" novalidate>   
-    <div class="card" style="width:75%">
-        <div class="card-header">Owner</div>
+<form method="post" class="needs-validation" novalidate>
+    <div class="card" style="width:50%">
+        <div class="card-header">New owner</div>
         <div class="card-body">
             <dl class="row">
 
-                <dt class="col-sm-3 text-end">
+                <dt class="col-sm-4 text-end">
                     <label asp-for="OwnerVM!.FullShop" class="col-form-label"></label>
                 </dt>
-                <dd class="col-sm-9">
+                <dd class="col-sm-8">
                     <input asp-for="OwnerVM!.FullShop" class="form-control" />
+                </dd>                
+
+                <dt class="col-sm-4 text-end">
+                    <label asp-for="OwnerVM!.FullProduction" class="col-form-label"></label>
+                </dt>
+                <dd class="col-sm-8">
+                    <input asp-for="OwnerVM!.FullProduction" class="form-control" />
                 </dd>
 
-                <dt class="col-sm-3 text-end">
+                <dt class="col-sm-4 text-end">
                     <label asp-for="OwnerVM!.ShortShop" class="col-form-label"></label>
                 </dt>
-                <dd class="col-sm-9">
+                <dd class="col-sm-8">
                     <input asp-for="OwnerVM!.ShortShop" class="form-control" required />
                     <div class="invalid-feedback">
                         Field must be required
                     </div>
                 </dd>
 
-                <dt class="col-sm-3 text-end">
-                    <label asp-for="OwnerVM!.FullProduction" class="col-form-label"></label>
-                </dt>
-                <dd class="col-sm-9">
-                    <input asp-for="OwnerVM!.FullProduction" class="form-control" />
-                </dd>
-
-                <dt class="col-sm-3 text-end">
+                <dt class="col-sm-4 text-end">
                     <label asp-for="OwnerVM!.ShortProduction" class="col-form-label"></label>
                 </dt>
-                <dd class="col-sm-9">
+                <dd class="col-sm-8">
                     <input asp-for="OwnerVM!.ShortProduction" class="form-control" />
                 </dd>
 
-                <dt class="col-sm-3 text-end">
+                <dt class="col-sm-4 text-end">
                     <label asp-for="OwnerVM!.ShopCode" class="col-form-label"></label>
                 </dt>
-                <dd class="col-sm-9">
+                <dd class="col-sm-8">
                     <input asp-for="OwnerVM!.ShopCode" class="form-control" />
                 </dd>
 
-                @*<dt class="col-sm-3 text-end">
-                    <label asp-for="Master" class="col-form-label"></label>
-                </dt>
-                <dd class="col-sm-9">
-                    <input asp-for="Master" class="form-control" />
-                </dd>*@
-
-                <dt class="col-sm-3 text-end">
+                <dt class="col-sm-4 text-end">
                     <label asp-for="OwnerVM!.Phone" class="col-form-label"></label>
                 </dt>
-                <dd class="col-sm-9">
+                <dd class="col-sm-8">
                     <input asp-for="OwnerVM!.Phone" class="form-control" />
                 </dd>
 
-                <label asp-for="OwnerVM!.MasterId" class="col-sm-1 col-form-label text-end"></label>
-                <div class="col-sm-2">
+                <dt class="col-sm-4 text-end">
+                    <label asp-for="OwnerVM!.MasterId" class=" col-form-label text-end"></label>
+                </dt>
+                <dd class="col-sm-8">
                     <select asp-for="OwnerVM!.MasterId" asp-items="@Model.Masters" class=" form-control" required>
                         <option disabled selected value="">select</option>
                     </select>
-                    <div class="invalid-feedback">
-                        Field must be required
-                    </div>
+                </dd>
 
-
-                    @*<dt class="col-sm-3 text-end">
-                    <label asp-for="Email" class="col-form-label"></label>
-                </dt>
-                <dd class="col-sm-9">
-                    <input asp-for="Email" class="form-control" type="email" />
-                    <div class="invalid-feedback">
-                        example@post.com
-                    </div>
-                </dd>*@
             </dl>
         </div>
         <div class="card-footer text-end">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                 <button type="submit" method="post" asp-controller="Owner" asp-action="Create" class="btn btn-outline-success">
-                <i class="bi bi-check-lg"></i>
-            </button>
+                    <i class="bi bi-check-lg"></i>
+                </button>
                 <a asp-controller="Owner" asp-action="Index" class="btn btn-outline-danger">
-                <i class="bi bi-box-arrow-left"></i>
-            </a>
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
             </div>
         </div>
     </div>

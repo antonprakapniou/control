@@ -3,7 +3,7 @@
 <table class="table table-responsive table-dark table-hover align-middle" style="width:100%">
     <thead>
         <tr>
-            <th style="width:90%">
+            <th class="text-start align-middle">
                 <div class="col-12 text-start">
                     <a asp-controller="Operation" asp-action="Create" class="btn btn-dark">
                         <i class="bi bi-plus-lg"></i>&nbsp;Operation
@@ -19,10 +19,8 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @item.Name
-                    </td>
-                    <td class="text-center">
+                    <td class="text-start align-middle">@item.Name</td>
+                    <td class="text-center align-middle">
                         <div class="btn-toolbar justify-content-between" role="toolbar">
                             <a asp-controller="Operation" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-warning">
                                 <i class="bi bi-pencil-fill"></i>

@@ -3,15 +3,15 @@
 <table class="table table-responsive table-dark table-hover align-middle" style="width:100%">
     <thead>
         <tr>
-            <th>
-                <div class="col-12 text-start">
+            <th class="text-start align-middle">
+                <div class="col-12">
                     <a asp-controller="Master" asp-action="Create" class="btn btn-dark">
                         <i class="bi bi-plus-lg"></i>&nbsp;Master
                     </a>
                 </div>
             </th>
-            <th class="align-middle">Phone</th>
-            <th>Email</th>
+            <th class="text-center align-middle">Phone</th>
+            <th class="text-center align-middle">Email</th>
             <th class="text-center align-middle" style="width:8% "><i class="bi bi-gear-wide-connected"></i></th>
         </tr>
     </thead>
@@ -21,16 +21,10 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @item.Name
-                    </td>
-                    <td>
-                        @item.Phone
-                    </td>
-                    <td>
-                        @item.Email
-                    </td>
-                    <td class="text-center">
+                    <td class ="text-start align-middle">@item.Name</td>
+                    <td class="text-center align-middle">@item.Phone</td>
+                    <td class="text-center align-middle">@item.Email</td>
+                    <td class="text-center align-middle">
                         <div class="btn-toolbar justify-content-between" role="toolbar">
                             <a asp-controller="Master" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-warning">
                                 <i class="bi bi-pencil-fill"></i>

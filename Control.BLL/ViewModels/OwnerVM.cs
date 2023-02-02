@@ -18,7 +18,7 @@ public sealed class OwnerVM : BaseViewModel
     public string? ShortProduction { get; set; }
 
     [DisplayName("Name")]
-    public string? ShortName { get => $"{ShortShop} {ShortProduction}".TrimEnd(); set { } }
+    public string? ShortName { get => $"{ShortShop} {ShortProduction}".TrimEnd();}
 
     [DisplayName("Shop code")]
     public string? ShopCode { get; set; }
