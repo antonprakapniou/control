@@ -3,7 +3,7 @@
 <form method="post" class="needs-validation" novalidate>
     <input asp-for="Id" hidden />
     <div class="card" style="width:50%">
-        <div class="card-header">New operation</div>
+        <div class="card-header bg-dark text-light">New operation</div>
         <div class="card-body">
             <dl class="row">
 
@@ -19,9 +19,9 @@
 
             </dl>
         </div>
-        <div class="card-footer text-end">
+        <div class="card-footer bg-dark text-end">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <button type="submit" method="post" asp-controller="Operation" asp-action="Update" class="btn btn-outline-success">
+                <button type="submit" method="post" asp-controller="Operation" asp-action="Update" class="btn btn-outline-warning">
                     <i class="bi bi-check-lg"></i>
                 </button>
                 <a asp-controller="Operation" asp-action="Index" class="btn btn-outline-danger">

@@ -1,151 +1,186 @@
-﻿@using Control.DAL.Configuration
-@model PositionCreatingVM
+﻿@model PositionCreatingVM
 <br />
 <form method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
-    <input asp-for="PositionVM!.Id" hidden/>
-    
-    <div class="row mb-3">
-        <label asp-for="PositionVM!.MeasuringId" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-2">
-            <select asp-for="PositionVM!.MeasuringId" asp-items="@Model.Measurings" class=" form-control" required>
-                <option disabled selected value="">select</option>
-            </select>
-            <div class="invalid-feedback">
-                Field must be required
-            </div>
+    <input asp-for="PositionVM!.Id" hidden />
+    <div class="card" style="width:100%">
+        <div class="card-header bg-dark">
+            <div class="text-light">Update position</div>
         </div>
-        <label asp-for="PositionVM!.NominationId" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-2">
-            <select asp-for="PositionVM!.NominationId" asp-items="@Model.Nominations" class=" form-control" required>
-                <option disabled selected value="">select</option>
-            </select>
-            <div class="invalid-feedback">
-                Field must be required
-            </div>
-        </div>
-        <label asp-for="PositionVM!.DeviceType" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-2">
-            <input asp-for="PositionVM!.DeviceType" class="form-control" required />
-        </div>
-        <label asp-for="PositionVM!.FactoryNumber" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-2">
-            <input asp-for="PositionVM!.FactoryNumber" class="form-control" required />
-        </div>
-    </div>
+        <div class="card-body">
+            <div class="row row-cols-2 p-1">
+                <div class="col">
+                    <div class="row row-cols-4 p-1">
+                        <div class="col">
+                            <select asp-for="PositionVM!.MeasuringId" asp-items="Model.Measurings" class=" form-control" required>
+                                <option disabled selected value="">measuring</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Field must be required
+                            </div>
+                        </div>
+                        <div class="col">
+                            <select asp-for="PositionVM!.NominationId" asp-items="Model.Nominations" class=" form-control" required>
+                                <option disabled selected value="">nomination</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Field must be required
+                            </div>
+                        </div>
+                        <div class="col">
+                            <input asp-for="PositionVM!.DeviceType" class="form-control" placeholder="device type" required />
+                            <div class="invalid-feedback">
+                                Field must be required
+                            </div>
+                        </div>
+                        <div class="col">
+                            <input asp-for="PositionVM!.FactoryNumber" class="form-control" placeholder="number" required />
+                            <div class="invalid-feedback">
+                                Field must be required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-cols-4 p-1">
+                        <div class="col">
+                            <select asp-for="PositionVM!.OwnerId" asp-items="Model.Owners" class=" form-control" required>
+                                <option disabled selected value="">owner</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Field must be required
+                            </div>
+                        </div>
+                        <div class="col">
+                            <select asp-for="PositionVM!.PeriodId" asp-items="Model.Periods" class=" form-control" required>
+                                <option disabled selected value="">period</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Field must be required
+                            </div>
+                        </div>
+                        <div class="col">
+                            <select asp-for="PositionVM!.OperationId" asp-items="Model.Operations" class=" form-control" required>
+                                <option disabled selected value="">operation</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Field must be required
+                            </div>
+                        </div>
+                        <div class="col">
+                            <select asp-for="PositionVM!.CategoryId" asp-items="Model.Categories" class=" form-control" required>
+                                <option disabled selected value="">category</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Field must be required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-cols-auto p-1">
+                        @if (@Model.PositionVM!.Picture is not null)
+                        {
+                            <label asp-for="PositionVM!.Picture" class="col-sm-2 col-form-label text-end"></label>
+                            <div class="col-sm-7">
+                                <input type="file" name="files" id="uploadBox" class=" form-control" />
+                            </div>
+                            <div class="col-sm-1 text-end">
+                                <div>
+                                    <img style="width:56px;height:37px" src="@AppConstants.PositionPartialPath@Model.PositionVM!.Picture" alt="No picture">
+                                </div>
+                            </div>
+                            <div class="col-sm-2 text-center align-middle">
+                                <button type="submit" asp-controller="Position" asp-action="DeletePicture" class="btn btn-outline-danger">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </div>
+                        }
 
-    <div class="row mb-3">
-        <label asp-for="PositionVM!.OwnerId" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-2">
-            <select asp-for="PositionVM!.OwnerId" asp-items="@Model.Owners" class=" form-control" required>
-                <option disabled selected value="">select</option>
-            </select>
-            <div class="invalid-feedback">
-                Field must be required
-            </div>
-        </div>
-        <label asp-for="PositionVM!.PeriodId" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-2">
-            <select asp-for="PositionVM!.PeriodId" asp-items="@Model.Periods" class="form-control" required>
-                <option disabled selected value="">select</option>
-            </select>
-            <div class="invalid-feedback">
-                Field must be required
-            </div>
-        </div>
-        <label asp-for="PositionVM!.PreviousDate" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-2">
-            <input type="date" asp-for="PositionVM!.PreviousDate" class="form-control" required />
-            <div class="invalid-feedback">
-                Field must be required
-            </div>
-        </div>
-        <label asp-for="PositionVM!.NeedDate" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-2">
-            <input type="date" asp-for="PositionVM!.NeedDate" class="form-control" disabled />
-            <div class="invalid-feedback">
-                Field must be required
-            </div>
-        </div>
-    </div>
+                        else
+                        {
+                            <label asp-for="PositionVM!.Picture" class="col-sm-3 col-form-label text-end"></label>
+                            <div class="col-sm-6">
+                                <input type="file" name="files" id="uploadBox" class=" form-control" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" style="width:100%">
+                        <div class="card card-header">Control dates</div>
+                        <div class="card-body">
+                            <div class="row p-1">
+                                <label asp-for="PositionVM!.PreviousDate" class="col-sm-2 col-form-label text-end"></label>
+                                <div class="col-sm-4">
+                                    <input type="date" asp-for="PositionVM!.PreviousDate" class="form-control" required />
+                                    <div class="invalid-feedback">
+                                        Field must be required
+                                    </div>
+                                </div>
+                                <label asp-for="PositionVM!.AdviceDate" class="col-sm-2 col-form-label text-end"></label>
+                                <div class="col-sm-4">
+                                    <input type="date" asp-for="PositionVM!.AdviceDate" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row p-1">
+                                <label asp-for="PositionVM!.NeedDate" class="col-sm-2 col-form-label text-end"></label>
+                                <div class="col-sm-4">
+                                    <input type="date" asp-for="PositionVM!.NeedDate" class="form-control" disabled />
+                                    <div class="invalid-feedback">
+                                        Field must be required
+                                    </div>
+                                </div>
+                                <label asp-for="PositionVM!.NextDate" class="col-sm-2 col-form-label text-end"></label>
+                                <div class="col-sm-4">
+                                    <input type="date" asp-for="PositionVM!.NextDate" class="form-control" disabled />
+                                    <div class="invalid-feedback">
+                                        Field must be required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @{
+                                if (Model.PositionVM!.ValidStatus.Equals(ValidStatusEnum.Valid))
+                                {
+                                    <div>valid</div>
+                                }
 
-    <div class="row mb-3">
-        <label asp-for="PositionVM!.OperationId" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-2">
-            <select asp-for="PositionVM!.OperationId" asp-items="@Model.Operations" class=" form-control" required>
-                <option disabled selected value="">select</option>
-            </select>
-            <div class="invalid-feedback">
-                Field must be required
-            </div>
-        </div>
-        <label asp-for="PositionVM!.CategoryId" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-2">
-            <select asp-for="PositionVM!.CategoryId" asp-items="@Model.Categories" class=" form-control" required>
-                <option disabled selected value="">select </option>
-            </select>
-            <div class="invalid-feedback">
-                Field must be required
-            </div>
-        </div>
-        <label asp-for="PositionVM!.AdviceDate" class="col-sm-1 col-form-label text-end"></label>
-        <div class="col-sm-2">
-            <input type="date" asp-for="PositionVM!.AdviceDate" class="form-control" />
-            <div class="invalid-feedback">
-                Field must be required
-            </div>
-        </div>
-    </div>
+                                else if (Model.PositionVM!.ValidStatus.Equals(ValidStatusEnum.NextMonthControl))
+                                {
+                                    <div>next month control</div>
+                                }
 
-    <div class="row mb-3">       
+                                else if (Model.PositionVM!.ValidStatus.Equals(ValidStatusEnum.CurrentMonthControl))
+                                {
+                                    <div>current month control</div>
+                                }
 
-        @if (Model.PositionVM!.Picture is not null)
-        {
-            <div class="col-sm-6"></div>
-            <label asp-for="PositionVM!.Picture" class="col-sm-1 col-form-label text-end"></label>
-            <div class="col-sm-3">
-                <input type="file" name="files" id="uploadBox" class=" form-control" />
-            </div>
-            <div class="col-sm-1 text-end">
-                <div>
-                    <img style="width:56px;height:37px" src="@AppConstants.PositionPartialPath@Model.PositionVM!.Picture" alt="No picture">
+                                else if (Model.PositionVM!.ValidStatus.Equals(ValidStatusEnum.Invalid))
+                                {
+                                    <div>invalid</div>
+                                }
+
+                                else
+                                {
+                                    <div>indefined</div>
+                                }
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-1 text-start align-middle">
-                <button type="submit" asp-controller="Position" asp-action="DeletePicture" class="btn btn-outline-danger">
-                    <i class="bi bi-trash3"></i>
-                </button>
-            </div>
-        }
-
-        else
-        {
-            <div class="col-sm-6"></div>
-            <label asp-for="PositionVM!.Picture" class="col-sm-1 col-form-label text-end"></label>
-            <div class="col-sm-3">
-                <input type="file" name="files" id="uploadBox" class=" form-control" />
-            </div>
-            <div class="col-sm-2">
-                <div>
-                    <img alt="No picture">
+            <div class="row row-cols-3 p-1">
+                <div class="col">
+                    <textarea asp-for="PositionVM!.Description" id="tinytextarea" class="form-control" placeholder="Measurement range, accuracy, error, discharge ..."></textarea>
+                </div>
+                <div class="col">
+                    <textarea asp-for="PositionVM!.Included" id="tinytextarea" class="form-control" placeholder="Equipment included in the measuring instrument ..."></textarea>
+                </div>
+                <div class="col">
+                    <textarea asp-for="PositionVM!.Addition" id="tinytextarea" class="form-control" placeholder="Addition ..."></textarea>
                 </div>
             </div>
-        }
-    </div>
-    <div class="row mb-3">
-        <div class="col-sm-4">
-            <textarea asp-for="PositionVM!.Description" id="tinytextarea" class="form-control" placeholder="Measurement range, accuracy, error, discharge ..."></textarea>
         </div>
-        <div class="col-sm-4">
-            <textarea asp-for="PositionVM!.Included" id="tinytextarea" class="form-control" placeholder="Equipment included in the measuring instrument ..."></textarea>
-        </div>
-        <div class="col-sm-4">
-            <textarea asp-for="PositionVM!.Addition" id="tinytextarea" class="form-control" placeholder="Addition ..."></textarea>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-sm-6 text-end">
+        <div class="card-footer bg-dark text-end">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <button type="submit" asp-controller="Position" asp-action="Update" class="btn btn-outline-success">
+                <button type="submit" asp-controller="Position" asp-action="Update" class="btn btn-outline-warning">
                     <i class="bi bi-check-lg"></i>
                 </button>
                 <a asp-controller="Position" asp-action="Index" class="btn btn-outline-danger">

@@ -26,6 +26,10 @@ public sealed class PositionVM : BaseViewModel
     public DateTime PreviousDate { get; set; }
 
     [Required]
+    [DisplayName("Need")]
+    public DateTime NeedDate { get; set; }
+
+    [Required]
     [DisplayName("Next")]
     public DateTime NextDate { get; set; }
 
@@ -33,7 +37,6 @@ public sealed class PositionVM : BaseViewModel
     [DisplayName("Advice")]
     public DateTime AdviceDate { get; set; }
 
-    [Required]
     [DisplayName("Created")]
     public DateTime Created { get; set; }
 
@@ -81,29 +84,24 @@ public sealed class PositionVM : BaseViewModel
 
     #endregion
 
-    #region NotSet
+    #region NotSet    
 
-    [Required]
     [DisplayName("Status")]
-    public StatusEnum Status { get => SetStatus(NextDate); }
-
-    [Required]
-    [DisplayName("Need")]
-    public DateTime NeedDate { get => (Period is not null) ? PreviousDate.AddMonths(Period.Month) : PreviousDate; }
+    public ValidStatusEnum ValidStatus { get => SetValidStatus(NeedDate); }
 
     #endregion
 
     #region Methods
 
-    private static StatusEnum SetStatus(DateTime nextDate)
+    private static ValidStatusEnum SetValidStatus( DateTime needDate)
     {
         DateTime currentDate = DateTime.Now;
 
-        if (currentDate>nextDate) return StatusEnum.Invalid;
-        else if (currentDate.AddMonths(2)>nextDate&&currentDate.Month.Equals(nextDate.Month)) return StatusEnum.CurrentMonthControl;
-        else if (currentDate.AddMonths(2)>nextDate&&currentDate.AddMonths(1).Month.Equals(nextDate.Month)) return StatusEnum.NextMonthControl;
-        else if (currentDate<=nextDate) return StatusEnum.Valid;
-        else return StatusEnum.Indefined;
+        if (currentDate>needDate) return ValidStatusEnum.Invalid;
+        else if (currentDate.AddMonths(2)>needDate&&currentDate.Month.Equals(needDate.Month)) return ValidStatusEnum.CurrentMonthControl;
+        else if (currentDate.AddMonths(2)>needDate&&currentDate.AddMonths(1).Month.Equals(needDate.Month)) return ValidStatusEnum.NextMonthControl;
+        else if (currentDate<=needDate) return ValidStatusEnum.Valid;
+        else return ValidStatusEnum.Indefined;
     }
 
     #endregion

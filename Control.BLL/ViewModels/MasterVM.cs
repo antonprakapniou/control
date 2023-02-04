@@ -5,13 +5,13 @@ public sealed class MasterVM:BaseViewModel
     #region Own properties
 
     [Required]
-    [DisplayName("Name")]
+    [DisplayName("Master")]
     public string? Name { get; set; }
 
     [DisplayName("Master phone")]
     public string? Phone { get; set; }
 
-    [DisplayName("Email")]
+    [DisplayName("Master email")]
     public string? Email { get; set; }
 
     #endregion

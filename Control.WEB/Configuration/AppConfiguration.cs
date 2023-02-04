@@ -2,9 +2,19 @@
 
 public static class AppConfiguration
 {
-    public static void Set(IConfiguration configuration, IServiceCollection services)
+    public static void Set(IConfiguration configuration, IServiceCollection services,ILoggingBuilder logging)
     {
         services.AddControllersWithViews();
+
+        #region Logging
+
+        logging.ClearProviders();
+        logging.AddSerilog(
+            new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger());
+
+        #endregion        
 
         #region Db connection
 

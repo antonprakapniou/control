@@ -1,14 +1,18 @@
-﻿@using Control.DAL.Models
-@using Control.DAL.Configuration
-@model PositionVM
+﻿@model PositionVM
+
+@{
+    var owner = Model.Owner;
+    var master = owner!.Master;
+}
+
 <br />
 <form method="get" class="needs-validation" novalidate>
     <input asp-for="Id" hidden />
-    <div class="card" style="width:75%">
+    <div class="card" style="width:80%">
         <div class="card-header">Position</div>
         <div class="card-body">
             <div class="row mb-3">
-                <div class="col-sm-7">
+                <div class="col-sm-6">
                     <dl class="row">
 
                         @if (Model.Measuring is not null)
@@ -27,15 +31,21 @@
                             <dd class="col-sm-9">@Model.Nomination!.Name</dd>
                         }
 
-                        <dt class="col-sm-3 text-end">
-                            <label asp-for="DeviceType"></label>
-                        </dt>
-                        <dd class="col-sm-9">@Model.DeviceType</dd>
+                        @if (Model.DeviceType is not null)
+                        {
+                            <dt class="col-sm-3 text-end">
+                                <label asp-for="DeviceType"></label>
+                            </dt>
+                            <dd class="col-sm-9">@Model.DeviceType</dd>
+                        }
 
-                        <dt class="col-sm-3 text-end">
-                            <label asp-for="FactoryNumber"></label>
-                        </dt>
-                        <dd class="col-sm-9">@Model.FactoryNumber</dd>
+                        @if (Model.FactoryNumber is not null)
+                        {
+                            <dt class="col-sm-3 text-end">
+                                <label asp-for="FactoryNumber"></label>
+                            </dt>
+                            <dd class="col-sm-9">@Model.FactoryNumber</dd>
+                        }
 
                         @if (Model.Description is not null)
                         {
@@ -72,32 +82,37 @@
                         <dd class="col-sm-9">@Model.NextDate.ToShortDateString()</dd>
 
                         <dt class="col-sm-3 text-end">
-                            <label asp-for="Status"></label>
+                            <label asp-for="NeedDate"></label>
+                        </dt>
+                        <dd class="col-sm-9">@Model.NeedDate.ToShortDateString()</dd>
+
+                        <dt class="col-sm-3 text-end">
+                            <label asp-for="ValidStatus"></label>
                         </dt>
                         <dd class="col-sm-9">
                             @{
-                                if (@Model.Status.Equals(StatusEnum.Valid))
+                                if (@Model.ValidStatus.Equals(ValidStatusEnum.Valid))
                                 {
                                     <div class="badge text-bg-light col-2">
                                         <i class="fa-solid fa-check"></i>
                                     </div>
                                 }
 
-                                else if (@Model.Status.Equals(StatusEnum.NextMonthControl))
+                                else if (@Model.ValidStatus.Equals(ValidStatusEnum.NextMonthControl))
                                 {
                                     <div class="badge text-bg-success col-2">
-                                        <i class="fa-solid fa-check"></i>
+                                        <i class="fa-solid fa-exclamation"></i>
                                     </div>
                                 }
 
-                                else if (@Model.Status.Equals(StatusEnum.CurrentMonthControl))
+                                else if (@Model.ValidStatus.Equals(ValidStatusEnum.CurrentMonthControl))
                                 {
                                     <div class="badge text-bg-warning col-2">
                                         <i class="fa-solid fa-exclamation"></i>
                                     </div>
                                 }
 
-                                else if (@Model.Status.Equals(StatusEnum.Invalid))
+                                else if (@Model.ValidStatus.Equals(ValidStatusEnum.Invalid))
                                 {
                                     <div class="badge text-bg-danger col-2">
                                         <i class="fa-solid fa-exclamation"></i>
@@ -142,7 +157,7 @@
 
                     </dl>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                     <dl class="row">
 
                         <dt class="col-sm-2 text-end">
@@ -154,7 +169,7 @@
 
                         <dt class="col-sm-2 text-end">
                             <div class="badge text-bg-success col-12">
-                                <i class="fa-solid fa-check"></i>
+                                <i class="fa-solid fa-exclamation"></i>
                             </div>
                         </dt>
                         <dd class="col-sm-10">Control in next month</dd>
@@ -172,14 +187,6 @@
                             </div>
                         </dt>
                         <dd class="col-sm-10">Invalid</dd>
-
-                        <dt class="col-sm-3 text-end"></dt>
-                        <dd class="col-sm-9">
-                            @if (Model.Picture is not null)
-                            {
-                                <img style="width:100%" src="@AppConstants.PositionPartialPath@Model.Picture" alt="No picture">
-                            }
-                        </dd>    
                         
                         @if (Model.Owner is not null)
                         {
@@ -187,44 +194,53 @@
                             <div class="card-body bg-light">
                                 <dl class="row">
 
-                                    @if(Model.Owner.ShopCode is not null)
-                                    {
-                                        <dd class="col-sm-12">@Model.Owner.ShopCode</dd>
-                                    }
+                                    @if(owner.ShopCode is not null){<dd class="col-sm-12">@Model.Owner.ShopCode</dd>}
                                     
-                                    @if(Model.Owner.ShortName is not null)
-                                    {
-                                        <dd class="col-sm-12">@Model.Owner.ShortName</dd>
-                                    }
+                                    @if(owner.ShortName is not null){<dd class="col-sm-12">@Model.Owner.ShortName</dd>}
                                     
-                                    @if(Model.Owner.FullShop is not null)
+                                    @if(owner.FullName is not null){<dd class="col-sm-12">@Model.Owner.FullName</dd>}
+
+                                    @if (owner.Phone is not null){<dd class="col-sm-12">@Model.Owner.Phone</dd>}  
+                                    
+                                    @if (master is not null)
                                     {
-                                        <dd class="col-sm-12">@Model.Owner.FullShop</dd>
+                                        @if (master.Name is not null)
+                                        {
+                                            <dt class="col-sm-4 text-end">
+                                                <label asp-for="@master.Name"></label>
+                                            </dt>
+                                            <dd class="col-sm-8">@master.Name</dd>
+                                        }
+
+                                        @if (master.Phone is not null)
+                                        {
+                                            <dt class="col-sm-4 text-end">
+                                                <label asp-for="@master.Phone"></label>
+                                            </dt>
+                                            <dd class="col-sm-8">@master.Phone</dd>
+                                        }
+
+                                        @if (master.Email is not null)
+                                        {
+                                            <dt class="col-sm-4 text-end">
+                                                <label asp-for="@master.Email"></label>
+                                            </dt>
+                                            <dd class="col-sm-8">@master.Email</dd>
+                                        }
                                     }
-
-                                    @if (Model.Owner.FullProduction is not null)
-                                    {
-                                        <dd class="col-sm-12">@Model.Owner.FullProduction</dd>
-                                    }
-
-                                    @*@if (Model.Owner.Master is not null)
-                                    {
-                                        <dd class="col-sm-12">@Model.Owner.Master</dd>
-                                    }*@
-
-                                    @if (Model.Owner.Phone is not null)
-                                    {
-                                        <dd class="col-sm-12">@Model.Owner.Phone</dd>
-                                    }
-
-                                    @*@if (Model.Owner.Email is not null)
-                                    {
-                                        <dd class="col-sm-12">@Model.Owner.Email</dd>
-                                    }*@
                                     
                                 </dl>
                             </div>
-                        }                            
+                        }  
+                        
+                        <dt class="col-sm-6 text-end"></dt>
+                        <dd class="col-sm-6">
+                            @if (Model.Picture is not null)
+                            {
+                                <img style="width:100%" src="@AppConstants.PositionPartialPath@Model.Picture" alt="No picture">
+                            }
+                        </dd>
+
                     </dl>
                 </div>
             </div>            

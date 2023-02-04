@@ -8,6 +8,7 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
     private readonly IGenericRepository<Position> _positionRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
     private readonly IGenericRepository<Measuring> _measuringRepository;
+    private readonly IGenericRepository<Master> _masterRepository;
     private readonly IGenericRepository<Nomination> _nominationRepository;
     private readonly IGenericRepository<Operation> _operationRepository;
     private readonly IGenericRepository<Owner> _ownerRepository;
@@ -24,6 +25,7 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
         IGenericRepository<Period> periodRepository,
         IGenericRepository<Category> categoryRepository,
         IGenericRepository<Measuring> measuringRepository,
+        IGenericRepository<Master> masterRepository,
         IGenericRepository<Nomination> nominationRepository,
         IGenericRepository<Operation> operationRepository,
         IGenericRepository<Owner> ownerRepository)
@@ -35,6 +37,7 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
         _periodRepository = periodRepository;
         _categoryRepository = categoryRepository;
         _measuringRepository = measuringRepository;
+        _masterRepository = masterRepository;
         _nominationRepository = nominationRepository;
         _operationRepository = operationRepository;
         _ownerRepository = ownerRepository;
@@ -93,6 +96,14 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
             {
                 var property = await _ownerRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.OwnerId));
                 var propertyVM = _mapper.Map<OwnerVM>(property);
+
+                if (propertyVM.MasterId is not null)
+                {
+                    var master = await _masterRepository.GetOneByAsync(_=>_.Id.Equals(propertyVM.MasterId));
+                    var masterVM = _mapper.Map<MasterVM>(master);
+                    propertyVM.Master=masterVM;
+                }
+
                 viewModel.Owner = propertyVM;
             }
 
@@ -101,6 +112,7 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
                 var property = await _periodRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.PeriodId));
                 var propertyVM = _mapper.Map<PeriodVM>(property);
                 viewModel.Period = propertyVM;
+                viewModel.NeedDate=viewModel.PreviousDate.AddMonths(propertyVM.Month).AddDays(-1);
             }
         }
 
@@ -163,6 +175,14 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
         {
             var property = await _ownerRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.OwnerId));
             var propertyVM = _mapper.Map<OwnerVM>(property);
+
+            if (propertyVM.MasterId is not null)
+            {
+                var master = await _masterRepository.GetOneByAsync(_ => _.Id.Equals(propertyVM.MasterId));
+                var masterVM = _mapper.Map<MasterVM>(master);
+                propertyVM.Master=masterVM;
+            }
+
             viewModel.Owner = propertyVM;
         }
 
@@ -171,7 +191,8 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
             var property = await _periodRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.PeriodId));
             var propertyVM = _mapper.Map<PeriodVM>(property);
             viewModel.Period = propertyVM;
-        }
+            viewModel.NeedDate=viewModel.PreviousDate.AddMonths(propertyVM.Month).AddDays(-1);
+        }        
 
         #endregion
 
@@ -179,6 +200,15 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
     }
     public override async Task CreateAsync(PositionVM vm)
     {
+        if (vm.PeriodId is not null)
+        {
+            var period = await _periodRepository.GetOneByAsync(_ => _.Id.Equals(vm.PeriodId));
+            var periodVM = _mapper.Map<PeriodVM>(period);
+            vm.NeedDate=vm.PreviousDate.AddMonths(periodVM.Month).AddDays(-1);
+        }
+
+        else vm.NeedDate=vm.PreviousDate;
+
         vm.NextDate=(vm.AdviceDate<vm.PreviousDate) ? vm.NeedDate : vm.AdviceDate;
         vm.Created= DateTime.Now;
         var model = _mapper.Map<Position>(vm);
@@ -186,6 +216,13 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
     }
     public override async Task UpdateAsync(PositionVM vm)
     {
+        if (vm.PeriodId is not null)
+        {
+            var period = await _periodRepository.GetOneByAsync(_ => _.Id.Equals(vm.PeriodId));
+            var periodVM = _mapper.Map<PeriodVM>(period);
+            vm.NeedDate=vm.PreviousDate.AddMonths(periodVM.Month).AddDays(-1);
+        }
+
         vm.NextDate=(vm.AdviceDate<vm.PreviousDate) ? vm.NeedDate : vm.AdviceDate;
         var model = _mapper.Map<Position>(vm);
         var modelFromDb = await _positionRepository.GetOneByAsync(_ => _.Id.Equals(model.Id));

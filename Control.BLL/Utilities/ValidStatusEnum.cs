@@ -1,7 +1,6 @@
-﻿namespace Control.BLL.ViewModels;
+﻿namespace Control.BLL.Utilities;
 
-[Flags]
-public enum StatusEnum
+public enum ValidStatusEnum
 {
     Indefined = 0,
     Valid = 0b1,

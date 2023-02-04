@@ -57,7 +57,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
 
         #endregion
 
-        var orderViewModels = viewModels.OrderBy(_ => _.FullShop);
+        var orderViewModels = viewModels.OrderBy(_ => _.ShortName);
 
         return orderViewModels;
     }

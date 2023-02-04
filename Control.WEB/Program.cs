@@ -1,9 +1,7 @@
-using Control.WEB.Configuration;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-AppConfiguration.Set(builder.Configuration, builder.Services);
+AppConfiguration.Set(builder.Configuration, builder.Services,builder.Logging);
 
 var app = builder.Build();
 

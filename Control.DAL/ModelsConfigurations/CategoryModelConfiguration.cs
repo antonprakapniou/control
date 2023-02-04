@@ -12,7 +12,7 @@ public sealed class CategoryModelConfiguration : IEntityTypeConfiguration<Catego
         builder
             .HasMany(_ => _.Positions)
             .WithOne(_ => _.Category)
-            .OnDelete(DeleteBehavior.SetNull); ;
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder
             .Property(_ => _.Id)

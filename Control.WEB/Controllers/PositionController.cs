@@ -149,21 +149,21 @@ public sealed class PositionController : Controller
         {
             if (ModelState.IsValid)
             {
-                var vm = positionCreatingVM.PositionVM;
+                var viewModel = positionCreatingVM.PositionVM;
 
                 var files = HttpContext.Request.Form.Files;
                 if (files.Count!=0)
                 {
                     _fileManager.Load(files, _partialPath);
-                    vm!.Picture=_fileManager.FileName;
+                    viewModel!.Picture=_fileManager.FileName;
                 }
 
-                await _positionService.CreateAsync(vm!);
+                await _positionService.CreateAsync(viewModel!);
                 TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrCreateSuccess;
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
 
-            else return View();
+            else return RedirectToAction();
         }
 
         catch (Exception ex)
@@ -333,7 +333,7 @@ public sealed class PositionController : Controller
             if (model.Picture is not null) _fileManager.Delete(model.Picture, _partialPath);
             await _positionService.DeleteAsync(id);
             TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrDeleteSuccess;
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         catch (ObjectNotFoundException ex)

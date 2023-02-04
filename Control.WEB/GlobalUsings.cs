@@ -14,3 +14,5 @@ global using Control.WEB.Utilities;
 global using Microsoft.EntityFrameworkCore;
 global using Control.WEB.Models;
 global using System.Diagnostics;
+global using Control.WEB.Configuration;
+global using Serilog;

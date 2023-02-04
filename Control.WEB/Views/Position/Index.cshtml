@@ -1,6 +1,4 @@
-﻿@using Control.DAL.Models
-
-@model IEnumerable<PositionVM>
+﻿@model IEnumerable<PositionVM>
 <br />
 <div class="row mb-3">
     <div class="col-sm-1 text-end">
@@ -13,7 +11,7 @@
     </div>
     <div class="col-sm-1 text-end">
         <div class="badge text-bg-success col-4">
-            <i class="fa-solid fa-check"></i>
+            <i class="fa-solid fa-exclamation"></i>
         </div>
     </div>
     <div class="col-sm-2">
@@ -51,6 +49,7 @@
             <th class="text-center align-middle">Owner</th>
             <th class="text-center align-middle">Period</th>
             <th class="text-center align-middle">Previous</th>
+            <th class="text-center align-middle">Next</th>
             <th class="text-center align-middle">Status</th>
             <th class="text-center align-middle">Operation</th>
             <th class="text-center align-middle">Category</th>
@@ -65,35 +64,34 @@
                 <tr>
                     <td class="text-center align-middle">@item.DeviceType</td>
                     <td class="text-center align-middle">@item.FactoryNumber</td>
-                    <td class="text-center align-middle">@item.FactoryNumber</td>
-
-                    @*<td class="text-center align-middle">@if (item.Owner != null) @item.Owner!.Shop&nbsp; @if (item.Owner != null)@item.Owner!.Production</td>*@
+                    <td class="text-center align-middle">@if (item.Owner is not null)@item.Owner.ShortName</td>
                     <td class="text-center align-middle">@if (item.Period is not null)@item.Period.Name</td>
                     <td class="text-center align-middle">@item.PreviousDate.ToShortDateString()</td>
+                    <td class="text-center align-middle">@item.NextDate.ToShortDateString()</td>
                     <td class="text-center align-middle">
                         @{
-                            if (item.Status.Equals(StatusEnum.Valid))
+                            if (item.ValidStatus.Equals(ValidStatusEnum.Valid))
                             {
                                 <div class="badge text-bg-light col-4">
                                     <i class="fa-solid fa-check"></i>
                                 </div>
                             }
 
-                            else if (item.Status.Equals(StatusEnum.NextMonthControl))
+                            else if (item.ValidStatus.Equals(ValidStatusEnum.NextMonthControl))
                             {
                                 <div class="badge text-bg-success col-4">
-                                    <i class="fa-solid fa-check"></i>
+                                    <i class="fa-solid fa-exclamation"></i>
                                 </div>
                             }
 
-                            else if (item.Status.Equals(StatusEnum.CurrentMonthControl))
+                            else if (item.ValidStatus.Equals(ValidStatusEnum.CurrentMonthControl))
                             {
                                 <div class="badge text-bg-warning col-4">
                                     <i class="fa-solid fa-exclamation"></i>
                                 </div>
                             }
 
-                            else if (item.Status.Equals(StatusEnum.Invalid))
+                            else if (item.ValidStatus.Equals(ValidStatusEnum.Invalid))
                             {
                                 <div class="badge text-bg-danger col-4">
                                     <i class="fa-solid fa-exclamation"></i>
@@ -108,7 +106,7 @@
                        
                     <td class="text-center align-middle">@if (item.Operation is not null)@item.Operation.Name</td>
                     <td class="text-center align-middle">@if (item.Category is not null)@item.Category.Name</td>
-                     <td class="text-center align-middle">
+                    <td class="text-center align-middle">
                         <div class="btn-toolbar justify-content-between" role="toolbar">
                             <a asp-controller="Position" asp-action="Info" asp-route-id="@item.Id" class="btn btn-outline-info">
                                 <i class="bi bi-info-lg"></i>
@@ -130,7 +128,7 @@
         else
         {
             <tr>
-                <td colspan="9">Position list is empty</td>
+                <td colspan="10">Position list is empty</td>
             </tr>
         }
     </tbody>
