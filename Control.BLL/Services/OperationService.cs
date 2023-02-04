@@ -4,7 +4,6 @@ public sealed class OperationService : GenericService<OperationVM, Operation>, I
 {
     #region Own fields
 
-    private readonly ILogger<GenericService<OperationVM, Operation>> _logger;
     private readonly IMapper _mapper;
     private readonly IGenericRepository<Operation> _repository;
 
@@ -13,12 +12,10 @@ public sealed class OperationService : GenericService<OperationVM, Operation>, I
     #region Ctor
 
     public OperationService(
-        ILogger<GenericService<OperationVM, Operation>> logger,
         IMapper mapper,
         IGenericRepository<Operation> repository)
-        : base(logger, mapper, repository)
+        : base(mapper, repository)
     {
-        _logger=logger;
         _mapper=mapper;
         _repository=repository;
     }
@@ -34,7 +31,6 @@ public sealed class OperationService : GenericService<OperationVM, Operation>, I
         if (models is null)
         {
             string errorMessage = $"'{models!.GetType().Name}' collection not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 

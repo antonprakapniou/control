@@ -2,14 +2,22 @@
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
+    #region Own fields
+
     private readonly AppDbContext _db;
     private readonly DbSet<T> _t;
+
+    #endregion
+
+    #region Ctor
 
     public GenericRepository(AppDbContext db)
     {
         _db=db;
         _t=_db.Set<T>();
     }
+
+    #endregion
 
     #region Methods
 
@@ -21,9 +29,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     }
     public async Task<T> GetOneByAsync(Expression<Func<T, bool>>? expression = null)
     {
-        IQueryable<T> query = _t;
+        IQueryable<T> query = _t.AsNoTracking();
         if (expression!=null) query=query.Where(expression);
-        var models = await query.AsNoTracking().FirstOrDefaultAsync();
+        var models = await query.FirstOrDefaultAsync();
         return models!;
     }
     public async Task CreateAsync(T entity)

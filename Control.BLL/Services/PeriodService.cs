@@ -3,7 +3,6 @@ public sealed class PeriodService : GenericService<PeriodVM, Period>, IPeriodSer
 {
     #region Own fields
 
-    private readonly ILogger<GenericService<PeriodVM, Period>> _logger;
     private readonly IMapper _mapper;
     private readonly IGenericRepository<Period> _repository;
 
@@ -12,12 +11,10 @@ public sealed class PeriodService : GenericService<PeriodVM, Period>, IPeriodSer
     #region Ctor
 
     public PeriodService(
-        ILogger<GenericService<PeriodVM, Period>> logger,
         IMapper mapper,
         IGenericRepository<Period> repository)
-        : base(logger, mapper, repository)
+        : base(mapper, repository)
     {
-        _logger=logger;
         _mapper=mapper;
         _repository=repository;
     }
@@ -33,7 +30,6 @@ public sealed class PeriodService : GenericService<PeriodVM, Period>, IPeriodSer
         if (models is null)
         {
             string errorMessage = $"'{models!.GetType().Name}' collection not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 

@@ -16,3 +16,4 @@ global using Control.WEB.Models;
 global using System.Diagnostics;
 global using Control.WEB.Configuration;
 global using Serilog;
+global using System.Net;

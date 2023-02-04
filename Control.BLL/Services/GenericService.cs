@@ -5,8 +5,7 @@ public class GenericService<V, T> : IGenericService<V, T>
         where T : BaseModel
 {
     #region Own fields
-
-    private readonly ILogger<GenericService<V, T>> _logger;
+        
     private readonly IMapper _mapper;
     private readonly IGenericRepository<T> _repository;
 
@@ -15,11 +14,9 @@ public class GenericService<V, T> : IGenericService<V, T>
     #region Ctor
 
     public GenericService(
-        ILogger<GenericService<V, T>> logger,
         IMapper mapper,
         IGenericRepository<T> repository)
     {
-        _logger=logger;
         _mapper=mapper;
         _repository=repository;
     }
@@ -35,7 +32,6 @@ public class GenericService<V, T> : IGenericService<V, T>
         if (models is null)
         {
             string errorMessage = $"'{models!.GetType().Name}' collection not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 
@@ -49,7 +45,6 @@ public class GenericService<V, T> : IGenericService<V, T>
         if (model is null)
         {
             string errorMessage = $"'{model!.GetType().Name}' with id: '{id}' not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 
@@ -69,7 +64,6 @@ public class GenericService<V, T> : IGenericService<V, T>
         if (modelFromDb is null)
         {
             string errorMessage = $"'{model!.GetType().Name}' with id: '{model.Id}' not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 
@@ -82,7 +76,6 @@ public class GenericService<V, T> : IGenericService<V, T>
         if (model is null)
         {
             string errorMessage = $"'{model!.GetType().Name}' with id: '{id}' not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 

@@ -16,7 +16,7 @@ public class MeasuringService : GenericService<MeasuringVM, Measuring>, IMeasuri
         ILogger<GenericService<MeasuringVM, Measuring>> logger,
         IMapper mapper,
         IGenericRepository<Measuring> repository)
-        : base(logger, mapper, repository)
+        : base(mapper, repository)
     {
         _logger=logger;
         _mapper=mapper;
@@ -34,7 +34,6 @@ public class MeasuringService : GenericService<MeasuringVM, Measuring>, IMeasuri
         if (models is null)
         {
             string errorMessage = $"'{models!.GetType().Name}' collection not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 

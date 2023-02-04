@@ -4,7 +4,6 @@ public sealed class CategoryService : GenericService<CategoryVM, Category>, ICat
 {
     #region Own fields
 
-    private readonly ILogger<GenericService<CategoryVM, Category>> _logger;
     private readonly IMapper _mapper;
     private readonly IGenericRepository<Category> _repository;
 
@@ -13,12 +12,10 @@ public sealed class CategoryService : GenericService<CategoryVM, Category>, ICat
     #region Ctor
 
     public CategoryService(
-        ILogger<GenericService<CategoryVM, Category>> logger,
         IMapper mapper,
         IGenericRepository<Category> repository)
-        : base(logger, mapper, repository)
+        : base(mapper, repository)
     {
-        _logger=logger;
         _mapper=mapper;
         _repository=repository;
     }
@@ -34,7 +31,6 @@ public sealed class CategoryService : GenericService<CategoryVM, Category>, ICat
         if (models is null)
         {
             string errorMessage = $"'{models!.GetType().Name}' collection not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 

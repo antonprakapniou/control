@@ -4,7 +4,6 @@ public sealed class MasterService:GenericService<MasterVM, Master>,IMasterServic
 {
     #region Own fields
 
-    private readonly ILogger<GenericService<MasterVM, Master>> _logger;
     private readonly IMapper _mapper;
     private readonly IGenericRepository<Master> _repository;
 
@@ -13,12 +12,10 @@ public sealed class MasterService:GenericService<MasterVM, Master>,IMasterServic
     #region Ctor
 
     public MasterService(
-        ILogger<GenericService<MasterVM, Master>> logger,
         IMapper mapper,
         IGenericRepository<Master> repository)
-        : base(logger, mapper, repository)
+        : base(mapper, repository)
     {
-        _logger=logger;
         _mapper=mapper;
         _repository=repository;
     }
@@ -34,7 +31,6 @@ public sealed class MasterService:GenericService<MasterVM, Master>,IMasterServic
         if (models is null)
         {
             string errorMessage = $"'{models!.GetType().Name}' collection not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 

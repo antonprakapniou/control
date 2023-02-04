@@ -49,6 +49,7 @@ public sealed class PositionController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        throw new InvalidValueException("sdgsgsfgs");
         try
         {
             var vms = await _positionService.GetAllAsync();

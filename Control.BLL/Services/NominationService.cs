@@ -4,7 +4,6 @@ public sealed class NominationService : GenericService<NominationVM, Nomination>
 {
     #region Own fields
 
-    private readonly ILogger<GenericService<NominationVM, Nomination>> _logger;
     private readonly IMapper _mapper;
     private readonly IGenericRepository<Nomination> _repository;
 
@@ -16,9 +15,8 @@ public sealed class NominationService : GenericService<NominationVM, Nomination>
        ILogger<GenericService<NominationVM, Nomination>> logger,
        IMapper mapper,
        IGenericRepository<Nomination> repository)
-       : base(logger, mapper, repository)
+       : base(mapper, repository)
     {
-        _logger=logger;
         _mapper=mapper;
         _repository=repository;
     }
@@ -34,7 +32,6 @@ public sealed class NominationService : GenericService<NominationVM, Nomination>
         if (models is null)
         {
             string errorMessage = $"'{models!.GetType().Name}' collection not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 

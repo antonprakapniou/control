@@ -1,27 +1,30 @@
-﻿namespace Control.WEB.Configuration;
+﻿using ILogger = Serilog.ILogger;
+
+namespace Control.WEB.Configuration;
 
 public static class AppConfiguration
 {
-    public static void Set(IConfiguration configuration, IServiceCollection services,ILoggingBuilder logging)
+    public static ILogger SetLogger(IConfiguration configuration,ILoggingBuilder logging)
     {
-        services.AddControllersWithViews();
+        #region Logging configuration
 
-        #region Logging
-
-        logging.ClearProviders();
-        logging.AddSerilog(
-            new LoggerConfiguration()
+        var logger = new LoggerConfiguration()
             .ReadFrom.Configuration(configuration)
-            .CreateLogger());
+            .CreateLogger();
+        logging.ClearProviders();
+        logging.AddSerilog(logger);
 
-        #endregion        
+        #endregion
 
+        return logger;
+    }
+    public static void SetDbContext(IConfiguration configuration, IServiceCollection services)
+    {
         #region Db connection
 
-        string? connectionName = AppConstants.DevelopSqLiteConnection;
+        string connectionName = AppConstants.DevelopSqLiteConnection;
         string connectionString = configuration
             .GetConnectionString(connectionName!)
-
             ??throw new InvalidOperationException($"Connection \"{connectionName}\" not found");
 
         services.AddDbContext<AppDbContext>(options =>
@@ -31,9 +34,16 @@ public static class AppConfiguration
         });
 
         #endregion
+    }
+    public static void SetServices(IServiceCollection services)
+    {
+        // Add services to the container.
+
+        services.AddControllersWithViews();
 
         #region Utilities
 
+        services.AddTransient<ExceptionHandlingMiddleware>();
         services.AddAutoMapper(typeof(MapPropfile));
         services.AddTransient<IFileManager, FileManager>();
 
@@ -52,5 +62,31 @@ public static class AppConfiguration
         services.AddScoped<IMasterService, MasterService>();
 
         #endregion
+    }
+    public static void SetMiddleware(WebApplication app)
+    {
+        #region Middleware
+
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        app.UseRouting();
+        app.UseAuthorization();
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+        #endregion
+
+
     }
 }

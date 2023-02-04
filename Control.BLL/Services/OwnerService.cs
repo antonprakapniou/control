@@ -4,7 +4,6 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
 {
     #region Own fields
 
-    private readonly ILogger<GenericService<OwnerVM, Owner>> _logger;
     private readonly IMapper _mapper;
     private readonly IGenericRepository<Owner> _ownerRepository;
     private readonly IGenericRepository<Master> _masterRepository;
@@ -14,13 +13,11 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
     #region Ctor
 
     public OwnerService(
-        ILogger<GenericService<OwnerVM, Owner>> logger,
         IMapper mapper,
         IGenericRepository<Owner> ownerRepository,
         IGenericRepository<Master> masterRepository)
-        : base(logger, mapper, ownerRepository)
+        : base(mapper, ownerRepository)
     {
-        _logger=logger;
         _mapper=mapper;
         _ownerRepository=ownerRepository;
         _masterRepository=masterRepository;
@@ -37,7 +34,6 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
         if (models is null)
         {
             string errorMessage = $"'{models!.GetType().Name}' collection not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 
@@ -68,7 +64,6 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
         if (model is null)
         {
             string errorMessage = $"'{model!.GetType().Name}' with id: '{id}' not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 

@@ -3,7 +3,6 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
 {
     #region Own fields
 
-    private readonly ILogger<GenericService<PositionVM, Position>> _logger;
     private readonly IMapper _mapper;
     private readonly IGenericRepository<Position> _positionRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
@@ -19,7 +18,6 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
     #region Ctor
 
     public PositionService(
-        ILogger<GenericService<PositionVM, Position>> logger,
         IMapper mapper,
         IGenericRepository<Position> positionRepository,
         IGenericRepository<Period> periodRepository,
@@ -29,9 +27,8 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
         IGenericRepository<Nomination> nominationRepository,
         IGenericRepository<Operation> operationRepository,
         IGenericRepository<Owner> ownerRepository)
-        : base(logger, mapper, positionRepository)
+        : base(mapper, positionRepository)
     {
-        _logger=logger;
         _mapper = mapper;
         _positionRepository = positionRepository;
         _periodRepository = periodRepository;
@@ -54,7 +51,6 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
         if (models is null)
         {
             string errorMessage = $"'{models!.GetType().Name}' collection not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 
@@ -134,7 +130,6 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
         if (model is null)
         {
             string errorMessage = $"'{model!.GetType().Name}' with id: '{id}' not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 
@@ -230,7 +225,6 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
         if (modelFromDb is null)
         {
             string errorMessage = $"'{model!.GetType().Name}' with id: '{model.Id}' not found ";
-            _logger.LogError(errorMessage);
             throw new ObjectNotFoundException(errorMessage);
         }
 
