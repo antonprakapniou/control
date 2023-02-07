@@ -3,103 +3,93 @@
 <form method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
     <div class="card" style="width:100%">
         <div class="card-header bg-dark">
-            <div class="text-light">New position</div>
+            <div class="text-light">Searching</div>
         </div>
         <div class="card-body">
-            <div class="row row-cols-2 p-1">
-                <div class="col">
-                    <div class="row row-cols-4 p-1">
-                        <div class="col">
-                            <select asp-for="Filter!.MeasuringId" asp-items="Model.Measurings" class=" form-control">
-                                <option disabled selected value="">measuring</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select asp-for="Filter!.NominationId" asp-items="Model.Nominations" class=" form-control">
-                                <option disabled selected value="">nomination</option>
-                            </select>                            
-                        </div>
-                        <div class="col">
-                            <input asp-for="Filter!.Month" class="form-control" placeholder="month"/>                            
-                        </div>                        
-                        <div class="col">
-                            <input asp-for="Filter!.Number" class="form-control" placeholder="number" />
-                        </div>
-                    </div>
-                    <div class="row row-cols-4 p-1">
-                        <div class="col">
-                            <select asp-for="Filter!.OwnerId" asp-items="Model.Owners" class=" form-control">
-                                <option disabled selected value="">owner</option>
-                            </select>                            
-                        </div>
-                        <div class="col">
-                            <select asp-for="Filter!.PeriodId" asp-items="Model.Periods" class=" form-control">
-                                <option disabled selected value="">period</option>
-                            </select>                            
-                        </div>
-                        <div class="col">
-                            <select asp-for="Filter!.OperationId" asp-items="Model.Operations" class=" form-control">
-                                <option disabled selected value="">operation</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select asp-for="Filter!.CategoryId" asp-items="Model.Categories" class=" form-control">
-                                <option disabled selected value="">category</option>
-                            </select>                            
-                        </div>
-                    </div>                    
-                </div>                
-            </div>            
+            <div class="row row-cols-auto">
+                <div class="col-sm">
+                    <select asp-for="Filter!.MeasuringId" asp-items="Model.Measurings" class=" form-control">
+                        <option disabled selected value="">measuring</option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <select asp-for="Filter!.NominationId" asp-items="Model.Nominations" class=" form-control">
+                        <option disabled selected value="">nomination</option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <input asp-for="Filter!.Month" class="form-control" placeholder="month" />
+                </div>
+                <div class="col-sm">
+                    <input asp-for="Filter!.Number" class="form-control" placeholder="number" />
+                </div>
+                <div class="col-sm">
+                    <select asp-for="Filter!.OwnerId" asp-items="Model.Owners" class=" form-control">
+                        <option disabled selected value="">owner</option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <select asp-for="Filter!.PeriodId" asp-items="Model.Periods" class=" form-control">
+                        <option disabled selected value="">period</option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <select asp-for="Filter!.OperationId" asp-items="Model.Operations" class=" form-control">
+                        <option disabled selected value="">operation</option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <select asp-for="Filter!.CategoryId" asp-items="Model.Categories" class=" form-control">
+                        <option disabled selected value="">category</option>
+                    </select>
+                </div>
+            </div>    
         </div>
+
         <div class="card-footer bg-dark text-end">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <button type="submit" asp-controller="Position" asp-action="FilterPost" class="btn btn-outline-success">
-                    <i class="bi bi-check-lg"></i>
+                <button type="submit" asp-controller="Position" asp-action="FilterPost" class="btn btn-outline-info">
+                    <i class="bi bi-search"></i>
                 </button>
-                @*<a asp-controller="Position" asp-action="Index" class="btn btn-outline-danger">
-                    <i class="bi bi-box-arrow-left"></i>
-                </a>*@
             </div>
         </div>
     </div>
-    <div class="row mb-3">
-        <div class="row row-cols-auto">
-            <div class="col-sm-1 text-end">
-                <div class="badge text-bg-light col-4">
-                    <i class="fa-solid fa-check"></i>
-                </div>
-            </div>
-            <div class="col-sm-2">
-                @StatusConst.AllRight
-            </div>
-            <div class="col-sm-1 text-end">
-                <div class="badge text-bg-success col-4">
-                    <i class="fa-solid fa-exclamation"></i>
-                </div>
-            </div>
-            <div class="col-sm-2">
-                @StatusConst.NextMonthControl
+    <br />
+    <div class="row row-cols-auto">
+        <div class="col-1 text-end">
+            <div class="badge text-bg-light col-4">
+                <i class="fa-solid fa-check"></i>
             </div>
         </div>
-        <div class="row row-cols-auto">
-            <div class="col-sm-1 text-end">
-                <div class="badge text-bg-warning col-4">
-                    <i class="fa-solid fa-exclamation"></i>
-                </div>
+        <div class="col">
+            @StatusConst.AllRight
+        </div>
+        <div class="col-1 text-end">
+            <div class="badge text-bg-success col-4">
+                <i class="fa-solid fa-exclamation"></i>
             </div>
-            <div class="col-sm-2">
-                @StatusConst.CurrentMonthControl
+        </div>
+        <div class="col">
+            @StatusConst.NextMonthControl
+        </div>
+        <div class="col-1 text-end">
+            <div class="badge text-bg-warning col-4">
+                <i class="fa-solid fa-exclamation"></i>
             </div>
-            <div class="col-sm-1 text-end">
-                <div class="badge text-bg-danger col-4">
-                    <i class="fa-solid fa-exclamation"></i>
-                </div>
+        </div>
+        <div class="col">
+            @StatusConst.CurrentMonthControl
+        </div>
+        <div class="col-1 text-end">
+            <div class="badge text-bg-danger col-4">
+                <i class="fa-solid fa-exclamation"></i>
             </div>
-            <div class="col-sm-2">
-                @StatusConst.NeedControl
-            </div>
+        </div>
+        <div class="col">
+            @StatusConst.NeedControl
         </div>
     </div>
+
     <br />
 
 
