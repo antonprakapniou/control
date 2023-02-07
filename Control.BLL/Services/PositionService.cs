@@ -136,7 +136,73 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
         if (filter.Number is not null) expressions.Add(_ => _.FactoryNumber!.ToUpper().Contains(filter.Number.ToUpper())||filter.Number.ToUpper().Contains(_.FactoryNumber.ToUpper()));
         var models = await _positionRepository.GetAllByFilterAsync(expressions.ToArray());
         var viewModels = _mapper.Map<IEnumerable<PositionVM>>(models);
-        return viewModels;
+
+        #region Include properties mapping
+
+        foreach (var viewModel in viewModels)
+        {
+            if (viewModel.CategoryId is not null)
+            {
+                var property = await _categoryRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.CategoryId));
+                var propertyVM = _mapper.Map<CategoryVM>(property);
+                viewModel.Category = propertyVM;
+            }
+
+            if (viewModel.MeasuringId is not null)
+            {
+                var property = await _measuringRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.MeasuringId));
+                var propertyVM = _mapper.Map<MeasuringVM>(property);
+                viewModel.Measuring = propertyVM;
+            }
+
+            if (viewModel.NominationId is not null)
+            {
+                var property = await _nominationRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.NominationId));
+                var propertyVM = _mapper.Map<NominationVM>(property);
+                viewModel.Nomination = propertyVM;
+            }
+
+            if (viewModel.OperationId is not null)
+            {
+                var property = await _operationRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.OperationId));
+                var propertyVM = _mapper.Map<OperationVM>(property);
+                viewModel.Operation = propertyVM;
+            }
+
+            if (viewModel.OwnerId is not null)
+            {
+                var property = await _ownerRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.OwnerId));
+                var propertyVM = _mapper.Map<OwnerVM>(property);
+
+                if (propertyVM.MasterId is not null)
+                {
+                    var master = await _masterRepository.GetOneByAsync(_ => _.Id.Equals(propertyVM.MasterId));
+                    var masterVM = _mapper.Map<MasterVM>(master);
+                    propertyVM.Master=masterVM;
+                }
+
+                viewModel.Owner = propertyVM;
+            }
+
+            if (viewModel.PeriodId is not null)
+            {
+                var property = await _periodRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.PeriodId));
+                var propertyVM = _mapper.Map<PeriodVM>(property);
+                viewModel.Period = propertyVM;
+                viewModel.NeedDate=viewModel.PreviousDate.AddMonths(propertyVM.Month).AddDays(-1);
+            }
+        }
+
+        #endregion
+
+        var orderViewModels = viewModels
+            .OrderBy(_ => _.Measuring?.Code)
+            .ThenBy(_ => _.Nomination?.Name)
+            .ThenBy(_ => _.Owner?.ShopCode)
+            .ThenBy(_ => _.DeviceType)
+            .ThenBy(_ => _.FactoryNumber);
+
+        return orderViewModels;
     }
     public override async Task<PositionVM> GetByIdAsync(Guid id)
     {

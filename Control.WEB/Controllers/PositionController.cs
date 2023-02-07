@@ -46,31 +46,20 @@ public sealed class PositionController : Controller
     #region Action methods
 
     [HttpGet]
-    public async Task<IActionResult> Index()
-    {
-        var viewModels = await _positionService.GetAllAsync();
-        return View(viewModels);
-    }
-    
-    [HttpGet]
-    public async Task<IActionResult> Filter(string response)
+    public async Task<IActionResult> Index(string? responseFilter)
     {
         var representation = new FilterRepresentationVM();
 
-        if (response is not null)
+        if (responseFilter is not null)
         {
-            var filterResponse = JsonConvert.DeserializeObject<FilterResponse>(response!);
-            representation.Filter=filterResponse!.Filter;
-            var positionList = new List<PositionVM>();
-
-            foreach (var item in filterResponse.Ids!) positionList.Add(await _positionService.GetByIdAsync(item));
-
-            representation.Positions = positionList;
+            var filter = JsonConvert.DeserializeObject<FilterVM>(responseFilter!);
+            representation.Filter=filter;
+            representation.Positions=await _positionService.GetAllByFilterAsync(representation.Filter!);
         }
 
         else
         {
-            representation.Positions = new List<PositionVM>();
+            representation.Positions = await _positionService.GetAllAsync();
         }
 
         representation.Categories=await _categoryService.GetSelectListAsync();
@@ -84,13 +73,10 @@ public sealed class PositionController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> FilterPost(FilterRepresentationVM representation)
+    public IActionResult Index(FilterRepresentationVM representation)
     {
-        representation.Positions=await _positionService.GetAllByFilterAsync(representation.Filter!);
-        Guid[] ids = representation.Positions.Select(x => x.Id).ToArray();
-        FilterResponse filterResponce = new() { Filter=representation.Filter, Ids=ids };
-        string jsonResponse = JsonConvert.SerializeObject(filterResponce);
-        return RedirectToAction("Filter", new { Response=jsonResponse });
+        string jsonFilter = JsonConvert.SerializeObject(representation.Filter);
+        return RedirectToAction(nameof(Index), new { ResponseFilter = jsonFilter });
     }
 
     [HttpGet]

@@ -16,7 +16,8 @@
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a asp-controller="Home" asp-action="Index" class="navbar-brand ps-3">Metrolog_Auf</a>
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>    </nav>
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>        
+    </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -25,7 +26,6 @@
                             <div class="sb-sidenav-menu-heading text-light">Manager</div>
                             <div class="sb-sidenav-menu-heading">Main</div>
                             <a asp-controller="Position" asp-action="Index" class="nav-link">Position</a>
-                            <a asp-controller="Position" asp-action="Filter" class="nav-link">Search</a>
                             <a asp-controller="Master" asp-action="Index" class="nav-link">Master</a>
                             <div class="sb-sidenav-menu-heading">Addition</div>
                             <a asp-controller="Measuring" asp-action="Index" class="nav-link">Measuring</a>
