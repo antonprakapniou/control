@@ -1,19 +1,35 @@
-﻿@using Control.DAL.Configuration
-
-@if (TempData[AppConstants.ToastrSuccess]!=null)
+﻿@if (TempData[ToastrConst.Success]!=null)
 {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
-        toastr.success('@TempData[AppConstants.ToastrSuccess]')
+        toastr.success('@TempData[ToastrConst.Success]')
     </script>
 }
 
-@if (TempData[AppConstants.ToastrError]!=null)
+@if (TempData[ToastrConst.Info]!=null)
 {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
-        toastr.error('@TempData[AppConstants.ToastrError]')
+        toastr.info('@TempData[ToastrConst.Info]')
+    </script>
+}
+
+@if (TempData[ToastrConst.Warning]!=null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        toastr.warning('@TempData[ToastrConst.Warning]')
+    </script>
+}
+
+@if (TempData[ToastrConst.Error]!=null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        toastr.error('@TempData[ToastrConst.Error]')
     </script>
 }

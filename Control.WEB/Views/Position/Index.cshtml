@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="col-sm-1">
-        Valid
+        @StatusConst.AllRight
     </div>
     <div class="col-sm-1 text-end">
         <div class="badge text-bg-success col-4">
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="col-sm-2">
-        Control in next month
+        @StatusConst.NextMonthControl
     </div>
     <div class="col-sm-1 text-end">
         <div class="badge text-bg-warning col-4">
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="col-sm-2">
-        Control in current month
+        @StatusConst.CurrentMonthControl
     </div>
     <div class="col-sm-1 text-end">
         <div class="badge text-bg-danger col-4">
@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="col-sm-1">
-        Invalid
+        @StatusConst.NeedControl
     </div>
 </div>
 <br />
@@ -70,37 +70,32 @@
                     <td class="text-center align-middle">@item.NextDate.ToShortDateString()</td>
                     <td class="text-center align-middle">
                         @{
-                            if (item.ValidStatus.Equals(ValidStatusEnum.Valid))
+                            if (item.NextDateStatus.Equals(NextDateStatusEnum.AllRight))
                             {
                                 <div class="badge text-bg-light col-4">
                                     <i class="fa-solid fa-check"></i>
                                 </div>
                             }
 
-                            else if (item.ValidStatus.Equals(ValidStatusEnum.NextMonthControl))
+                            else if (item.NextDateStatus.Equals(NextDateStatusEnum.NextMonthControl))
                             {
                                 <div class="badge text-bg-success col-4">
                                     <i class="fa-solid fa-exclamation"></i>
                                 </div>
                             }
 
-                            else if (item.ValidStatus.Equals(ValidStatusEnum.CurrentMonthControl))
+                            else if (item.NextDateStatus.Equals(NextDateStatusEnum.CurrentMonthControl))
                             {
                                 <div class="badge text-bg-warning col-4">
                                     <i class="fa-solid fa-exclamation"></i>
                                 </div>
                             }
 
-                            else if (item.ValidStatus.Equals(ValidStatusEnum.Invalid))
+                            else
                             {
                                 <div class="badge text-bg-danger col-4">
                                     <i class="fa-solid fa-exclamation"></i>
                                 </div>
-                            }
-
-                            else
-                            {
-                                <p>indefined</p>
                             }
                         }
                        

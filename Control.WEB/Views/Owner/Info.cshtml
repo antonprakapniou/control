@@ -1,9 +1,4 @@
 ﻿@model OwnerVM
-
-@{
-    var master = Model.Master;
-}
-
 <br />
 <form method="post" class="needs-validation" novalidate>
     <input asp-for="Id" hidden />
@@ -54,7 +49,7 @@
 
                 @if (Model.MasterId is not null)
                 {
-                    if (master!.Name is not null)
+                    if (Model.Master!.Name is not null)
                     {
                         <dt class="col-sm-3 text-end">
                             <label asp-for="Master!.Name" class="col-form-label"></label>
@@ -64,7 +59,7 @@
                         </dd>
                     }
 
-                    if (master!.Phone is not null)
+                    if (Model.Master!.Phone is not null)
                     {
                         <dt class="col-sm-3 text-end">
                             <label asp-for="Master!.Phone" class="col-form-label"></label>
@@ -74,7 +69,7 @@
                         </dd>
                     }
 
-                    if (master!.Email is not null)
+                    if (Model.Master!.Email is not null)
                     {
                         <dt class="col-sm-3 text-end">
                             <label asp-for="Master!.Email" class="col-form-label"></label>
@@ -88,14 +83,25 @@
             </dl>
         </div>
         <div class="card-footer bg-dark text-end">
-            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <a asp-controller="Owner" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-warning">
-                    <i class="bi bi-pencil-fill"></i>
-                </a>
-                <a asp-controller="Owner" asp-action="Index" class="btn btn-outline-danger">
-                    <i class="bi bi-box-arrow-left"></i>
-                </a>
-            </div>
+            <div class="row row-cols-auto">
+                <div class="col-6 text-start">
+                    <form method="post" asp-controller="Owner" asp-action="Delete" asp-route-id="@Model.Id">
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="col-6 text-end">
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                        <a asp-controller="Owner" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-warning">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <a asp-controller="Owner" asp-action="Index" class="btn btn-outline-danger">
+                            <i class="bi bi-box-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>            
         </div>
     </div>
 </form>

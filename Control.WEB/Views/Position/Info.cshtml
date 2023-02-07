@@ -1,15 +1,9 @@
 ﻿@model PositionVM
-
-@{
-    var owner = Model.Owner;
-    var master = owner!.Master;
-}
-
 <br />
 <form method="get" class="needs-validation" novalidate>
     <input asp-for="Id" hidden />
     <div class="card" style="width:80%">
-        <div class="card-header">Position</div>
+        <div class="card-header bg-dark text-light">Position</div>
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-sm-6">
@@ -91,37 +85,32 @@
                         </dt>
                         <dd class="col-sm-9">
                             @{
-                                if (@Model.ValidStatus.Equals(ValidStatusEnum.Valid))
+                                if (Model.NextDateStatus.Equals(NextDateStatusEnum.AllRight))
                                 {
                                     <div class="badge text-bg-light col-2">
                                         <i class="fa-solid fa-check"></i>
                                     </div>
                                 }
 
-                                else if (@Model.ValidStatus.Equals(ValidStatusEnum.NextMonthControl))
+                                else if (Model.NextDateStatus.Equals(NextDateStatusEnum.NextMonthControl))
                                 {
                                     <div class="badge text-bg-success col-2">
                                         <i class="fa-solid fa-exclamation"></i>
                                     </div>
                                 }
 
-                                else if (@Model.ValidStatus.Equals(ValidStatusEnum.CurrentMonthControl))
+                                else if (Model.NextDateStatus.Equals(NextDateStatusEnum.CurrentMonthControl))
                                 {
                                     <div class="badge text-bg-warning col-2">
                                         <i class="fa-solid fa-exclamation"></i>
                                     </div>
                                 }
 
-                                else if (@Model.ValidStatus.Equals(ValidStatusEnum.Invalid))
+                                else
                                 {
                                     <div class="badge text-bg-danger col-2">
                                         <i class="fa-solid fa-exclamation"></i>
                                     </div>
-                                }
-
-                                else
-                                {
-                                    <p>indefined</p>
                                 }
                             }
                         </dd>
@@ -165,70 +154,71 @@
                                 <i class="fa-solid fa-check"></i>
                             </div>
                         </dt>
-                        <dd class="col-sm-10">Valid</dd>
+                        <dd class="col-sm-10">@StatusConst.AllRight</dd>
 
                         <dt class="col-sm-2 text-end">
                             <div class="badge text-bg-success col-12">
                                 <i class="fa-solid fa-exclamation"></i>
                             </div>
                         </dt>
-                        <dd class="col-sm-10">Control in next month</dd>
+                        <dd class="col-sm-10">@StatusConst.NextMonthControl</dd>
 
                         <dt class="col-sm-2 text-end">
                             <div class="badge text-bg-warning col-12">
                                 <i class="fa-solid fa-exclamation"></i>
                             </div>
                         </dt>
-                        <dd class="col-sm-10">Control in current month</dd>
+                        <dd class="col-sm-10">@StatusConst.CurrentMonthControl</dd>
 
                         <dt class="col-sm-2 text-end">
                             <div class="badge text-bg-danger col-12">
                                 <i class="fa-solid fa-exclamation"></i>
                             </div>
                         </dt>
-                        <dd class="col-sm-10">Invalid</dd>
+                        <dd class="col-sm-10">@StatusConst.NeedControl</dd>
                         
                         @if (Model.Owner is not null)
                         {
                             <div class="card-header">Owner</div>
                             <div class="card-body bg-light">
                                 <dl class="row">
-
-                                    @if(owner.ShopCode is not null){<dd class="col-sm-12">@Model.Owner.ShopCode</dd>}
-                                    
-                                    @if(owner.ShortName is not null){<dd class="col-sm-12">@Model.Owner.ShortName</dd>}
-                                    
-                                    @if(owner.FullName is not null){<dd class="col-sm-12">@Model.Owner.FullName</dd>}
-
-                                    @if (owner.Phone is not null){<dd class="col-sm-12">@Model.Owner.Phone</dd>}  
-                                    
-                                    @if (master is not null)
+                                    @if(Model.Owner.ShopCode is not null){<dd class="col-sm-12">@Model.Owner.ShopCode</dd>}
+                                    @if (Model.Owner.ShortName is not null)
                                     {
-                                        @if (master.Name is not null)
-                                        {
-                                            <dt class="col-sm-4 text-end">
-                                                <label asp-for="@master.Name"></label>
-                                            </dt>
-                                            <dd class="col-sm-8">@master.Name</dd>
-                                        }
-
-                                        @if (master.Phone is not null)
-                                        {
-                                            <dt class="col-sm-4 text-end">
-                                                <label asp-for="@master.Phone"></label>
-                                            </dt>
-                                            <dd class="col-sm-8">@master.Phone</dd>
-                                        }
-
-                                        @if (master.Email is not null)
-                                        {
-                                            <dt class="col-sm-4 text-end">
-                                                <label asp-for="@master.Email"></label>
-                                            </dt>
-                                            <dd class="col-sm-8">@master.Email</dd>
-                                        }
+                                        <dd class="col-sm-12">@Model.Owner.ShortName</dd>
                                     }
-                                    
+                                    @if (Model.Owner.FullName is not null)
+                                    {
+                                        <dd class="col-sm-12">@Model.Owner.FullName</dd>
+                                    }
+                                    @if (Model.Owner.Phone is not null)
+                                    {
+                                        <dd class="col-sm-12">@Model.Owner.Phone</dd>
+                                    }
+                                    @if (Model.Owner.Master is not null)
+                                    {
+                                        @if (Model.Owner.Master.Name is not null)
+                                        {
+                                            <dt class="col-sm-4 text-end">
+                                                <label asp-for="@Model.Owner.Master.Name"></label>
+                                            </dt>
+                                            <dd class="col-sm-8">@Model.Owner.Master.Name</dd>
+                                        }
+                                        @if (Model.Owner.Master.Phone is not null)
+                                        {
+                                            <dt class="col-sm-4 text-end">
+                                                <label asp-for="@Model.Owner.Master.Phone"></label>
+                                            </dt>
+                                            <dd class="col-sm-8">@Model.Owner.Master.Phone</dd>
+                                        }
+                                        @if (Model.Owner.Master.Email is not null)
+                                        {
+                                            <dt class="col-sm-4 text-end">
+                                                <label asp-for="@Model.Owner.Master.Email"></label>
+                                            </dt>
+                                            <dd class="col-sm-8">@Model.Owner.Master.Email</dd>
+                                        }
+                                    }                                    
                                 </dl>
                             </div>
                         }  
@@ -237,7 +227,7 @@
                         <dd class="col-sm-6">
                             @if (Model.Picture is not null)
                             {
-                                <img style="width:100%" src="@AppConstants.PositionPartialPath@Model.Picture" alt="No picture">
+                                <img style="width:100%" src="@GeneralConst.PositionPartialPath@Model.Picture" alt="No picture">
                             }
                         </dd>
 
@@ -245,15 +235,26 @@
                 </div>
             </div>            
         </div>
-        <div class="card-footer text-end">
-            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <a asp-controller="Position" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-warning">
-                    <i class="bi bi-pencil-fill"></i>
-                </a>
-                <a asp-controller="Position" asp-action="Index" class="btn btn-outline-danger">
-                    <i class="bi bi-box-arrow-left"></i>
-                </a>
-            </div>
+        <div class="card-footer bg-dark text-end">
+            <div class="row row-cols-auto">
+                <div class="col-6 text-start">
+                    <form method="post" asp-controller="Position" asp-action="Delete" asp-route-id="@Model.Id">
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="col-6 text-end">
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                        <a asp-controller="Position" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-warning">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <a asp-controller="Position" asp-action="Index" class="btn btn-outline-danger">
+                            <i class="bi bi-box-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>            
         </div>
     </div>
 </form>

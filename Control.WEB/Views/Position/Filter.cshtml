@@ -160,7 +160,7 @@
                         <td class="text-center align-middle">@item.NextDate.ToShortDateString()</td>
                         <td class="text-center align-middle">
                             @{
-                                if (item.ValidStatus.Equals(NextDateStatusEnum.AllRight))
+                                if (item.NextDateStatus.Equals(NextDateStatusEnum.AllRight))
                                 {
                                     <div class="badge text-bg-light col-4">
                                         <i class="fa-solid fa-check"></i>

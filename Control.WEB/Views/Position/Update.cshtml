@@ -82,7 +82,7 @@
                             </div>
                             <div class="col-sm-1 text-end">
                                 <div>
-                                    <img style="width:56px;height:37px" src="@AppConstants.PositionPartialPath@Model.PositionVM!.Picture" alt="No picture">
+                                    <img style="width:56px;height:37px" src="@GeneralConst.PositionPartialPath@Model.PositionVM!.Picture" alt="No picture">
                                 </div>
                             </div>
                             <div class="col-sm-2 text-center align-middle">
@@ -137,29 +137,24 @@
                         </div>
                         <div class="card-footer">
                             @{
-                                if (Model.PositionVM!.ValidStatus.Equals(ValidStatusEnum.Valid))
+                                if (Model.PositionVM!.NextDateStatus.Equals(NextDateStatusEnum.AllRight))
                                 {
-                                    <div>valid</div>
+                                    <div>@StatusConst.AllRight</div>
                                 }
 
-                                else if (Model.PositionVM!.ValidStatus.Equals(ValidStatusEnum.NextMonthControl))
+                                else if (Model.PositionVM!.NextDateStatus.Equals(NextDateStatusEnum.NextMonthControl))
                                 {
-                                    <div>next month control</div>
+                                    <div>@StatusConst.NextMonthControl</div>
                                 }
 
-                                else if (Model.PositionVM!.ValidStatus.Equals(ValidStatusEnum.CurrentMonthControl))
+                                else if (Model.PositionVM!.NextDateStatus.Equals(NextDateStatusEnum.CurrentMonthControl))
                                 {
-                                    <div>current month control</div>
-                                }
-
-                                else if (Model.PositionVM!.ValidStatus.Equals(ValidStatusEnum.Invalid))
-                                {
-                                    <div>invalid</div>
+                                    <div>@StatusConst.CurrentMonthControl</div>
                                 }
 
                                 else
                                 {
-                                    <div>indefined</div>
+                                    <div>@StatusConst.NeedControl</div>
                                 }
                             }
                         </div>

@@ -22,7 +22,7 @@ public static class AppConfiguration
     {
         #region Db connection
 
-        string connectionName = AppConstants.DevelopSqLiteConnection;
+        string connectionName = ConnectionConst.DevelopSqLiteConnection;
         string connectionString = configuration
             .GetConnectionString(connectionName!)
             ??throw new InvalidOperationException($"Connection \"{connectionName}\" not found");

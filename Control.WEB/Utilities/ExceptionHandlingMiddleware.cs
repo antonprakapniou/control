@@ -23,7 +23,6 @@ public class ExceptionHandlingMiddleware : IMiddleware
     {
         try
         {
-            _logger.LogInformation($"{context.GetEndpoint()} Request is successfull");
             await next(context);
         }
 

@@ -87,21 +87,28 @@ public sealed class PositionVM : BaseViewModel
     #region NotSet    
 
     [DisplayName("Status")]
+    public NextDateStatusEnum NextDateStatus { get => SetNextDateStatus(NextDate); }
     public ValidStatusEnum ValidStatus { get => SetValidStatus(NeedDate); }
 
     #endregion
 
     #region Methods
 
-    private static ValidStatusEnum SetValidStatus( DateTime needDate)
+    private static NextDateStatusEnum SetNextDateStatus( DateTime nextDate)
+    {
+        DateTime currentDate = DateTime.Now;
+
+        if (currentDate>nextDate) return NextDateStatusEnum.NeedControl;
+        else if (currentDate.AddMonths(2)>nextDate&&currentDate.Month.Equals(nextDate.Month)) return NextDateStatusEnum.CurrentMonthControl;
+        else if (currentDate.AddMonths(2)>nextDate&&currentDate.AddMonths(1).Month.Equals(nextDate.Month)) return NextDateStatusEnum.NextMonthControl;
+        else return NextDateStatusEnum.AllRight;
+    }
+    private static ValidStatusEnum SetValidStatus(DateTime needDate)
     {
         DateTime currentDate = DateTime.Now;
 
         if (currentDate>needDate) return ValidStatusEnum.Invalid;
-        else if (currentDate.AddMonths(2)>needDate&&currentDate.Month.Equals(needDate.Month)) return ValidStatusEnum.CurrentMonthControl;
-        else if (currentDate.AddMonths(2)>needDate&&currentDate.AddMonths(1).Month.Equals(needDate.Month)) return ValidStatusEnum.NextMonthControl;
-        else if (currentDate<=needDate) return ValidStatusEnum.Valid;
-        else return ValidStatusEnum.Indefined;
+        else return ValidStatusEnum.Valid;
     }
 
     #endregion
