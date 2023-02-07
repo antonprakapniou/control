@@ -35,8 +35,14 @@ public sealed class CategoryService : GenericService<CategoryVM, Category>, ICat
         }
 
         var viewModels = _mapper.Map<IEnumerable<CategoryVM>>(models);
-        var orderViewModels= viewModels.OrderBy(_ => _.Name);
+        var orderViewModels = viewModels.OrderBy(_ => _.Name);
         return orderViewModels;
+    }
+    public async Task<IEnumerable<SelectListItem>> GetSelectListAsync()
+    {
+        var models = await _repository.GetAllByAsync();
+        var selectList = models.Select(_ => new SelectListItem { Value=_.Id.ToString(), Text=_.Name });
+        return selectList;
     }
 
     #endregion

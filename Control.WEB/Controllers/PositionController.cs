@@ -1,12 +1,13 @@
-﻿namespace Control.WEB.Controllers;
+﻿using Newtonsoft.Json;
+
+namespace Control.WEB.Controllers;
 
 public sealed class PositionController : Controller
 {
-    private const string _partialPath = AppConstants.PositionPartialPath;
+    private const string _partialPath = GeneralConst.PositionPartialPath;
 
     #region Own fields
 
-    private readonly ILogger<PositionController> _logger;
     private readonly IPositionService _positionService;
     private readonly ICategoryService _categoryService;
     private readonly IMeasuringService _measuringService;
@@ -21,7 +22,6 @@ public sealed class PositionController : Controller
     #region Ctor
 
     public PositionController(
-        ILogger<PositionController> logger,
         IPositionService positionService,
         ICategoryService categoryService,
         IMeasuringService measuringService,
@@ -31,7 +31,6 @@ public sealed class PositionController : Controller
         IPeriodService periodService,
         IFileManager fileManager)
     {
-        _logger=logger;
         _positionService=positionService;
         _categoryService=categoryService;
         _measuringService=measuringService;
@@ -49,309 +48,175 @@ public sealed class PositionController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        throw new InvalidValueException("sdgsgsfgs");
-        try
+        var viewModels = await _positionService.GetAllAsync();
+        return View(viewModels);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> Filter(string response)
+    {
+        var representation = new FilterRepresentationVM();
+
+        if (response is not null)
         {
-            var vms = await _positionService.GetAllAsync();
-            return View(vms);
+            var filterResponse = JsonConvert.DeserializeObject<FilterResponse>(response!);
+            representation.Filter=filterResponse!.Filter;
+            var positionList = new List<PositionVM>();
+
+            foreach (var item in filterResponse.Ids!) positionList.Add(await _positionService.GetByIdAsync(item));
+
+            representation.Positions = positionList;
         }
 
-        catch (ObjectNotFoundException ex)
+        else
         {
-            string message = ex.Message;
-            _logger.LogError(message);
-            return NotFound(message);
+            representation.Positions = new List<PositionVM>();
         }
 
-        catch (Exception ex)
-        {
-            string message = ex.Message;
-            _logger.LogError(message);
-            return BadRequest(message);
-        }
+        representation.Categories=await _categoryService.GetSelectListAsync();
+        representation.Measurings=await _measuringService.GetSelectListAsync();
+        representation.Nominations=await _nominationService.GetSelectListAsync();
+        representation.Operations=await _operationService.GetSelectListAsync();
+        representation.Owners=await _ownerService.GetSelectListAsync();
+        representation.Periods=await _periodService.GetSelectListAsync();
+
+        return View(representation);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> FilterPost(FilterRepresentationVM representation)
+    {
+        representation.Positions=await _positionService.GetAllByFilterAsync(representation.Filter!);
+        Guid[] ids = representation.Positions.Select(x => x.Id).ToArray();
+        FilterResponse filterResponce = new() { Filter=representation.Filter, Ids=ids };
+        string jsonResponse = JsonConvert.SerializeObject(filterResponce);
+        return RedirectToAction("Filter", new { Response=jsonResponse });
     }
 
     [HttpGet]
     public async Task<IActionResult> Info(Guid id)
     {
-        var vm = await _positionService.GetByIdAsync(id);
-        return View(vm);
+        var viewModel = await _positionService.GetByIdAsync(id);
+        return View(viewModel);
     }
 
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        try
+        PositionCreatingVM positionCreatingVM = new()
         {
-            var categories = await _categoryService.GetAllAsync();
-            var measurings = await _measuringService.GetAllAsync();
-            var nominations = await _nominationService.GetAllAsync();
-            var operations = await _operationService.GetAllAsync();
-            var owners = await _ownerService.GetAllAsync();
-            var periods = await _periodService.GetAllAsync();
+            PositionVM = new(),
+            Categories = await _categoryService.GetSelectListAsync(),
+            Measurings= await _measuringService.GetSelectListAsync(),
+            Nominations=await _nominationService.GetSelectListAsync(),
+            Operations=await _operationService.GetSelectListAsync(),
+            Owners=await _ownerService.GetSelectListAsync(),
+            Periods=await _periodService.GetSelectListAsync(),
+        };
 
-            PositionCreatingVM positionCreatingVM = new()
-            {
-                PositionVM=new(),
-
-                Categories=categories.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.Name
-                }),
-
-                Measurings=measurings.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.Code
-                }),
-
-                Nominations=nominations.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.Name
-                }),
-
-                Operations=operations.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.Name
-                }),
-
-                Owners=owners.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.ShortName
-                }),
-
-                Periods=periods.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.Name
-                })
-            };
-
-            return View(positionCreatingVM);
-        }
-
-        catch (Exception ex)
-        {
-            string message = ex.Message;
-            _logger.LogError(message);
-            return BadRequest(message);
-        }
+        return View(positionCreatingVM);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(PositionCreatingVM positionCreatingVM)
     {
-        try
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
+            var viewModel = positionCreatingVM.PositionVM;
+
+            var files = HttpContext.Request.Form.Files;
+            if (files.Count!=0)
             {
-                var viewModel = positionCreatingVM.PositionVM;
-
-                var files = HttpContext.Request.Form.Files;
-                if (files.Count!=0)
-                {
-                    _fileManager.Load(files, _partialPath);
-                    viewModel!.Picture=_fileManager.FileName;
-                }
-
-                await _positionService.CreateAsync(viewModel!);
-                TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrCreateSuccess;
-                return RedirectToAction(nameof(Index));
+                _fileManager.Load(files, _partialPath);
+                viewModel!.Picture=_fileManager.FileName;
             }
 
-            else return RedirectToAction();
+            await _positionService.CreateAsync(viewModel!);
+            TempData[ToastrConst.Success]=ToastrConst.CreateSuccess;
+            return RedirectToAction(nameof(Index));
         }
 
-        catch (Exception ex)
+        else
         {
-            TempData[AppConstants.ToastrError]=AppConstants.ToastrCreateError;
-            string message = ex.Message;
-            _logger.LogError(message);
-            return BadRequest(message);
+            TempData[ToastrConst.Error]=ToastrConst.OperationError;
+            return RedirectToAction();
         }
     }
 
     [HttpGet]
     public async Task<IActionResult> Update(Guid id)
     {
-        try
+        PositionCreatingVM positionCreatingVM = new()
         {
-            var vm = await _positionService.GetByIdAsync(id);
-            var categories = await _categoryService.GetAllAsync();
-            var measurings = await _measuringService.GetAllAsync();
-            var nominations = await _nominationService.GetAllAsync();
-            var operations = await _operationService.GetAllAsync();
-            var owners = await _ownerService.GetAllAsync();
-            var periods = await _periodService.GetAllAsync();
+            PositionVM=await _positionService.GetByIdAsync(id),
+            Categories = await _categoryService.GetSelectListAsync(),
+            Measurings= await _measuringService.GetSelectListAsync(),
+            Nominations=await _nominationService.GetSelectListAsync(),
+            Operations=await _operationService.GetSelectListAsync(),
+            Owners=await _ownerService.GetSelectListAsync(),
+            Periods=await _periodService.GetSelectListAsync(),
+        };
 
-            PositionCreatingVM positionCreatingVM = new()
-            {
-                PositionVM=vm,
-
-                Categories=categories.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.Name
-                }),
-
-                Measurings=measurings.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.Code
-                }),
-
-                Nominations=nominations.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.Name
-                }),
-
-                Operations=operations.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.Name
-                }),
-
-                Owners=owners.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.ShortName,
-                }),
-
-                Periods=periods.Select(_ => new SelectListItem
-                {
-                    Value=_.Id.ToString(),
-                    Text=_.Name
-                })
-            };
-
-            return View(positionCreatingVM);
-        }
-
-        catch (ObjectNotFoundException ex)
-        {
-            string message = ex.Message;
-            _logger.LogError(message);
-            return NotFound(message);
-        }
-
-        catch (Exception ex)
-        {
-            string message = ex.Message;
-            _logger.LogError(message);
-            return BadRequest(message);
-        }
+        return View(positionCreatingVM);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Update(PositionCreatingVM positionCreatingVM)
     {
-        try
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
+            var viewModel = positionCreatingVM.PositionVM;
+            var vmFromDb = await _positionService.GetByIdAsync(viewModel!.Id);
+            var oldPicture = vmFromDb.Picture;
+            var files = HttpContext.Request.Form.Files;
+
+            if (files.Count!=0)
             {
-                var vm = positionCreatingVM.PositionVM;
-                var vmFromDb = await _positionService.GetByIdAsync(vm!.Id);
-                var oldPicture = vmFromDb.Picture;
-                var files = HttpContext.Request.Form.Files;
-
-                if (files.Count!=0)
-                {
-                    if (oldPicture is not null) _fileManager.Delete(oldPicture!, _partialPath);
-                    _fileManager.Load(files, _partialPath);
-                    vm!.Picture=_fileManager.FileName;
-                }
-
-                else vm.Picture=oldPicture;
-
-                await _positionService.UpdateAsync(vm!);
-                TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrUpdateSuccess;
-                return RedirectToAction(nameof(Update), new { id = vm.Id });
+                if (oldPicture is not null) _fileManager.Delete(oldPicture!, _partialPath);
+                _fileManager.Load(files, _partialPath);
+                viewModel!.Picture=_fileManager.FileName;
             }
 
-            return RedirectToAction();
+            else viewModel.Picture=oldPicture;
+
+            await _positionService.UpdateAsync(viewModel!);
+            TempData[ToastrConst.Success]=ToastrConst.UpdateSuccess;
+            return RedirectToAction(nameof(Update), new { id = viewModel.Id });
         }
 
-        catch (Exception ex)
-        {
-            TempData[AppConstants.ToastrError]=AppConstants.ToastrUpdateError;
-            string message = ex.Message;
-            _logger.LogError(message);
-            return BadRequest(message);
-        }
+        else TempData[ToastrConst.Error]=ToastrConst.InvalidModel;
+        return RedirectToAction(nameof(Update), new { id = positionCreatingVM.PositionVM!.Id }); ;
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeletePicture(PositionCreatingVM positionCreatingVM)
     {
-        try
+        var viewModel = await _positionService.GetByIdAsync(positionCreatingVM.PositionVM!.Id);
+
+        if (viewModel.Picture is not null)
         {
-            var vm = await _positionService.GetByIdAsync(positionCreatingVM.PositionVM!.Id);
-
-            if (vm.Picture is not null)
-            {
-                _fileManager.Delete(vm.Picture, _partialPath);
-                vm.Picture = null;
-                await _positionService.UpdateAsync(vm);
-                TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrPictureDeleteSuccess;
-            }
-
-            else TempData[AppConstants.ToastrError]=AppConstants.ToastrPictureNotFound;
-            return RedirectToAction(nameof(Update), new { id = vm.Id });
+            _fileManager.Delete(viewModel.Picture, _partialPath);
+            viewModel.Picture = null;
+            await _positionService.UpdateAsync(viewModel);
+            TempData[ToastrConst.Success]=ToastrConst.DeleteSuccess;
         }
 
-        catch (ObjectNotFoundException ex)
-        {
-            TempData[AppConstants.ToastrError]=AppConstants.ToastrPictureDeleteError;
-            string message = ex.Message;
-            _logger.LogError(message);
-            return NotFound(message);
-        }
-
-        catch (Exception ex)
-        {
-            TempData[AppConstants.ToastrError]=AppConstants.ToastrPictureDeleteError;
-            string message = ex.Message;
-            _logger.LogError(message);
-            return BadRequest(message);
-        }
+        else TempData[ToastrConst.Error]=ToastrConst.OperationError;
+        return RedirectToAction(nameof(Update), new { id = viewModel.Id });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(Guid id)
     {
-        try
-        {
-            var model = await _positionService.GetByIdAsync(id);
-            if (model.Picture is not null) _fileManager.Delete(model.Picture, _partialPath);
-            await _positionService.DeleteAsync(id);
-            TempData[AppConstants.ToastrSuccess]=AppConstants.ToastrDeleteSuccess;
-            return RedirectToAction(nameof(Index));
-        }
-
-        catch (ObjectNotFoundException ex)
-        {
-            TempData[AppConstants.ToastrError]=AppConstants.ToastrDeleteError;
-            string message = ex.Message;
-            _logger.LogError(message);
-            return NotFound(message);
-        }
-
-        catch (Exception ex)
-        {
-            TempData[AppConstants.ToastrError]=AppConstants.ToastrDeleteError;
-            string message = ex.Message;
-            _logger.LogError(message);
-            return BadRequest(message);
-        }
+        var model = await _positionService.GetByIdAsync(id);
+        if (model.Picture is not null) _fileManager.Delete(model.Picture, _partialPath);
+        await _positionService.DeleteAsync(id);
+        TempData[ToastrConst.Success]=ToastrConst.DeleteSuccess;
+        return RedirectToAction(nameof(Index));
     }
 
     #endregion

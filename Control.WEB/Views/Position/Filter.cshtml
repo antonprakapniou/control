@@ -1,0 +1,236 @@
+﻿@model FilterRepresentationVM
+<br />
+<form method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+    <div class="card" style="width:100%">
+        <div class="card-header bg-dark">
+            <div class="text-light">New position</div>
+        </div>
+        <div class="card-body">
+            <div class="row row-cols-2 p-1">
+                <div class="col">
+                    <div class="row row-cols-4 p-1">
+                        <div class="col">
+                            <select asp-for="Filter!.MeasuringId" asp-items="Model.Measurings" class=" form-control">
+                                <option disabled selected value="">measuring</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select asp-for="Filter!.NominationId" asp-items="Model.Nominations" class=" form-control">
+                                <option disabled selected value="">nomination</option>
+                            </select>                            
+                        </div>
+                        <div class="col">
+                            <input asp-for="Filter!.Month" class="form-control" placeholder="month"/>                            
+                        </div>                        
+                        <div class="col">
+                            <input asp-for="Filter!.Number" class="form-control" placeholder="number" />
+                        </div>
+                    </div>
+                    <div class="row row-cols-4 p-1">
+                        <div class="col">
+                            <select asp-for="Filter!.OwnerId" asp-items="Model.Owners" class=" form-control">
+                                <option disabled selected value="">owner</option>
+                            </select>                            
+                        </div>
+                        <div class="col">
+                            <select asp-for="Filter!.PeriodId" asp-items="Model.Periods" class=" form-control">
+                                <option disabled selected value="">period</option>
+                            </select>                            
+                        </div>
+                        <div class="col">
+                            <select asp-for="Filter!.OperationId" asp-items="Model.Operations" class=" form-control">
+                                <option disabled selected value="">operation</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select asp-for="Filter!.CategoryId" asp-items="Model.Categories" class=" form-control">
+                                <option disabled selected value="">category</option>
+                            </select>                            
+                        </div>
+                    </div>                    
+                </div>                
+            </div>            
+        </div>
+        <div class="card-footer bg-dark text-end">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <button type="submit" asp-controller="Position" asp-action="FilterPost" class="btn btn-outline-success">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+                @*<a asp-controller="Position" asp-action="Index" class="btn btn-outline-danger">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>*@
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="row row-cols-auto">
+            <div class="col-sm-1 text-end">
+                <div class="badge text-bg-light col-4">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                @StatusConst.AllRight
+            </div>
+            <div class="col-sm-1 text-end">
+                <div class="badge text-bg-success col-4">
+                    <i class="fa-solid fa-exclamation"></i>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                @StatusConst.NextMonthControl
+            </div>
+        </div>
+        <div class="row row-cols-auto">
+            <div class="col-sm-1 text-end">
+                <div class="badge text-bg-warning col-4">
+                    <i class="fa-solid fa-exclamation"></i>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                @StatusConst.CurrentMonthControl
+            </div>
+            <div class="col-sm-1 text-end">
+                <div class="badge text-bg-danger col-4">
+                    <i class="fa-solid fa-exclamation"></i>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                @StatusConst.NeedControl
+            </div>
+        </div>
+    </div>
+    <br />
+
+
+
+
+
+    <table class="table table-responsive table-dark table-hover align-middle" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-center align-middle">
+                    <div class="col-12 text-start">
+                        <a asp-controller="Position" asp-action="Create" class="btn btn-dark">
+                            <i class="bi bi-plus-lg"></i>
+                        </a>
+                    </div>
+                </th>
+                <th class="text-center align-middle">Number</th>
+                <th class="text-center align-middle">Owner</th>
+                <th class="text-center align-middle">Period</th>
+                <th class="text-center align-middle">Previous</th>
+                <th class="text-center align-middle">Next</th>
+                <th class="text-center align-middle">Status</th>
+                <th class="text-center align-middle">Operation</th>
+                <th class="text-center align-middle">Category</th>
+                <th class="text-center align-middle" style="width:12%"><i class="bi bi-gear-wide-connected"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Positions!.Count()>0)
+            {
+                @foreach (var item in Model.Positions!)
+                {
+                    <tr>
+                        <td class="text-center align-middle">@item.DeviceType</td>
+                        <td class="text-center align-middle">@item.FactoryNumber</td>
+                        <td class="text-center align-middle">@if (item.Owner is not null)
+                                @item.Owner.ShortName
+                        </td>
+                            <td class="text-center align-middle">@if (item.Period is not null)
+                                @item.Period.Name
+                        </td>
+                            <td class="text-center align-middle">
+                                @if (item.ValidStatus.Equals(ValidStatusEnum.Valid))
+                            {
+                                <div class="btn-outline-info">
+                                    @item.PreviousDate.ToShortDateString()
+                                </div>
+                            }
+
+                            else
+                            {
+                                <div class="btn-outline-info">
+                                    @item.PreviousDate.ToShortDateString()
+                                </div>
+                            }
+
+                        </td>
+                        <td class="text-center align-middle">@item.NextDate.ToShortDateString()</td>
+                        <td class="text-center align-middle">
+                            @{
+                                if (item.ValidStatus.Equals(NextDateStatusEnum.AllRight))
+                                {
+                                    <div class="badge text-bg-light col-4">
+                                        <i class="fa-solid fa-check"></i>
+                                    </div>
+                                }
+
+                                else if (item.NextDateStatus.Equals(NextDateStatusEnum.NextMonthControl))
+                                {
+                                    <div class="badge text-bg-success col-4">
+                                        <i class="fa-solid fa-exclamation"></i>
+                                    </div>
+                                }
+
+                                else if (item.NextDateStatus.Equals(NextDateStatusEnum.CurrentMonthControl))
+                                {
+                                    <div class="badge text-bg-warning col-4">
+                                        <i class="fa-solid fa-exclamation"></i>
+                                    </div>
+                                }
+
+                                else
+                                {
+                                    <div class="badge text-bg-danger col-4">
+                                        <i class="fa-solid fa-exclamation"></i>
+                                    </div>
+                                }
+                            }
+
+                        <td class="text-center align-middle">@if (item.Operation is not null)
+                                    @item.Operation.Name
+                        </td>
+                            <td class="text-center align-middle">@if (item.Category is not null)
+                                    @item.Category.Name
+                        </td>
+                            <td class="text-center align-middle">
+                                <div class="btn-toolbar justify-content-between" role="toolbar">
+                                    <a asp-controller="Position" asp-action="Info" asp-route-id="@item.Id" class="btn btn-outline-info">
+                                        <i class="bi bi-info-lg"></i>
+                                    </a>
+                                    <a asp-controller="Position" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-warning">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    <form method="post" asp-controller="Position" asp-action="Delete" asp-route-id="@item.Id">
+                                        <button type="submit" class="btn btn-outline-danger">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                }
+            }
+
+            else
+            {
+                <tr>
+                    <td colspan="10">Position list is empty</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+        <script src="~/js/site.js"></script>
+    }
+}

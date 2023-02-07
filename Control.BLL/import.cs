@@ -9,3 +9,4 @@ global using Control.DAL.Models;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.AspNetCore.Mvc.Rendering;
 global using Control.BLL.Utilities;
+global using System.Linq.Expressions;

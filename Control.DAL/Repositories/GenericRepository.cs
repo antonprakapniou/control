@@ -27,6 +27,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         if (expression!=null) query=query.Where(expression);
         return await query.AsNoTracking().ToListAsync();
     }
+    public async Task<IEnumerable<T>> GetAllByFilterAsync(params Expression<Func<T, bool>>[] expressions)
+    {
+        IQueryable<T> query = _t;
+        var expressionsList=expressions.ToList();
+        expressionsList.ForEach(_=>query=query.Where(_));
+        return await query.AsNoTracking().ToListAsync();
+    }
     public async Task<T> GetOneByAsync(Expression<Func<T, bool>>? expression = null)
     {
         IQueryable<T> query = _t.AsNoTracking();
@@ -48,7 +55,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         _t.Remove(entity);
         await _db.SaveChangesAsync();
-    }
+    }    
 
     #endregion
 }

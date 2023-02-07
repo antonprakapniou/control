@@ -57,6 +57,12 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
 
         return orderViewModels;
     }
+    public async Task<IEnumerable<SelectListItem>> GetSelectListAsync()
+    {
+        var models = await _ownerRepository.GetAllByAsync();
+        var selectList = models.Select(_ => new SelectListItem { Value=_.Id.ToString(), Text=$"{_.ShortShop} {_.ShortProduction}" });
+        return selectList;
+    }
     public override async Task<OwnerVM> GetByIdAsync(Guid id)
     {
         var model = await _ownerRepository.GetOneByAsync(_ => _.Id.Equals(id));

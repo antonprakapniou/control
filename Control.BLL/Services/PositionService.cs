@@ -123,6 +123,21 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
 
         return orderViewModels;
     }
+    public async Task<IEnumerable<PositionVM>> GetAllByFilterAsync(FilterVM filter)
+    {
+        var expressions = new List<Expression<Func<Position, bool>>>();
+        if (filter.CategoryId is not null) expressions.Add(_=>_.CategoryId.Equals(filter.CategoryId));
+        if (filter.MeasuringId is not null) expressions.Add(_ => _.MeasuringId.Equals(filter.MeasuringId));
+        if (filter.NominationId is not null) expressions.Add(_ => _.NominationId.Equals(filter.NominationId));
+        if (filter.OperationId is not null) expressions.Add(_ => _.OperationId.Equals(filter.OperationId));
+        if (filter.OwnerId is not null) expressions.Add(_ => _.OwnerId.Equals(filter.OwnerId));
+        if (filter.PeriodId is not null) expressions.Add(_ => _.PeriodId.Equals(filter.PeriodId));
+        if (filter.Month is not null) expressions.Add(_ => _.NextDate.Year.Equals(DateTime.Now.Year)&&_.NextDate.Month.Equals(filter.Month));
+        if (filter.Number is not null) expressions.Add(_ => _.FactoryNumber!.ToUpper().Contains(filter.Number.ToUpper())||filter.Number.ToUpper().Contains(_.FactoryNumber.ToUpper()));
+        var models = await _positionRepository.GetAllByFilterAsync(expressions.ToArray());
+        var viewModels = _mapper.Map<IEnumerable<PositionVM>>(models);
+        return viewModels;
+    }
     public override async Task<PositionVM> GetByIdAsync(Guid id)
     {
         var model = await _positionRepository.GetOneByAsync(_ => _.Id.Equals(id));

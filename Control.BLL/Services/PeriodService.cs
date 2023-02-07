@@ -38,7 +38,12 @@ public sealed class PeriodService : GenericService<PeriodVM, Period>, IPeriodSer
 
         return orderViewModels;
     }
-
+    public async Task<IEnumerable<SelectListItem>> GetSelectListAsync()
+    {
+        var models = await _repository.GetAllByAsync();
+        var selectList = models.Select(_ => new SelectListItem { Value=_.Id.ToString(), Text=_.Name });
+        return selectList;
+    }
     public override async Task CreateAsync(PeriodVM viewModel)
     {
         if (int.TryParse(viewModel.Name, out _))
