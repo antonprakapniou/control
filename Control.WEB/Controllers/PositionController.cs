@@ -47,7 +47,6 @@ public sealed class PositionController : Controller
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public IActionResult Index(FilterRepresentationVM representation)
     {
         string jsonFilter = JsonConvert.SerializeObject(representation.Filter);
