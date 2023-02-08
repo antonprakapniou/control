@@ -17,3 +17,4 @@ global using System.Diagnostics;
 global using Control.WEB.Configuration;
 global using Serilog;
 global using System.Net;
+global using Newtonsoft.Json;

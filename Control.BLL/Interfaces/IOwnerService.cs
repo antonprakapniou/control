@@ -4,7 +4,7 @@ public interface IOwnerService : IGenericService<OwnerVM, Owner>
 {
     #region Methods
 
-    public Task<IEnumerable<SelectListItem>> GetSelectListAsync();
+    public Task<OwnerCreatingVM> SetOwnerSelectList(OwnerCreatingVM viewModel);
 
     #endregion
 }

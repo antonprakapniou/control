@@ -42,12 +42,6 @@ public class MeasuringService : GenericService<MeasuringVM, Measuring>, IMeasuri
 
         return orderViewModels;
     }
-    public async Task<IEnumerable<SelectListItem>> GetSelectListAsync()
-    {
-        var models = await _repository.GetAllByAsync();
-        var selectList = models.Select(_ => new SelectListItem { Value=_.Id.ToString(), Text=_.Code });
-        return selectList;
-    }
 
     #endregion
 }

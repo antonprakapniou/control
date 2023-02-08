@@ -8,4 +8,13 @@ public sealed class OwnerCreatingVM
     public IEnumerable<SelectListItem>? Masters { get; set; }
 
     #endregion
+
+    #region Ctor
+
+    public OwnerCreatingVM()
+    {
+        OwnerVM=new();
+    }
+
+    #endregion
 }

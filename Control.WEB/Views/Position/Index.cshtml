@@ -46,8 +46,8 @@
             </div>
         </div>
 
-        <div class="card-footer bg-dark text-end">
-            <div class="btn-toolbar justify-content-between" role="toolbar">
+        <div class="card-footer bg-dark text-end">            
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                 <button type="submit" asp-controller="Position" asp-action="Index" class="btn btn-outline-info">
                     <i class="bi bi-search"></i>
                 </button>
@@ -192,7 +192,7 @@
 
                             </td>
                             <td class="text-center align-middle">
-                                <div class="btn-toolbar justify-content-between" role="toolbar">
+                                <div class="btn-toolbar justify-content-between" role="toolbar">                                
                                     <a asp-controller="Position" asp-action="Info" asp-route-id="@item.Id" class="btn btn-outline-info">
                                         <i class="bi bi-info-lg"></i>
                                     </a>
@@ -213,7 +213,7 @@
             else
             {
                 <tr>
-                    <td colspan="10">No search results</td>
+                    <td colspan="10">No positions</td>
                 </tr>
             }
         </tbody>

@@ -4,22 +4,15 @@ public sealed class OwnerController : Controller
 {
     #region Own fields
 
-    private readonly ILogger<OwnerController> _logger;
     private readonly IOwnerService _ownerService;
-    private readonly IMasterService _masterService;
 
     #endregion
 
     #region Ctor
 
-    public OwnerController(
-        ILogger<OwnerController> logger,
-        IOwnerService service,
-        IMasterService masterService)
+    public OwnerController(IOwnerService service)
     {
-        _logger=logger;
         _ownerService=service;
-        _masterService=masterService;
     }
 
     #endregion
@@ -43,14 +36,8 @@ public sealed class OwnerController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        var masters = await _masterService.GetSelectListAsync();
-
-        OwnerCreatingVM ownerCreatingVM = new()
-        {
-            OwnerVM=new(),
-            Masters=masters
-        };
-
+        OwnerCreatingVM ownerCreatingVM = new();
+        await _ownerService.SetOwnerSelectList(ownerCreatingVM);
         return View(ownerCreatingVM);
     }
 
@@ -76,15 +63,11 @@ public sealed class OwnerController : Controller
 
     [HttpGet]
     public async Task<IActionResult> Update(Guid id)
-    {
+    {        
+        OwnerCreatingVM ownerCreatingVM = new();
         var viewModel = await _ownerService.GetByIdAsync(id);
-        var masters = await _masterService.GetSelectListAsync();
-
-        OwnerCreatingVM ownerCreatingVM = new()
-        {
-            OwnerVM=viewModel,
-            Masters=masters
-        };
+        ownerCreatingVM.OwnerVM = viewModel;
+        await _ownerService.SetOwnerSelectList(ownerCreatingVM);
 
         return View(ownerCreatingVM);
     }

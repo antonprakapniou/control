@@ -13,5 +13,14 @@
         public IEnumerable<SelectListItem>? Periods { get; set; }
 
         #endregion
+
+        #region Ctor
+
+        public PositionCreatingVM()
+        {
+            PositionVM=new();
+        }
+
+        #endregion
     }
 }

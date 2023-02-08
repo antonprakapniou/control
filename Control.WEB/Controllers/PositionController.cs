@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Control.WEB.Controllers;
+﻿namespace Control.WEB.Controllers;
 
 public sealed class PositionController : Controller
 {
@@ -9,12 +7,6 @@ public sealed class PositionController : Controller
     #region Own fields
 
     private readonly IPositionService _positionService;
-    private readonly ICategoryService _categoryService;
-    private readonly IMeasuringService _measuringService;
-    private readonly INominationService _nominationService;
-    private readonly IOperationService _operationService;
-    private readonly IOwnerService _ownerService;
-    private readonly IPeriodService _periodService;
     private readonly IFileManager _fileManager;
 
     #endregion
@@ -23,21 +15,9 @@ public sealed class PositionController : Controller
 
     public PositionController(
         IPositionService positionService,
-        ICategoryService categoryService,
-        IMeasuringService measuringService,
-        INominationService nominationService,
-        IOperationService operationService,
-        IOwnerService ownerService,
-        IPeriodService periodService,
         IFileManager fileManager)
     {
         _positionService=positionService;
-        _categoryService=categoryService;
-        _measuringService=measuringService;
-        _nominationService=nominationService;
-        _operationService=operationService;
-        _ownerService=ownerService;
-        _periodService=periodService;
         _fileManager=fileManager;
     }
 
@@ -46,13 +26,13 @@ public sealed class PositionController : Controller
     #region Action methods
 
     [HttpGet]
-    public async Task<IActionResult> Index(string? responseFilter)
+    public async Task<IActionResult> Index(string? jsonFilter)
     {
         var representation = new FilterRepresentationVM();
 
-        if (responseFilter is not null)
+        if (jsonFilter is not null)
         {
-            var filter = JsonConvert.DeserializeObject<FilterVM>(responseFilter!);
+            var filter = JsonConvert.DeserializeObject<FilterVM>(jsonFilter!);
             representation.Filter=filter;
             representation.Positions=await _positionService.GetAllByFilterAsync(representation.Filter!);
         }
@@ -62,21 +42,16 @@ public sealed class PositionController : Controller
             representation.Positions = await _positionService.GetAllAsync();
         }
 
-        representation.Categories=await _categoryService.GetSelectListAsync();
-        representation.Measurings=await _measuringService.GetSelectListAsync();
-        representation.Nominations=await _nominationService.GetSelectListAsync();
-        representation.Operations=await _operationService.GetSelectListAsync();
-        representation.Owners=await _ownerService.GetSelectListAsync();
-        representation.Periods=await _periodService.GetSelectListAsync();
-
+        await _positionService.SetFilterSelectList(representation);
         return View(representation);
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Index(FilterRepresentationVM representation)
     {
         string jsonFilter = JsonConvert.SerializeObject(representation.Filter);
-        return RedirectToAction(nameof(Index), new { ResponseFilter = jsonFilter });
+        return RedirectToAction(nameof(Index), new { JsonFilter = jsonFilter });
     }
 
     [HttpGet]
@@ -89,17 +64,8 @@ public sealed class PositionController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        PositionCreatingVM positionCreatingVM = new()
-        {
-            PositionVM = new(),
-            Categories = await _categoryService.GetSelectListAsync(),
-            Measurings= await _measuringService.GetSelectListAsync(),
-            Nominations=await _nominationService.GetSelectListAsync(),
-            Operations=await _operationService.GetSelectListAsync(),
-            Owners=await _ownerService.GetSelectListAsync(),
-            Periods=await _periodService.GetSelectListAsync(),
-        };
-
+        PositionCreatingVM positionCreatingVM = new();
+        await _positionService.SetPositionSelectList(positionCreatingVM);
         return View(positionCreatingVM);
     }
 
@@ -133,17 +99,10 @@ public sealed class PositionController : Controller
     [HttpGet]
     public async Task<IActionResult> Update(Guid id)
     {
-        PositionCreatingVM positionCreatingVM = new()
-        {
-            PositionVM=await _positionService.GetByIdAsync(id),
-            Categories = await _categoryService.GetSelectListAsync(),
-            Measurings= await _measuringService.GetSelectListAsync(),
-            Nominations=await _nominationService.GetSelectListAsync(),
-            Operations=await _operationService.GetSelectListAsync(),
-            Owners=await _ownerService.GetSelectListAsync(),
-            Periods=await _periodService.GetSelectListAsync(),
-        };
-
+        PositionCreatingVM positionCreatingVM = new();
+        var viewModel = await _positionService.GetByIdAsync(id);
+        positionCreatingVM.PositionVM=viewModel;
+        await _positionService.SetPositionSelectList(positionCreatingVM);
         return View(positionCreatingVM);
     }
 
