@@ -21,17 +21,34 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
+
                             <div class="sb-sidenav-menu-heading text-light">Manager</div>
                             <div class="sb-sidenav-menu-heading">Main</div>
-                            <a asp-controller="Position" asp-action="Index" class="nav-link">Position</a>
-                            <a asp-controller="Master" asp-action="Index" class="nav-link">Master</a>
-                            <div class="sb-sidenav-menu-heading">Addition</div>
-                            <a asp-controller="Measuring" asp-action="Index" class="nav-link">Measuring</a>
-                            <a asp-controller="Nomination" asp-action="Index" class="nav-link">Nomination</a>
-                            <a asp-controller="Period" asp-action="Index" class="nav-link">Period</a>
-                            <a asp-controller="Owner" asp-action="Index" class="nav-link">Owner</a>
-                            <a asp-controller="Operation" asp-action="Index" class="nav-link">Operation</a>
-                            <a asp-controller="Category" asp-action="Index" class="nav-link">Category</a>
+
+
+                            <div class="nav-item dropdown">
+                              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-workspace"></i>&nbsp;Main
+                              </a>
+                              <ul class="dropdown-menu">
+                                <a asp-controller="Position" asp-action="Index" class="nav-link text-dark">Position</a>
+                                <a asp-controller="Master" asp-action="Index" class="nav-link text-dark">Master</a>
+                              </ul>
+                            </div>
+                            <div class="nav-item dropdown">
+                              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear"></i>&nbsp;Manager
+                              </a>
+                              <ul class="dropdown-menu">
+                                <a asp-controller="Measuring" asp-action="Index" class="nav-link text-dark">Measuring</a>
+                                <a asp-controller="Nomination" asp-action="Index" class="nav-link text-dark">Nomination</a>
+                                <a asp-controller="Period" asp-action="Index" class="nav-link text-dark">Period</a>
+                                <a asp-controller="Owner" asp-action="Index" class="nav-link text-dark">Owner</a>
+                                <a asp-controller="Operation" asp-action="Index" class="nav-link text-dark">Operation</a>
+                                <a asp-controller="Category" asp-action="Index" class="nav-link text-dark">Category</a>
+                              </ul>
+                            </div>                           
+                            
                         </div>
                     </div>                    
                 </nav>
