@@ -4,14 +4,21 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     #region Own fields
 
-    private readonly AppDbContext _db;
+    //private readonly AppDbContext _db; 
+    private readonly AuthDbContext _db;
     private readonly DbSet<T> _t;
 
     #endregion
 
     #region Ctor
 
-    public GenericRepository(AppDbContext db)
+    //public GenericRepository(AppDbContext db)
+    //{
+    //    _db=db;
+    //    _t=_db.Set<T>();
+    //}
+
+    public GenericRepository(AuthDbContext db)
     {
         _db=db;
         _t=_db.Set<T>();

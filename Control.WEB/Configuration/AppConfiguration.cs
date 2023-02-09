@@ -20,18 +20,34 @@ public static class AppConfiguration
     }
     public static void SetDbContext(IConfiguration configuration, IServiceCollection services)
     {
-        #region Db connection
-
-        string connectionName = ConnectionConst.DevelopSqLiteConnection;
+        //string connectionName = ConnectionConst.DevelopSqLiteConnection;
+        string connectionName = ConnectionConst.DevelopSqLiteAuthConnection;
         string connectionString = configuration
             .GetConnectionString(connectionName!)
             ??throw new InvalidOperationException($"Connection \"{connectionName}\" not found");
 
-        services.AddDbContext<AppDbContext>(options =>
+        //#region Db context        
+
+        //services.AddDbContext<AppDbContext>(options =>
+        //{
+        //    options.UseSqlite(connectionString);
+        //    options.EnableSensitiveDataLogging();
+        //});
+
+        //#endregion
+
+        #region Auth db context
+
+        services.AddDbContext<AuthDbContext>(options =>
         {
             options.UseSqlite(connectionString);
             options.EnableSensitiveDataLogging();
         });
+
+        services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            .AddDefaultTokenProviders()
+            .AddDefaultUI()
+            .AddEntityFrameworkStores<AuthDbContext>();
 
         #endregion
     }
@@ -79,6 +95,7 @@ public static class AppConfiguration
         app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthorization();
+        app.UseAuthorization();
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -86,7 +103,5 @@ public static class AppConfiguration
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         #endregion
-
-
     }
 }

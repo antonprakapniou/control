@@ -1,6 +1,6 @@
 ﻿namespace Control.DAL.EF;
 
-public sealed class AppDbContext : DbContext
+public sealed class AuthDbContext:IdentityDbContext
 {
     #region DbSet
 
@@ -17,7 +17,7 @@ public sealed class AppDbContext : DbContext
 
     #region Ctor
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options) { }
 
     #endregion
 
@@ -25,6 +25,7 @@ public sealed class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder
             .ApplyConfiguration(new MeasuringModelConfiguration())
             .ApplyConfiguration(new MasterModelConfiguration())
@@ -35,7 +36,6 @@ public sealed class AppDbContext : DbContext
             .ApplyConfiguration(new PositionModelConfiguration())
             .ApplyConfiguration(new CategoryModelConfiguration());
     }
-
 
     #endregion
 }

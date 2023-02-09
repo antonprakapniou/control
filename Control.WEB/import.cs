@@ -4,7 +4,6 @@ global using Control.BLL.Interfaces;
 global using Control.BLL.ViewModels;
 global using Control.DAL.Configuration;
 global using Control.WEB.Interfaces;
-global using Microsoft.AspNetCore.Mvc.Rendering;
 global using Control.BLL.Services;
 global using Control.BLL.Utilities;
 global using Control.DAL.EF;
@@ -18,3 +17,5 @@ global using Control.WEB.Configuration;
 global using Serilog;
 global using System.Net;
 global using Newtonsoft.Json;
+global using Microsoft.AspNetCore.Identity;
+
