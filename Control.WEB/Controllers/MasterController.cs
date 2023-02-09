@@ -25,47 +25,7 @@ public class MasterController : Controller
     {
         var viewModels = await _service.GetAllAsync();
         return View(viewModels);
-    }
-
-    [HttpGet]
-    public IActionResult Create() => View();
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(MasterVM viewModel)
-    {
-        if (ModelState.IsValid)
-        {
-            await _service.CreateAsync(viewModel);
-            TempData[ToastrConst.Success]=ToastrConst.CreateSuccess;
-            return RedirectToAction(nameof(Index));
-        }
-        else
-        {
-            TempData[ToastrConst.Error]=ToastrConst.OperationError;
-            return RedirectToAction();
-        }
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Update(Guid id)
-    {
-        var viewModel = await _service.GetByIdAsync(id);
-        return View(viewModel);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Update(MasterVM viewModel)
-    {
-        if (ModelState.IsValid)
-        {
-            await _service.UpdateAsync(viewModel);
-            TempData[ToastrConst.Success]=ToastrConst.UpdateSuccess;
-        }
-        else TempData[ToastrConst.Error]=ToastrConst.OperationError;
-        return RedirectToAction(nameof(Update), new { viewModel.Id });
-    }
+    }    
 
     [HttpPost]
     [ValidateAntiForgeryToken]

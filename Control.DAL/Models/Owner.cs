@@ -22,7 +22,7 @@ public sealed class Owner : BaseModel
 
     #region Included properties
 
-    public Master? Master { get; set; }
+    public IdentityMaster? Master { get; set; }
 
     #endregion
 }

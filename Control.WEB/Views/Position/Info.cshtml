@@ -197,19 +197,19 @@
                                     }
                                     @if (Model.Owner.Master is not null)
                                     {
-                                        @if (Model.Owner.Master.Name is not null)
+                                        @if (Model.Owner.Master.UserName is not null)
                                         {
                                             <dt class="col-sm-4 text-end">
-                                                <label asp-for="@Model.Owner.Master.Name"></label>
+                                                <label asp-for="@Model.Owner.Master.UserName"></label>
                                             </dt>
-                                            <dd class="col-sm-8">@Model.Owner.Master.Name</dd>
+                                            <dd class="col-sm-8">@Model.Owner.Master.UserName</dd>
                                         }
-                                        @if (Model.Owner.Master.Phone is not null)
+                                        @if (Model.Owner.Master.PhoneNumber is not null)
                                         {
                                             <dt class="col-sm-4 text-end">
-                                                <label asp-for="@Model.Owner.Master.Phone"></label>
+                                                <label asp-for="@Model.Owner.Master.PhoneNumber"></label>
                                             </dt>
-                                            <dd class="col-sm-8">@Model.Owner.Master.Phone</dd>
+                                            <dd class="col-sm-8">@Model.Owner.Master.PhoneNumber</dd>
                                         }
                                         @if (Model.Owner.Master.Email is not null)
                                         {

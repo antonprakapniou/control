@@ -41,7 +41,7 @@ public sealed class OwnerVM : BaseViewModel
 
     #region IncludedProperties
 
-    public MasterVM? Master { get; set; }
+    public IdentityMasterVM? Master { get; set; }
 
     #endregion
 }

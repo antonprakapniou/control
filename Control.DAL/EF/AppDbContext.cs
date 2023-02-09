@@ -11,7 +11,7 @@ public sealed class AppDbContext : DbContext
     public DbSet<Owner> Owners { get; set; }
     public DbSet<Period> Periods { get; set; }
     public DbSet<Position> Positions { get; set; }
-    public DbSet<Master> Masters { get; set; }
+    //public DbSet<Master> Masters { get; set; }
 
     #endregion
 
@@ -27,7 +27,6 @@ public sealed class AppDbContext : DbContext
     {
         modelBuilder
             .ApplyConfiguration(new MeasuringModelConfiguration())
-            .ApplyConfiguration(new MasterModelConfiguration())
             .ApplyConfiguration(new NominationModelConfiguration())
             .ApplyConfiguration(new OperationModelConfiguration())
             .ApplyConfiguration(new OwnerModelConfiguration())

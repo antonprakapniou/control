@@ -49,23 +49,23 @@
 
                 @if (Model.MasterId is not null)
                 {
-                    if (Model.Master!.Name is not null)
+                    if (Model.Master!.UserName is not null)
                     {
                         <dt class="col-sm-3 text-end">
-                            <label asp-for="Master!.Name" class="col-form-label"></label>
+                            <label asp-for="Master!.UserName" class="col-form-label"></label>
                         </dt>
                         <dd class="col-sm-9">
-                            <input asp-for="Master!.Name" class="form-control" />
+                            <input asp-for="Master!.UserName" class="form-control" />
                         </dd>
                     }
 
-                    if (Model.Master!.Phone is not null)
+                    if (Model.Master!.PhoneNumber is not null)
                     {
                         <dt class="col-sm-3 text-end">
-                            <label asp-for="Master!.Phone" class="col-form-label"></label>
+                            <label asp-for="Master!.PhoneNumber" class="col-form-label"></label>
                         </dt>
                         <dd class="col-sm-9">
-                            <input asp-for="Master!.Phone" class="form-control" />
+                            <input asp-for="Master!.PhoneNumber" class="form-control" />
                         </dd>
                     }
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MasterVM>
+﻿@model IEnumerable<IdentityMasterVM>
 <br />
 <table class="table table-responsive table-dark table-hover table-sm align-middle" style="width:100%">
     <thead>
@@ -21,9 +21,9 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td class ="text-start align-middle">@item.Name</td>
-                    <td class="text-center align-middle">@item.Phone</td>
+                    <td class ="text-start align-middle">@item.UserName</td>
                     <td class="text-center align-middle">@item.Email</td>
+                    <td class="text-center align-middle">@item.PhoneNumber</td>                    
                     <td class="text-center align-middle">
                         <div class="btn-toolbar justify-content-between" role="toolbar">
                             <a asp-controller="Master" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-warning">

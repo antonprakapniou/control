@@ -45,8 +45,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         IQueryable<T> query = _t.AsNoTracking();
         if (expression!=null) query=query.Where(expression);
-        var models = await query.FirstOrDefaultAsync();
-        return models!;
+        var model = await query.FirstOrDefaultAsync();
+        return model!;
     }
     public async Task CreateAsync(T entity)
     {

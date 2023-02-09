@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Control.WEB</title>
@@ -10,14 +11,13 @@
     <link rel="stylesheet" href="~/Control.WEB.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
 </head>
-<body>    
+<body>
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a asp-controller="Home" asp-action="Index" class="navbar-brand ps-3">Metrolog_Auf</a>
-        <button class="btn" id="sidebarToggle" href="#!"><i class="bi bi-three-dots-vertical"></i></button>
-        
-        <partial name="_LoginPartial" />
-        
+        <button class="btn" id="sidebarToggle" href="#!"><i class="bi bi-three-dots-vertical"></i></button>        
+        <partial name="_LoginPartial" />        
     </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -25,9 +25,8 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav"> 
 
-                            <div class="sb-sidenav-menu-heading text-light">Manager</div>
+                            <div class="sb-sidenav-menu-heading text-light">Menu</div>
                             <div class="sb-sidenav-menu-heading">Main</div>
-
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person-workspace"></i>&nbsp;Main
@@ -38,22 +37,46 @@
                                 </ul>
                             </div>
 
-                            @if (User.IsInRole(RoleConst.Admin))
-                            {
-                                <div class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-gear"></i>&nbsp;Manager
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register"><i class="bi bi-person-plus"></i>&nbsp;New user</a>
-                                        <a asp-controller="Measuring" asp-action="Index" class="nav-link text-dark">Measuring</a>
-                                        <a asp-controller="Nomination" asp-action="Index" class="nav-link text-dark">Nomination</a>
-                                        <a asp-controller="Period" asp-action="Index" class="nav-link text-dark">Period</a>
-                                        <a asp-controller="Owner" asp-action="Index" class="nav-link text-dark">Owner</a>
-                                        <a asp-controller="Operation" asp-action="Index" class="nav-link text-dark">Operation</a>
-                                        <a asp-controller="Category" asp-action="Index" class="nav-link text-dark">Category</a>
+                            @{
+                                if (User.IsInRole(RoleConst.Admin))
+                                {
+                                    <div class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-person-workspace"></i>&nbsp;Main
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <a asp-controller="Position" asp-action="Index" class="nav-link text-dark">Position</a>
+                                            <a asp-controller="Master" asp-action="Index" class="nav-link text-dark">Master</a>
+                                        </ul>
+                                    </div>
+                                    <div class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-gear"></i>&nbsp;Manager
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register"><i class="bi bi-person-plus"></i>&nbsp;New user</a>
+                                            <a asp-controller="Measuring" asp-action="Index" class="nav-link text-dark">Measuring</a>
+                                            <a asp-controller="Nomination" asp-action="Index" class="nav-link text-dark">Nomination</a>
+                                            <a asp-controller="Period" asp-action="Index" class="nav-link text-dark">Period</a>
+                                            <a asp-controller="Owner" asp-action="Index" class="nav-link text-dark">Owner</a>
+                                            <a asp-controller="Operation" asp-action="Index" class="nav-link text-dark">Operation</a>
+                                            <a asp-controller="Category" asp-action="Index" class="nav-link text-dark">Category</a>
+                                        </ul>
+                                    </div>                                
+                                }
+
+                                else if (User.IsInRole(RoleConst.Master))
+                                {
+                                    <div class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-person-workspace"></i>&nbsp;Main
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                        <a asp-controller="Position" asp-action="Index" class="nav-link text-dark">Position</a>
+                                        <a asp-controller="Master" asp-action="Index" class="nav-link text-dark">Master</a>
                                     </ul>
-                                </div>                                
+                                    </div>
+                                }
                             }
                         </div>
                     </div>                    

@@ -6,7 +6,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
 
     private readonly IMapper _mapper;
     private readonly IGenericRepository<Owner> _ownerRepository;
-    private readonly IGenericRepository<Master> _masterRepository;
+    private readonly IGenericRepository<IdentityMaster> _masterRepository;
 
     #endregion
 
@@ -15,7 +15,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
     public OwnerService(
         IMapper mapper,
         IGenericRepository<Owner> ownerRepository,
-        IGenericRepository<Master> masterRepository)
+        IGenericRepository<IdentityMaster> masterRepository)
         : base(mapper, ownerRepository)
     {
         _mapper=mapper;
@@ -46,7 +46,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
             if (viewModel.MasterId is not null)
             {
                 var property = await _masterRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.MasterId));
-                var propertyVM = _mapper.Map<MasterVM>(property);
+                var propertyVM = _mapper.Map<IdentityMasterVM>(property);
                 viewModel.Master = propertyVM;
             }
         }
@@ -74,7 +74,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
         if (viewModel.MasterId is not null)
         {
             var property = await _masterRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.MasterId));
-            var propertyVM = _mapper.Map<MasterVM>(property);
+            var propertyVM = _mapper.Map<IdentityMasterVM>(property);
             viewModel.Master = propertyVM;
         }
 
@@ -85,7 +85,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
     public async Task<OwnerCreatingVM> SetOwnerSelectList(OwnerCreatingVM viewModel)
     {
         var masters = await _masterRepository.GetAllByAsync();
-        viewModel.Masters=masters.Select(_ => new SelectListItem { Value=_.Id.ToString(), Text=_.Name });
+        viewModel.Masters=masters.Select(_ => new SelectListItem { Value=_.Id.ToString(), Text=_.UserName });
         return viewModel;
     }
 

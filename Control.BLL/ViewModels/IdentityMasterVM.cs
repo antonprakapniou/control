@@ -1,19 +1,18 @@
 ﻿namespace Control.BLL.ViewModels;
 
-public sealed class MasterVM:BaseViewModel
+public sealed class IdentityMasterVM:BaseViewModel
 {
     #region Own properties
 
     [Required]
     [DisplayName("Master")]
-    public string? Name { get; set; }
-
-    [DisplayName("Master phone")]
-    public string? Phone { get; set; }
+    public string? UserName { get; set; }
 
     [DisplayName("Master email")]
     public string? Email { get; set; }
 
-    #endregion
+    [DisplayName("Master phone")]
+    public string? PhoneNumber { get; set; }
 
+    #endregion
 }

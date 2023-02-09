@@ -68,6 +68,7 @@ public static class AppConfiguration
         #region Services
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<IMasterRepository, MasterRepository>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IMeasuringService, MeasuringService>();
         services.AddScoped<INominationService, NominationService>();
