@@ -1,5 +1,4 @@
 var builder = WebApplication.CreateBuilder(args);
-
 var logger = AppConfiguration.SetLogger(builder.Configuration,builder.Logging);
 
 AppConfiguration.SetDbContext(builder.Configuration,builder.Services);
