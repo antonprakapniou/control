@@ -96,6 +96,7 @@ public static class AppConfiguration
         app.UseRouting();
         app.UseAuthorization();
         app.UseAuthorization();
+        app.MapRazorPages();
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");

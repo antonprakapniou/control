@@ -15,6 +15,9 @@
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a asp-controller="Home" asp-action="Index" class="navbar-brand ps-3">Metrolog_Auf</a>
         <button class="btn" id="sidebarToggle" href="#!"><i class="bi bi-three-dots-vertical"></i></button>
+        
+        <partial name="_LoginPartial" />
+        
     </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -47,14 +50,11 @@
                                 <a asp-controller="Operation" asp-action="Index" class="nav-link text-dark">Operation</a>
                                 <a asp-controller="Category" asp-action="Index" class="nav-link text-dark">Category</a>
                               </ul>
-                            </div>                           
-                            
+                            </div>  
                         </div>
                     </div>                    
                 </nav>
-            </div>        
-
-
+            </div>
             <div id="layoutSidenav_content">
                 <div class="container">
                     <main role="main" class="pb-3">
