@@ -1,5 +1,6 @@
 ﻿namespace Control.WEB.Controllers;
 
+[Authorize]
 public class MasterController : Controller
 {
     #region Own fields

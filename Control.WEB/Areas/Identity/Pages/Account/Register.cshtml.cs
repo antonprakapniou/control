@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using Microsoft.DotNet.Scaffolding.Shared;
-
 namespace Control.WEB.Areas.Identity.Pages.Account;
 
+[Authorize(Roles =RoleConst.Admin)]
 public class RegisterModel : PageModel
 {
     private readonly SignInManager<IdentityUser> _signInManager;

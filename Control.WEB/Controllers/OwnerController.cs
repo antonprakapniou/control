@@ -1,5 +1,6 @@
 ﻿namespace Control.WEB.Controllers;
 
+[Authorize(Roles = RoleConst.Admin)]
 public sealed class OwnerController : Controller
 {
     #region Own fields

@@ -1,5 +1,6 @@
 ﻿namespace Control.WEB.Controllers;
 
+[Authorize]
 public sealed class PositionController : Controller
 {
     private const string _partialPath = GeneralConst.PositionPartialPath;
