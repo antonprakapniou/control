@@ -165,7 +165,7 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
             .ThenBy(_ => _.FactoryNumber);
 
         return orderViewModels;
-    }
+    }    
     public async Task SetPositionSelectList(PositionCreatingVM viewModel)
     {
         var categories = await _categoryRepository.GetAllByAsync();

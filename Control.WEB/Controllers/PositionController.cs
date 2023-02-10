@@ -36,6 +36,8 @@ public sealed class PositionController : Controller
             var filter = JsonConvert.DeserializeObject<FilterVM>(jsonFilter!);
             representation.Filter=filter;
             representation.Positions=await _positionService.GetAllByFilterAsync(representation.Filter!);
+            if (representation.Positions.Any()) TempData[ToastrConst.Info]=$"{representation.Positions.Count()} position(s) found";
+            else TempData[ToastrConst.Info]=$"No positions found";
         }
 
         else
