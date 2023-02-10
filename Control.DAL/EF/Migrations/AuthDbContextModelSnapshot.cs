@@ -3,19 +3,16 @@ using System;
 using Control.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Control.DAL.Migrations
+namespace Control.DAL.EF.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20230209100005_UpdateIdentity")]
-    partial class UpdateIdentity
+    partial class AuthDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -36,32 +33,6 @@ namespace Control.DAL.Migrations
                         .HasName("Id");
 
                     b.ToTable("Categories", (string)null);
-                });
-
-            modelBuilder.Entity("Control.DAL.Models.Master", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Id");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Email");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Name");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Phone");
-
-                    b.HasKey("Id")
-                        .HasName("Id");
-
-                    b.ToTable("Masters", (string)null);
                 });
 
             modelBuilder.Entity("Control.DAL.Models.Measuring", b =>
@@ -138,7 +109,7 @@ namespace Control.DAL.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("FullShop");
 
-                    b.Property<Guid?>("MasterId")
+                    b.Property<string>("MasterId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Phone")
@@ -326,6 +297,10 @@ namespace Control.DAL.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -376,6 +351,10 @@ namespace Control.DAL.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -455,6 +434,18 @@ namespace Control.DAL.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Control.DAL.Models.Master", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Name");
+
+                    b.HasDiscriminator().HasValue("Master");
                 });
 
             modelBuilder.Entity("Control.DAL.Models.Owner", b =>
@@ -568,11 +559,6 @@ namespace Control.DAL.Migrations
                     b.Navigation("Positions");
                 });
 
-            modelBuilder.Entity("Control.DAL.Models.Master", b =>
-                {
-                    b.Navigation("Owners");
-                });
-
             modelBuilder.Entity("Control.DAL.Models.Measuring", b =>
                 {
                     b.Navigation("Positions");
@@ -596,6 +582,11 @@ namespace Control.DAL.Migrations
             modelBuilder.Entity("Control.DAL.Models.Period", b =>
                 {
                     b.Navigation("Positions");
+                });
+
+            modelBuilder.Entity("Control.DAL.Models.Master", b =>
+                {
+                    b.Navigation("Owners");
                 });
 #pragma warning restore 612, 618
         }

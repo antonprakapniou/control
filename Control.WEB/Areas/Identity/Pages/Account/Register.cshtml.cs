@@ -4,7 +4,7 @@
 
 namespace Control.WEB.Areas.Identity.Pages.Account;
 
-[Authorize(Roles =RoleConst.Admin)]
+//[Authorize(Roles = RoleConst.Admin)]
 public class RegisterModel : PageModel
 {
     private readonly SignInManager<IdentityUser> _signInManager;
@@ -84,16 +84,28 @@ public class RegisterModel : PageModel
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-    }
 
+        #region My properties
+
+        [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Phone")]
+        public string PhoneNumber { get; set; }
+
+        #endregion
+    }
 
     public async Task OnGetAsync(string returnUrl = null)
     {
-        if (_roleManager.Roles.Count()==0)
+        if (!_roleManager.Roles.Any())
         {
             await _roleManager.CreateAsync(new(RoleConst.Admin));
             await _roleManager.CreateAsync(new(RoleConst.Master));
         }
+
         ReturnUrl = returnUrl;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
@@ -108,18 +120,15 @@ public class RegisterModel : PageModel
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+            user.Name=Input.Name;
+            user.PhoneNumber=Input.PhoneNumber;
+
             var result = await _userManager.CreateAsync(user, Input.Password);
 
             if (result.Succeeded)
             {
-                if (User.IsInRole(RoleConst.Admin))
-                {
-                    await _userManager.AddToRoleAsync(user, RoleConst.Admin);
-                }
-                else
-                {
-                    await _userManager.AddToRoleAsync(user, RoleConst.Master);
-                }
+                await _userManager.AddToRoleAsync(user, RoleConst.Master);
 
                 _logger.LogInformation("User created a new account with password.");
 
@@ -155,16 +164,16 @@ public class RegisterModel : PageModel
         return Page();
     }
 
-    private IdentityUser CreateUser()
+    private Master CreateUser()
     {
         try
         {
-            return Activator.CreateInstance<IdentityUser>();
+            return Activator.CreateInstance<Master>();
         }
         catch
         {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+            throw new InvalidOperationException($"Can't create an instance of '{nameof(Master)}'. " +
+                $"Ensure that '{nameof(Master)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                 $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
         }
     }

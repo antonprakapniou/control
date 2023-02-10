@@ -1,12 +1,12 @@
-﻿@model IEnumerable<IdentityMasterVM>
+﻿@model IEnumerable<MasterVM>
 <br />
 <table class="table table-responsive table-dark table-hover table-sm align-middle" style="width:100%">
     <thead>
         <tr>
             <th class="text-start align-middle">
                 <div class="col-12">
-                    <a asp-controller="Master" asp-action="Create" class="btn btn-dark">
-                        <i class="bi bi-plus-lg"></i>&nbsp;Master
+                    <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">
+                        <i class="bi bi-person-workspace"></i>&nbsp;Add master
                     </a>
                 </div>
             </th>
@@ -20,30 +20,35 @@
         {
             @foreach (var item in Model)
             {
-                <tr>
-                    <td class ="text-start align-middle">@item.UserName</td>
-                    <td class="text-center align-middle">@item.Email</td>
-                    <td class="text-center align-middle">@item.PhoneNumber</td>                    
-                    <td class="text-center align-middle">
-                        <div class="btn-toolbar justify-content-between" role="toolbar">
-                            <a asp-controller="Master" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-warning">
-                                <i class="bi bi-pencil-fill"></i>
-                            </a>
+                if (item.Name!.Equals(RoleConst.AdminName))
+                {
+                    <tr>
+                        <td colspan="4">No masters</td>
+                    </tr>
+                }
+
+                else
+                {
+                    <tr>
+                        <td class ="text-start align-middle">@item.Name</td>
+                        <td class="text-center align-middle">@item.PhoneNumber</td>
+                        <td class="text-center align-middle">@item.Email</td>                    
+                        <td class="text-center align-middle">
                             <form method="post" asp-controller="Master" asp-action="Delete" asp-route-id="@item.Id">
                                 <button type="submit" class="btn btn-outline-danger">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </form>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                }
             }
         }
 
         else
         {
             <tr>
-                <td colspan="4">Mater list is empty</td>
+                <td colspan="4">No masters</td>
             </tr>
         }
     </tbody>

@@ -1,6 +1,6 @@
 ﻿namespace Control.WEB.Controllers;
 
-[Authorize]
+[Authorize(Roles =RoleConst.Admin)]
 public class MasterController : Controller
 {
     #region Own fields
@@ -31,8 +31,19 @@ public class MasterController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(Guid id)
     {
-        await _service.DeleteAsync(id);
-        TempData[ToastrConst.Success]=ToastrConst.DeleteSuccess;
+        var viewModel=await _service.GetByIdAsync(id);
+
+        if (viewModel.Name!.Equals(RoleConst.AdminName))
+        {
+            TempData[ToastrConst.Error]="It cannot be removed";
+        }
+
+        else
+        {
+            await _service.DeleteAsync(id);
+            TempData[ToastrConst.Success]=ToastrConst.DeleteSuccess;
+        }
+
         return RedirectToAction(nameof(Index));
     }
 

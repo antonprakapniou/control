@@ -11,8 +11,7 @@ public sealed class AuthDbContext:IdentityDbContext
     public DbSet<Owner> Owners { get; set; }
     public DbSet<Period> Periods { get; set; }
     public DbSet<Position> Positions { get; set; }
-    public DbSet<IdentityMaster> Masters { get; set; }
-    //public DbSet<Master> Masters { get; set; }
+    public DbSet<Master> Masters { get; set; }
 
     #endregion
 
@@ -29,14 +28,15 @@ public sealed class AuthDbContext:IdentityDbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder
             .ApplyConfiguration(new MeasuringModelConfiguration())
-            //.ApplyConfiguration(new MasterModelConfiguration())
             .ApplyConfiguration(new NominationModelConfiguration())
             .ApplyConfiguration(new OperationModelConfiguration())
             .ApplyConfiguration(new OwnerModelConfiguration())
             .ApplyConfiguration(new PeriodModelConfiguration())
             .ApplyConfiguration(new PositionModelConfiguration())
-            .ApplyConfiguration(new CategoryModelConfiguration());
-        modelBuilder.Entity<IdentityMaster>(m=>m.HasMany(_=>_.Owners).WithOne(_=>_.Master));
+            .ApplyConfiguration(new CategoryModelConfiguration())
+            .ApplyConfiguration(new MasterModelConfiguration());
+        //modelBuilder.Entity<IdentityUser>().HasKey(x => x.Id);
+
     }
 
     #endregion

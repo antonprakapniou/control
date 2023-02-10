@@ -6,7 +6,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
 
     private readonly IMapper _mapper;
     private readonly IGenericRepository<Owner> _ownerRepository;
-    private readonly IGenericRepository<IdentityMaster> _masterRepository;
+    private readonly IGenericRepository<Master> _masterRepository;
 
     #endregion
 
@@ -15,7 +15,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
     public OwnerService(
         IMapper mapper,
         IGenericRepository<Owner> ownerRepository,
-        IGenericRepository<IdentityMaster> masterRepository)
+        IGenericRepository<Master> masterRepository)
         : base(mapper, ownerRepository)
     {
         _mapper=mapper;
@@ -46,7 +46,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
             if (viewModel.MasterId is not null)
             {
                 var property = await _masterRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.MasterId));
-                var propertyVM = _mapper.Map<IdentityMasterVM>(property);
+                var propertyVM = _mapper.Map<MasterVM>(property);
                 viewModel.Master = propertyVM;
             }
         }
@@ -74,7 +74,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
         if (viewModel.MasterId is not null)
         {
             var property = await _masterRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.MasterId));
-            var propertyVM = _mapper.Map<IdentityMasterVM>(property);
+            var propertyVM = _mapper.Map<MasterVM>(property);
             viewModel.Master = propertyVM;
         }
 

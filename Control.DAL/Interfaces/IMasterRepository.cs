@@ -4,9 +4,9 @@ public interface IMasterRepository
 {
     #region Methods
 
-    public Task<IEnumerable<IdentityMaster>> GetAllByAsync(Expression<Func<IdentityMaster, bool>>? expression = null);
-    public Task<IdentityMaster> GetOneByAsync(Expression<Func<IdentityMaster, bool>>? expression = null);
-    public Task DeleteAsync(IdentityMaster master);
+    public Task<IEnumerable<Master>> GetAllByAsync(Expression<Func<Master, bool>>? expression = null);
+    public Task<Master> GetOneByAsync(Expression<Func<Master, bool>>? expression = null);
+    public Task DeleteAsync(Master master);
 
     #endregion
 }

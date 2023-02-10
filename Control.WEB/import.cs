@@ -9,6 +9,7 @@ global using Control.BLL.Utilities;
 global using Control.DAL.EF;
 global using Control.DAL.Interfaces;
 global using Control.DAL.Repositories;
+global using Control.DAL.Models;
 global using Control.WEB.Utilities;
 global using Microsoft.EntityFrameworkCore;
 global using Control.WEB.Models;

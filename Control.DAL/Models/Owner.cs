@@ -1,4 +1,6 @@
-﻿namespace Control.DAL.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Control.DAL.Models;
 
 public sealed class Owner : BaseModel
 {
@@ -16,13 +18,13 @@ public sealed class Owner : BaseModel
 
     #region Included properties Id
 
-    public Guid? MasterId { get; set; }
+    public string? MasterId { get; set; }
 
     #endregion
 
     #region Included properties
 
-    public IdentityMaster? Master { get; set; }
+    public Master? Master { get; set; }
 
     #endregion
 }

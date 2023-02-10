@@ -7,7 +7,7 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
     private readonly IGenericRepository<Position> _positionRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
     private readonly IGenericRepository<Measuring> _measuringRepository;
-    private readonly IGenericRepository<IdentityMaster> _masterRepository;
+    private readonly IGenericRepository<Master> _masterRepository;
     private readonly IGenericRepository<Nomination> _nominationRepository;
     private readonly IGenericRepository<Operation> _operationRepository;
     private readonly IGenericRepository<Owner> _ownerRepository;
@@ -23,7 +23,7 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
         IGenericRepository<Period> periodRepository,
         IGenericRepository<Category> categoryRepository,
         IGenericRepository<Measuring> measuringRepository,
-        IGenericRepository<IdentityMaster> masterRepository,
+        IGenericRepository<Master> masterRepository,
         IGenericRepository<Nomination> nominationRepository,
         IGenericRepository<Operation> operationRepository,
         IGenericRepository<Owner> ownerRepository)
@@ -232,7 +232,7 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
             if (propertyVM.MasterId is not null)
             {
                 var master = await _masterRepository.GetOneByAsync(_ => _.Id.Equals(propertyVM.MasterId));
-                var masterVM = _mapper.Map<IdentityMasterVM>(master);
+                var masterVM = _mapper.Map<MasterVM>(master);
                 propertyVM.Master=masterVM;
             }
 

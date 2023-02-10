@@ -20,21 +20,10 @@ public static class AppConfiguration
     }
     public static void SetDbContext(IConfiguration configuration, IServiceCollection services)
     {
-        //string connectionName = ConnectionConst.DevelopSqLiteConnection;
         string connectionName = ConnectionConst.DevelopSqLiteAuthConnection;
         string connectionString = configuration
             .GetConnectionString(connectionName!)
-            ??throw new InvalidOperationException($"Connection \"{connectionName}\" not found");
-
-        //#region Db context        
-
-        //services.AddDbContext<AppDbContext>(options =>
-        //{
-        //    options.UseSqlite(connectionString);
-        //    options.EnableSensitiveDataLogging();
-        //});
-
-        //#endregion
+            ??throw new InvalidOperationException($"Connection \"{connectionName}\" not found");        
 
         #region Auth db context
 

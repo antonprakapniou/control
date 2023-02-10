@@ -23,7 +23,7 @@ public sealed class MasterService : IMasterService
 
     #region Methods    
 
-    public async Task<IEnumerable<IdentityMasterVM>> GetAllAsync()
+    public async Task<IEnumerable<MasterVM>> GetAllAsync()
     {
         var models = await _repository.GetAllByAsync();
 
@@ -33,10 +33,10 @@ public sealed class MasterService : IMasterService
             throw new ObjectNotFoundException(errorMessage);
         }
 
-        var viewModels = _mapper.Map<IEnumerable<IdentityMasterVM>>(models);
+        var viewModels = _mapper.Map<IEnumerable<MasterVM>>(models);
         return viewModels;
     }
-    public async Task<IdentityMasterVM> GetByIdAsync(Guid id)
+    public async Task<MasterVM> GetByIdAsync(Guid id)
     {
         var model = await _repository.GetOneByAsync(_ => _.Id.Equals(id));
 
@@ -46,7 +46,7 @@ public sealed class MasterService : IMasterService
             throw new ObjectNotFoundException(errorMessage);
         }
 
-        var viewModel = _mapper.Map<IdentityMasterVM>(model);
+        var viewModel = _mapper.Map<MasterVM>(model);
         return viewModel;
     }
     public async Task DeleteAsync(Guid id)
