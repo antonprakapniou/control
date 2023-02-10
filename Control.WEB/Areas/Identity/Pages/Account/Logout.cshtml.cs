@@ -25,8 +25,11 @@ namespace Control.WEB.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
+            var user = User.Identity.Name;
             await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
+            _logger.LogInformation($"'{user}' logged out.");
+            TempData[ToastrConst.Success]=$"All the best, {user}!";
+
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);

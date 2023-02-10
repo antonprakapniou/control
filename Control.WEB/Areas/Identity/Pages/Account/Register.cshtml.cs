@@ -130,7 +130,8 @@ public class RegisterModel : PageModel
             {
                 await _userManager.AddToRoleAsync(user, RoleConst.Master);
 
-                _logger.LogInformation("User created a new account with password.");
+                _logger.LogInformation($"{user.UserName} created a new account with password.");
+                TempData[ToastrConst.Success]=$"Welcome, {user.UserName}!";
 
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

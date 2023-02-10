@@ -1,6 +1,79 @@
 ﻿@page
 @model RegisterModel
-@{
+<br />
+<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+    <div class="card" style="width:50%">
+        <div class="card-header bg-dark text-light">Use a local account to log in</div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Input.Name">Name</label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="Input.Name" class="form-control" autocomplete="username" aria-required="true" placeholder="name" />
+                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                </dd>
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Input.Name">Phone number</label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="username" aria-required="true" placeholder="phone number" />
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </dd>
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Input.Email">Email</label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </dd>
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Input.Password">Password</label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </dd>
+                <dt class="col-sm-3 text-end">
+                    <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                </dt>
+                <dd class="col-sm-9">
+                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer bg-dark text-end">
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <button type="submit" id="registerSubmit" class="btn btn-outline-success">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+                <a asp-controller="Master" asp-action="Index" class="btn btn-outline-danger">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@{
     ViewData["Title"] = "Register";
 }
 
@@ -70,8 +143,6 @@
             }
         </section>
     </div>
-</div>
+*@
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+

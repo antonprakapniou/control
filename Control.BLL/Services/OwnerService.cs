@@ -85,7 +85,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
     public async Task<OwnerCreatingVM> SetOwnerSelectList(OwnerCreatingVM viewModel)
     {
         var masters = await _masterRepository.GetAllByAsync();
-        viewModel.Masters=masters.Select(_ => new SelectListItem { Value=_.Id.ToString(), Text=_.UserName });
+        viewModel.Masters=masters.Select(_ => new SelectListItem { Value=_.Id.ToString(), Text=_.Name });
         return viewModel;
     }
 

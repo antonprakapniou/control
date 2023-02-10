@@ -36,7 +36,7 @@ public sealed class MasterService : IMasterService
         var viewModels = _mapper.Map<IEnumerable<MasterVM>>(models);
         return viewModels;
     }
-    public async Task<MasterVM> GetByIdAsync(Guid id)
+    public async Task<MasterVM> GetByIdAsync(string id)
     {
         var model = await _repository.GetOneByAsync(_ => _.Id.Equals(id));
 
@@ -49,7 +49,7 @@ public sealed class MasterService : IMasterService
         var viewModel = _mapper.Map<MasterVM>(model);
         return viewModel;
     }
-    public async Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(string id)
     {
         var model = await _repository.GetOneByAsync(_ => _.Id.Equals(id));
 

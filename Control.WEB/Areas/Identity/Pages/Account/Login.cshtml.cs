@@ -101,7 +101,9 @@ namespace Control.WEB.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    var user=await _signInManager.UserManager.FindByNameAsync(Input.Email);
+                    _logger.LogInformation($"'{user.UserName}' logged in.");
+                    TempData[ToastrConst.Success]=$"Hello, {user.UserName}!";
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -110,11 +112,13 @@ namespace Control.WEB.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
+                    TempData[ToastrConst.Warning]="Your account locked out";
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
                 else
                 {
+                    TempData[ToastrConst.Error]="Login failed";
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }

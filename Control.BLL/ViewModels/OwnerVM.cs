@@ -35,7 +35,8 @@ public sealed class OwnerVM : BaseViewModel
 
     [Required]
     [DisplayName("Master")]
-    public Guid? MasterId { get; set; }
+    public string? MasterId { get; set; }
+    public string? NormMasterId { get => MasterId!.ToUpper(); }
 
     #endregion
 

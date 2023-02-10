@@ -1,4 +1,6 @@
-﻿namespace Control.WEB.Controllers;
+﻿using System.Security.Claims;
+
+namespace Control.WEB.Controllers;
 
 [Authorize]
 public sealed class PositionController : Controller
@@ -29,23 +31,31 @@ public sealed class PositionController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string? jsonFilter)
     {
-        var representation = new FilterRepresentationVM();
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!.ToUpper();
+        var allPositions = await _positionService.GetAllAsync();
+        var positions = allPositions;        
 
-        if (jsonFilter is not null)
-        {
-            var filter = JsonConvert.DeserializeObject<FilterVM>(jsonFilter!);
-            representation.Filter=filter;
-            representation.Positions=await _positionService.GetAllByFilterAsync(representation.Filter!);
-            if (representation.Positions.Any()) TempData[ToastrConst.Info]=$"{representation.Positions.Count()} position(s) found";
-            else TempData[ToastrConst.Info]=$"No positions found";
-        }
-
-        else
-        {
-            representation.Positions = await _positionService.GetAllAsync();
-        }
-
+        FilterRepresentationVM representation = new();
+        representation.Filter = (jsonFilter is null) ? new() : JsonConvert.DeserializeObject<FilterVM>(jsonFilter!);
+        var filterPositions = (jsonFilter is null) ? allPositions : await _positionService.GetAllByFilterAsync(representation.Filter!);
+        var ownerPositions = (User.IsInRole(RoleConst.Admin)) ? filterPositions : filterPositions.Where(_=>_.Owner!.NormMasterId!.Equals(userId));
+        representation.Positions=ownerPositions;
         await _positionService.SetFilterSelectList(representation);
+
+        #region Notifications
+
+        var allCount = representation.Positions.Count();
+        var currentMonthCount = representation.Positions.Count(_ => _.NextDateStatus.Equals(NextDateStatusEnum.CurrentMonthControl));
+        var noControlCount = representation.Positions.Count(_ => _.NextDateStatus.Equals(NextDateStatusEnum.NeedControl));
+        var invalidCount = representation.Positions.Count(_ => _.ValidStatus.Equals(ValidStatusEnum.Invalid));
+
+        if (!representation.Positions.Any()) TempData[ToastrConst.Info]="No positions";
+        if (currentMonthCount>0) TempData[ToastrConst.Info]=$"{currentMonthCount} position(s) with current month control";
+        if (noControlCount>0) TempData[ToastrConst.Warning]=$"For {noControlCount} positions the schedule was not completed";
+        if (invalidCount>0) TempData[ToastrConst.Warning]=$"{invalidCount} position(s) need in control";
+
+        # endregion
+
         return View(representation);
     }
 

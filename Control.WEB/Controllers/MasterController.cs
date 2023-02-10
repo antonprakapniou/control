@@ -29,7 +29,7 @@ public class MasterController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(string id)
     {
         var viewModel=await _service.GetByIdAsync(id);
 

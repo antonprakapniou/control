@@ -20,14 +20,7 @@
         {
             @foreach (var item in Model)
             {
-                if (item.Name!.Equals(RoleConst.AdminName))
-                {
-                    <tr>
-                        <td colspan="4">No masters</td>
-                    </tr>
-                }
-
-                else
+                if (!item.Name!.Equals(RoleConst.AdminName))
                 {
                     <tr>
                         <td class ="text-start align-middle">@item.Name</td>
@@ -43,13 +36,6 @@
                     </tr>
                 }
             }
-        }
-
-        else
-        {
-            <tr>
-                <td colspan="4">No masters</td>
-            </tr>
         }
     </tbody>
 </table>
