@@ -73,7 +73,20 @@
                         <dt class="col-sm-3 text-end">
                             <label asp-for="NextDate"></label>
                         </dt>
-                        <dd class="col-sm-9">@Model.NextDate.ToShortDateString()</dd>
+                        <dd class="col-sm-9">
+                            @if (Model.ValidStatus.Equals(ValidStatusEnum.Valid))
+                            {
+                                <div class="btn-outline-info">
+                                    @Model.NextDate.ToShortDateString()
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="btn-outline-danger">
+                                    @Model.NextDate.ToShortDateString()
+                                </div>
+                            }                            
+                        </dd>
 
                         <dt class="col-sm-3 text-end">
                             <label asp-for="NeedDate"></label>
@@ -81,7 +94,7 @@
                         <dd class="col-sm-9">@Model.NeedDate.ToShortDateString()</dd>
 
                         <dt class="col-sm-3 text-end">
-                            <label asp-for="ValidStatus"></label>
+                            <label asp-for="NextDateStatus"></label>
                         </dt>
                         <dd class="col-sm-9">
                             @{
