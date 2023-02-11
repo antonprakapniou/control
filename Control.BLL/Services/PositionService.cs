@@ -54,16 +54,12 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
             throw new ObjectNotFoundException(errorMessage);
         }
 
-        var viewModels = _mapper.Map<IEnumerable<PositionVM>>(models);
-
-        #region Include properties mapping
+        var viewModels = _mapper.Map<IEnumerable<PositionVM>>(models);        
 
         foreach (var viewModel in viewModels)
         {
             await SetIncludePropertiesAsync(viewModel);
         }
-
-        #endregion
 
         var orderViewModels = viewModels
             .OrderBy(_ => _.Measuring?.Code)
@@ -86,12 +82,7 @@ public sealed class PositionService : GenericService<PositionVM, Position>, IPos
 
         var viewModel = _mapper.Map<PositionVM>(model);
         viewModel.AdviceDate=viewModel.NextDate;
-
-        #region Include properties mapping
-
         await SetIncludePropertiesAsync(viewModel);
-
-        #endregion
 
         return viewModel;
     }

@@ -1,6 +1,6 @@
 ﻿@model OwnerVM
 <br />
-<form method="post" class="needs-validation" novalidate>
+<form method="get">
     <input asp-for="Id" hidden />
     <div class="card" style="width:60%">
         <div class="card-header bg-dark text-light">Owner</div>
@@ -10,41 +10,35 @@
                 @if (Model.ShortName is not null)
                 {
                     <dt class="col-sm-3 text-end">
-                        <label asp-for="ShortName" class="col-form-label"></label>
+                        <label asp-for="ShortName"></label>
                     </dt>
-                    <dd class="col-sm-9">
-                        <input asp-for="ShortName" class="form-control" />
-                    </dd>
+                    <dd class="col-sm-9">@Model.ShortName</dd>
                 }
 
                 @if (Model.FullShop is not null)
                 {
                     <dt class="col-sm-3 text-end">
-                        <label asp-for="FullShop" class="col-form-label"></label>
+                        <label asp-for="FullShop"></label>
                     </dt>
-                    <dd class="col-sm-9">
-                        <input asp-for="FullShop" class="form-control" />
-                    </dd>
+                    <dd class="col-sm-9">@Model.FullShop</dd>
+
                 }
 
                 @if (Model.FullProduction is not null)
                 {
                     <dt class="col-sm-3 text-end">
-                        <label asp-for="FullProduction" class="col-form-label"></label>
+                        <label asp-for="FullProduction"></label>
                     </dt>
-                    <dd class="col-sm-9">
-                        <input asp-for="FullProduction" class="form-control" />
-                    </dd>
+                    <dd class="col-sm-9">@Model.FullProduction</dd>
+
                 }
 
                 @if (Model.ShortName is not null)
                 {
                     <dt class="col-sm-3 text-end">
-                        <label asp-for="Phone" class="col-form-label"></label>
+                        <label asp-for="Phone"></label>
                     </dt>
-                    <dd class="col-sm-9">
-                        <input asp-for="Phone" class="form-control" />
-                    </dd>
+                    <dd class="col-sm-9">@Model.Phone</dd>
                 }
 
                 @if (Model.MasterId is not null)
@@ -52,31 +46,25 @@
                     if (Model.Master!.Name is not null)
                     {
                         <dt class="col-sm-3 text-end">
-                            <label asp-for="Master!.Name" class="col-form-label"></label>
+                            <label asp-for="Master!.Name"></label>
                         </dt>
-                        <dd class="col-sm-9">
-                            <input asp-for="Master!.Name" class="form-control" />
-                        </dd>
+                        <dd class="col-sm-9">@Model.Master!.Name</dd>
                     }
 
                     if (Model.Master!.PhoneNumber is not null)
                     {
                         <dt class="col-sm-3 text-end">
-                            <label asp-for="Master!.PhoneNumber" class="col-form-label"></label>
+                            <label asp-for="Master!.PhoneNumber"></label>
                         </dt>
-                        <dd class="col-sm-9">
-                            <input asp-for="Master!.PhoneNumber" class="form-control" />
-                        </dd>
+                        <dd class="col-sm-9">@Model.Master!.PhoneNumber</dd>
                     }
 
                     if (Model.Master!.Email is not null)
                     {
                         <dt class="col-sm-3 text-end">
-                            <label asp-for="Master!.Email" class="col-form-label"></label>
+                            <label asp-for="Master!.Email"></label>
                         </dt>
-                        <dd class="col-sm-9">
-                            <input asp-for="Master!.Email" class="form-control" />
-                        </dd>
+                        <dd class="col-sm-9">@Model.Master!.Email</dd>
                     }
                 }
 
@@ -105,9 +93,3 @@
         </div>
     </div>
 </form>
-
-@section Scripts{
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
-}

@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace Control.WEB.Controllers;
+﻿namespace Control.WEB.Controllers;
 
 [Authorize]
 public sealed class PositionController : Controller
@@ -144,25 +142,23 @@ public sealed class PositionController : Controller
         }
 
         else TempData[ToastrConst.Error]=ToastrConst.InvalidModel;
-        return RedirectToAction(nameof(Update), new { id = positionCreatingVM.PositionVM!.Id }); ;
+        return RedirectToAction(nameof(Update), new { Id = positionCreatingVM.PositionVM!.Id }); ;
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeletePicture(PositionCreatingVM positionCreatingVM)
     {
-        var viewModel = await _positionService.GetByIdAsync(positionCreatingVM.PositionVM!.Id);
-
+        var id = positionCreatingVM.PositionVM!.Id;
+        var viewModel = await _positionService.GetByIdAsync(id);
         if (viewModel.Picture is not null)
         {
-            _fileManager.Delete(viewModel.Picture, _partialPath);
             viewModel.Picture = null;
             await _positionService.UpdateAsync(viewModel);
-            TempData[ToastrConst.Success]=ToastrConst.DeleteSuccess;
-        }
-
-        else TempData[ToastrConst.Error]=ToastrConst.OperationError;
-        return RedirectToAction(nameof(Update), new { id = viewModel.Id });
+        }                
+        
+        TempData[ToastrConst.Success]="Picture deleted successfully";
+        return RedirectToAction(nameof(Update), new { Id = id });
     }
 
     [HttpPost]

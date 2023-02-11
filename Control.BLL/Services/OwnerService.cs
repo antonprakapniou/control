@@ -6,7 +6,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
 
     private readonly IMapper _mapper;
     private readonly IGenericRepository<Owner> _ownerRepository;
-    private readonly IGenericRepository<Master> _masterRepository;
+    private readonly IMasterRepository _masterRepository;
 
     #endregion
 
@@ -15,7 +15,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
     public OwnerService(
         IMapper mapper,
         IGenericRepository<Owner> ownerRepository,
-        IGenericRepository<Master> masterRepository)
+        IMasterRepository masterRepository)
         : base(mapper, ownerRepository)
     {
         _mapper=mapper;
@@ -39,19 +39,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
 
         var viewModels = _mapper.Map<IEnumerable<OwnerVM>>(models);
 
-        #region Include properties mapping
-
-        foreach (var viewModel in viewModels)
-        {
-            if (viewModel.MasterId is not null)
-            {
-                var property = await _masterRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.MasterId));
-                var propertyVM = _mapper.Map<MasterVM>(property);
-                viewModel.Master = propertyVM;
-            }
-        }
-
-        #endregion
+        foreach (var viewModel in viewModels) await SetIncludePropertiesAsync(viewModel);
 
         var orderViewModels = viewModels.OrderBy(_ => _.ShortName);
 
@@ -69,16 +57,7 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
 
         var viewModel = _mapper.Map<OwnerVM>(model);
 
-        #region Include properties mapping
-
-        if (viewModel.MasterId is not null)
-        {
-            var property = await _masterRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.MasterId));
-            var propertyVM = _mapper.Map<MasterVM>(property);
-            viewModel.Master = propertyVM;
-        }
-
-        #endregion
+        await SetIncludePropertiesAsync(viewModel);
 
         return viewModel;
     }
@@ -87,6 +66,15 @@ public sealed class OwnerService : GenericService<OwnerVM, Owner>, IOwnerService
         var masters = await _masterRepository.GetAllByAsync();
         viewModel.Masters=masters.Select(_ => new SelectListItem { Value=_.Id.ToString(), Text=_.Name });
         return viewModel;
+    }
+    private async Task SetIncludePropertiesAsync(OwnerVM viewModel)
+    {
+        if (viewModel.MasterId is not null)
+        {
+            var property = await _masterRepository.GetOneByAsync(_ => _.Id.Equals(viewModel.MasterId));
+            var propertyVM = _mapper.Map<MasterVM>(property);
+            viewModel.Master = propertyVM;
+        }        
     }
 
     #endregion
