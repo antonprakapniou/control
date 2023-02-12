@@ -12,6 +12,7 @@ public sealed class AuthDbContext:IdentityDbContext
     public DbSet<Period> Periods { get; set; }
     public DbSet<Position> Positions { get; set; }
     public DbSet<Master> Masters { get; set; }
+    public DbSet<History> History { get; set; }
 
     #endregion
 
@@ -34,9 +35,8 @@ public sealed class AuthDbContext:IdentityDbContext
             .ApplyConfiguration(new PeriodModelConfiguration())
             .ApplyConfiguration(new PositionModelConfiguration())
             .ApplyConfiguration(new CategoryModelConfiguration())
-            .ApplyConfiguration(new MasterModelConfiguration());
-        //modelBuilder.Entity<IdentityUser>().HasKey(x => x.Id);
-
+            .ApplyConfiguration(new MasterModelConfiguration())
+            .ApplyConfiguration(new HistoryModelConfiguration());
     }
 
     #endregion

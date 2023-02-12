@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Control.DAL.Models;
+﻿namespace Control.DAL.Models;
 
 public sealed class Owner : BaseModel
 {
