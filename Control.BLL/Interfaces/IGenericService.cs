@@ -1,7 +1,7 @@
 ﻿namespace Control.BLL.Interfaces;
 
 public interface IGenericService<V, T>
-        where V : BaseViewModel
+        where V : BaseVM
         where T : BaseModel
 {
     #region Methods

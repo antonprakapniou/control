@@ -1,6 +1,6 @@
 ﻿namespace Control.BLL.ViewModels;
 
-public sealed class MeasuringVM : BaseViewModel
+public sealed class MeasuringVM : BaseVM
 {
     #region Own properties
 

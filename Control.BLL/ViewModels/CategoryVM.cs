@@ -1,6 +1,6 @@
 ﻿namespace Control.BLL.ViewModels;
 
-public sealed class CategoryVM : BaseViewModel
+public sealed class CategoryVM : BaseVM
 {
     #region Own properties
 

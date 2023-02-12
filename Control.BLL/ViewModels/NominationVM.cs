@@ -1,6 +1,6 @@
 ﻿namespace Control.BLL.ViewModels;
 
-public sealed class NominationVM : BaseViewModel
+public sealed class NominationVM : BaseVM
 {
     #region Own properties
 

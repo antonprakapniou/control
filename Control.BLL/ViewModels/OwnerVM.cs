@@ -1,6 +1,6 @@
 ﻿namespace Control.BLL.ViewModels;
 
-public sealed class OwnerVM : BaseViewModel
+public sealed class OwnerVM : BaseVM
 {
     #region Own properties
 

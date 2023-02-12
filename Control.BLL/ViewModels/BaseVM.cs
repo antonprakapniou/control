@@ -1,6 +1,6 @@
 ﻿namespace Control.BLL.ViewModels;
 
-public abstract class BaseViewModel
+public abstract class BaseVM
 {
     #region Own properties
 

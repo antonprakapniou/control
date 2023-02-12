@@ -1,7 +1,7 @@
 ﻿namespace Control.BLL.Services;
 
 public class GenericService<V, T> : IGenericService<V, T>
-        where V : BaseViewModel
+        where V : BaseVM
         where T : BaseModel
 {
     #region Own fields

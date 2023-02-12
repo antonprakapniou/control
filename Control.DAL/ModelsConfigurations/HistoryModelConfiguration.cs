@@ -34,11 +34,6 @@ public sealed class HistoryModelConfiguration : IEntityTypeConfiguration<History
             .IsRequired();
 
         builder
-            .Property(_ => _.Action )
-            .HasColumnName("Action")
-            .IsRequired();
-
-        builder
             .Property(_ => _.Master)
             .HasColumnName("Master")
             .IsRequired();

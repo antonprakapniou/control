@@ -1,6 +1,6 @@
 ﻿namespace Control.BLL.ViewModels;
 
-public sealed class PositionVM : BaseViewModel
+public sealed class PositionVM : BaseVM
 {
     #region Own properties
 

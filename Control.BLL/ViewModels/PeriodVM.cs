@@ -1,6 +1,6 @@
 ﻿namespace Control.BLL.ViewModels;
 
-public sealed class PeriodVM : BaseViewModel
+public sealed class PeriodVM : BaseVM
 {
     private const int _defaultMonth = 12;
 
